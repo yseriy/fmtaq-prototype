@@ -5,9 +5,8 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class Task {
+class Task {
     private UUID id;
-    private String command;
-    private String status;
-    private Task nextTask;
+    private Address address;
+    private Body body;
 }
