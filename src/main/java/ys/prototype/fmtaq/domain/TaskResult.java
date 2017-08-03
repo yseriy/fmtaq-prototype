@@ -1,14 +1,28 @@
 package ys.prototype.fmtaq.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.UUID;
 
 @Data
+@ToString(exclude = {"id", "task"})
+@EqualsAndHashCode(exclude = {"id", "task"})
+@Entity
 public class TaskResult {
-    private Task task;
-    private Boolean success;
-    private Body body;
 
-    public Boolean isTaskSuccessed() {
-        return success;
-    }
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn()
+    private Task task;
+
+    @Enumerated
+    private TaskResultStatus status;
+
+    private String body;
 }
