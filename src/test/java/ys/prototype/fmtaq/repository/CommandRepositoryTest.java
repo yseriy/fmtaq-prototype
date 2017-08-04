@@ -29,9 +29,7 @@ public class CommandRepositoryTest {
 
     @Before
     public void setup() {
-        Task task = new Task();
-        task.setStatus(TaskStatus.REGISTERED);
-        task.setType(TaskType.GROUP);
+        Task task = new Task(TaskStatus.REGISTERED, TaskType.GROUP);
 
         entityManager.persist(task);
         entityManager.flush();
@@ -41,21 +39,10 @@ public class CommandRepositoryTest {
 
     @Test
     public void save() {
-        Command command1 = new Command();
-        command1.setAddress(new Address("test_address_1"));
-        command1.setBody(new Body("test_body_1"));
-        command1.setStatus(CommandStatus.REGISTERED);
-
-        Command command2 = new Command();
-        command2.setAddress(new Address("test_address_2"));
-        command2.setBody(new Body("test_body_2"));
-        command2.setStatus(CommandStatus.REGISTERED);
-
         Task task = entityManager.find(Task.class, taskId);
-        entityManager.flush();
 
-        command1.setTask(task);
-        command2.setTask(task);
+        Command command1 = new Command("test_address_1", "test_body_1", CommandStatus.REGISTERED, 0, task);
+        Command command2 = new Command("test_address_1", "test_body_1", CommandStatus.REGISTERED, 1, task);
 
         entityManager.persist(command1);
         entityManager.persist(command2);
@@ -63,5 +50,11 @@ public class CommandRepositoryTest {
 
         assertThat(command1.getId()).isNotNull();
         assertThat(command2.getId()).isNotNull();
+
+        Command command3 = entityManager.find(Command.class, command1.getId());
+        Command command4 = entityManager.find(Command.class, command2.getId());
+
+        assertThat(command3).isEqualTo(command1);
+        assertThat(command4).isEqualTo(command2);
     }
 }
