@@ -25,7 +25,7 @@ public class Command {
 
     private Integer step;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
     public Command(String address, String body, CommandStatus status, Integer step, Task task) {

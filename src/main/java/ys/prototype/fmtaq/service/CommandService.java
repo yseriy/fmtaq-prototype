@@ -1,10 +1,15 @@
 package ys.prototype.fmtaq.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
 import ys.prototype.fmtaq.domain.CommandResult;
+import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.repository.CommandRepository;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -48,6 +53,9 @@ public class CommandService {
     }
 
     private Command getNextCommand(Command command) {
-        return null;
+        Pageable limit1 = new PageRequest(0, 1);
+        List<Command> nextCommandList = commandRepository.getNextCommand(command.getTask(), CommandStatus.REGISTERED, limit1);
+
+        return nextCommandList.get(0);
     }
 }
