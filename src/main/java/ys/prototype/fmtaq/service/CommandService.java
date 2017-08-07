@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
 import ys.prototype.fmtaq.domain.CommandConverter;
-import ys.prototype.fmtaq.domain.CommandResult;
+import ys.prototype.fmtaq.domain.CommandResultConverter;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.repository.CommandRepository;
 
@@ -31,14 +31,14 @@ public class CommandService {
         this.commandRepository = commandRepository;
     }
 
-    public Command setStatusAndGetNextCommand(CommandResult commandResult) {
-        Command command = commandRepository.findOne(commandResult.getCommandId());
+    public Command setStatusAndGetNextCommand(CommandResultConverter converter) {
+        Command command = commandRepository.findOne(converter.getCommandId());
 
         if (command == null) {
             throw new RuntimeException("command not found");
         }
 
-        if (commandResult.isStatusOk()) {
+        if (converter.isStatusOk()) {
             return setStatusOkAndGetNextCommand(command);
         } else
             return setStatusErrorAndGetNextCommand(command);
