@@ -1,10 +1,14 @@
 package ys.prototype.fmtaq.service;
 
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Queue;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
+import ys.prototype.fmtaq.domain.CommandConverter;
 import ys.prototype.fmtaq.domain.CommandResult;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.repository.CommandRepository;
@@ -16,9 +20,14 @@ import java.util.List;
 public class CommandService {
 
     private static final Pageable LIMIT_1 = new PageRequest(0, 1);
+
+    private final AmqpAdmin amqpAdmin;
+    private final AmqpTemplate amqpTemplate;
     private final CommandRepository commandRepository;
 
-    public CommandService(CommandRepository commandRepository) {
+    public CommandService(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, CommandRepository commandRepository) {
+        this.amqpAdmin = amqpAdmin;
+        this.amqpTemplate = amqpTemplate;
         this.commandRepository = commandRepository;
     }
 
@@ -58,5 +67,10 @@ public class CommandService {
                 CommandStatus.REGISTERED, LIMIT_1);
 
         return nextCommandList.get(0);
+    }
+
+    private void sendCommand(CommandConverter converter) {
+        amqpAdmin.declareQueue(new Queue(converter.getAddress()));
+        amqpTemplate.convertAndSend(converter.getAddress(), converter.getBody());
     }
 }
