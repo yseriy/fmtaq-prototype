@@ -16,7 +16,6 @@ import java.util.List;
 public class CommandService {
 
     private static final Pageable LIMIT_1 = new PageRequest(0, 1);
-
     private final CommandRepository commandRepository;
 
     public CommandService(CommandRepository commandRepository) {
