@@ -15,6 +15,8 @@ import java.util.List;
 @Transactional
 public class CommandService {
 
+    private static final Pageable LIMIT_1 = new PageRequest(0, 1);
+
     private final CommandRepository commandRepository;
 
     public CommandService(CommandRepository commandRepository) {
@@ -53,8 +55,8 @@ public class CommandService {
     }
 
     private Command getNextCommand(Command command) {
-        Pageable limit1 = new PageRequest(0, 1);
-        List<Command> nextCommandList = commandRepository.getNextCommand(command.getTask(), CommandStatus.REGISTERED, limit1);
+        List<Command> nextCommandList = commandRepository.getNextCommand(command.getTask(),
+                CommandStatus.REGISTERED, LIMIT_1);
 
         return nextCommandList.get(0);
     }
