@@ -1,14 +1,15 @@
 package ys.prototype.fmtaq.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = "commands")
+@EqualsAndHashCode(exclude = "commands")
 @Entity
 public class Task {
 
@@ -21,6 +22,9 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private TaskType type;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private Set<Command> commands;
 
     public Task(TaskStatus status, TaskType type) {
         this.status = status;
