@@ -8,9 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandConverter;
-import ys.prototype.fmtaq.domain.CommandResultConverter;
 import ys.prototype.fmtaq.domain.CommandStatus;
+import ys.prototype.fmtaq.domain.dto.CommandResultDTO;
 import ys.prototype.fmtaq.repository.CommandRepository;
 
 import java.util.List;
@@ -31,35 +30,37 @@ public class CommandService {
         this.commandRepository = commandRepository;
     }
 
-    public Command setStatusAndGetNextCommand(CommandResultConverter converter) {
-        Command command = commandRepository.findOne(converter.getCommandId());
+    public void setStatusAndSendNextCommand(CommandResultDTO commandResultDTO) {
+        Command command = commandRepository.findOne(commandResultDTO.getCommandId());
 
         if (command == null) {
             throw new RuntimeException("command not found");
         }
 
-        if (converter.isStatusOk()) {
-            return setStatusOkAndGetNextCommand(command);
+        if (commandResultDTO.isStatusOk()) {
+            setStatusOkAndSendCommand(command);
         } else
-            return setStatusErrorAndGetNextCommand(command);
+            setStatusErrorAndSendCommand(command);
     }
 
-    private Command setStatusOkAndGetNextCommand(Command command) {
+    private void setStatusOkAndSendCommand(Command command) {
         command.setStatusOk();
         Command nextCommand = getNextCommand(command);
 
         if (nextCommand == null) {
             command.getTask().setStatusOk();
+        } else {
+            sendCommand(nextCommand);
         }
-
-        return nextCommand;
     }
 
-    private Command setStatusErrorAndGetNextCommand(Command command) {
+    private void setStatusErrorAndSendCommand(Command command) {
         command.setStatusError();
         command.getTask().setStatusError();
 
-        return command.getTask().isErrorFatal() ? null : getNextCommand(command);
+        if (command.getTask().isErrorNonFatal()) {
+            sendCommandIfNotNull(getNextCommand(command));
+        }
     }
 
     private Command getNextCommand(Command command) {
@@ -69,7 +70,13 @@ public class CommandService {
         return nextCommandList.get(0);
     }
 
-    private void sendCommand(Command command) {
+    private void sendCommandIfNotNull(Command command) {
+        if (command != null) {
+            sendCommand(command);
+        }
+    }
+
+    void sendCommand(Command command) {
         amqpAdmin.declareQueue(new Queue(command.getAddress()));
         amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
     }
