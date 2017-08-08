@@ -69,8 +69,8 @@ public class CommandService {
         return nextCommandList.get(0);
     }
 
-    private void sendCommand(CommandConverter converter) {
-        amqpAdmin.declareQueue(new Queue(converter.getAddress()));
-        amqpTemplate.convertAndSend(converter.getAddress(), converter.getBody());
+    private void sendCommand(Command command) {
+        amqpAdmin.declareQueue(new Queue(command.getAddress()));
+        amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
     }
 }
