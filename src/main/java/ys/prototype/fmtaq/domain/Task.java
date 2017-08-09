@@ -31,8 +31,8 @@ public class Task {
         this.type = type;
     }
 
-    public Boolean isErrorFatal() {
-        return type == TaskType.SEQUENCE;
+    public Boolean isErrorNonFatal() {
+        return type == TaskType.GROUP;
     }
 
     public void setStatusOk() {
