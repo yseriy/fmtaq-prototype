@@ -23,25 +23,55 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskType type;
 
+    private Integer commandCount;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<Command> commands;
 
-    public Task(TaskStatus status, TaskType type) {
+    public Task(TaskStatus status, TaskType type, Integer commandCount) {
         this.status = status;
         this.type = type;
+        this.commandCount = commandCount;
     }
 
-    public Boolean isErrorNonFatal() {
-        return type == TaskType.GROUP;
+    Boolean hasNonFatalStatus() {
+        return getStatus() != TaskStatus.ERROR && getType() == TaskType.GROUP;
     }
 
-    public void setStatusOk() {
-        if (status != TaskStatus.PARTIAL) {
-            status = TaskStatus.OK;
+    void setCommandSuccessStatus() {
+    }
+
+    void setCommandErrorStatus() {
+        if (getType() == TaskType.GROUP) {
+
+            if (getStatus() == TaskStatus.REGISTERED) {
+                setStatus(TaskStatus.HAS_ERROR);
+            }
+
+        } else {
+            setStatus(TaskStatus.ERROR);
         }
     }
 
-    public void setStatusError() {
-        status = (type == TaskType.GROUP) ? TaskStatus.PARTIAL : TaskStatus.ERROR;
+    void setLastCommandSuccessStatus() {
+        if (getType() == TaskType.GROUP) {
+
+            if (getStatus() == TaskStatus.HAS_ERROR) {
+                setStatus(TaskStatus.PARTIAL);
+            } else {
+                setStatus(TaskStatus.OK);
+            }
+
+        } else {
+            setStatus(TaskStatus.OK);
+        }
+    }
+
+    void setLastCommandErrorStatus() {
+        if (getType() == TaskType.GROUP) {
+            setStatus(TaskStatus.PARTIAL);
+        } else {
+            setStatus(TaskStatus.ERROR);
+        }
     }
 }

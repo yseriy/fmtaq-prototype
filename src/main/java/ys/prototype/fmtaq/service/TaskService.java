@@ -30,25 +30,26 @@ public class TaskService {
     }
 
     public UUID registerTaskAndSendFirstCommand(TaskDTO taskDTO) {
-        Task task = new Task(TaskStatus.REGISTERED, taskDTO.getType());
         List<CommandDTO> commandDTOList = taskDTO.getCommandDTOList();
-        Set<Command> commandSetTo = new HashSet<>();
+        Integer commandCounter = commandDTOList.size();
+        Set<Command> commandSet = new HashSet<>();
 
-        Command firstCommand = copyCommand(commandDTOList.get(STEP_0), STEP_0);
+        Task task = new Task(TaskStatus.REGISTERED, taskDTO.getType(), commandCounter);
+        Command firstCommand = copyCommand(commandDTOList.get(STEP_0), STEP_0, task);
 
-        for (Integer step = STEP_1; step < commandDTOList.size(); step++) {
-            commandSetTo.add(copyCommand(commandDTOList.get(step), step));
+        for (Integer step = STEP_1; step < commandCounter; step++) {
+            commandSet.add(copyCommand(commandDTOList.get(step), step, task));
         }
 
-        commandSetTo.add(firstCommand);
-        task.setCommands(commandSetTo);
+        commandSet.add(firstCommand);
+        task.setCommands(commandSet);
         taskRepository.save(task);
         commandService.sendCommand(firstCommand);
 
         return task.getId();
     }
 
-    private Command copyCommand(CommandDTO commandDTO, Integer step) {
-        return new Command(commandDTO.getAddress(), commandDTO.getBody(), CommandStatus.REGISTERED, step);
+    private Command copyCommand(CommandDTO commandDTO, Integer step, Task task) {
+        return new Command(commandDTO.getAddress(), commandDTO.getBody(), CommandStatus.REGISTERED, step, task);
     }
 }

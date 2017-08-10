@@ -3,22 +3,16 @@ package ys.prototype.fmtaq.service;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.dto.CommandResultDTO;
+import ys.prototype.fmtaq.domain.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.repository.CommandRepository;
-
-import java.util.List;
 
 @Service
 @Transactional
 public class CommandService {
-
-    private static final Pageable LIMIT_1 = new PageRequest(0, 1);
 
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
@@ -30,49 +24,24 @@ public class CommandService {
         this.commandRepository = commandRepository;
     }
 
-    public void setStatusAndSendNextCommand(CommandResultDTO commandResultDTO) {
-        Command command = commandRepository.findOne(commandResultDTO.getCommandId());
+    public void setStatusAndSendNextCommand(CommandResponseDTO commandResponseDTO) {
+        Command command = commandRepository.findOne(commandResponseDTO.getCommandId());
 
         if (command == null) {
             throw new RuntimeException("command not found");
         }
 
-        if (commandResultDTO.isStatusOk()) {
-            setStatusOkAndSendCommand(command);
-        } else
-            setStatusErrorAndSendCommand(command);
-    }
+        command.setStatusFromResponse(commandResponseDTO.getResponseStatus());
 
-    private void setStatusOkAndSendCommand(Command command) {
-        command.setStatusOk();
-        Command nextCommand = getNextCommand(command);
+        if (command.hasNextCommand()) {
+            Command nextCommand = commandRepository.getNextCommand(command.getTask(), CommandStatus.REGISTERED,
+                    command.nextStep());
 
-        if (nextCommand == null) {
-            command.getTask().setStatusOk();
-        } else {
+            if (nextCommand == null) {
+                throw new RuntimeException("cannot found next command");
+            }
+
             sendCommand(nextCommand);
-        }
-    }
-
-    private void setStatusErrorAndSendCommand(Command command) {
-        command.setStatusError();
-        command.getTask().setStatusError();
-
-        if (command.getTask().isErrorNonFatal()) {
-            sendCommandIfNotNull(getNextCommand(command));
-        }
-    }
-
-    private Command getNextCommand(Command command) {
-        List<Command> nextCommandList = commandRepository.getNextCommand(command.getTask(),
-                CommandStatus.REGISTERED, LIMIT_1);
-
-        return nextCommandList.get(0);
-    }
-
-    private void sendCommandIfNotNull(Command command) {
-        if (command != null) {
-            sendCommand(command);
         }
     }
 

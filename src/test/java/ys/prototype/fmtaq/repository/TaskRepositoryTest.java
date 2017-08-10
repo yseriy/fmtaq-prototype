@@ -11,6 +11,8 @@ import ys.prototype.fmtaq.domain.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class TaskRepositoryTest {
@@ -24,21 +26,33 @@ public class TaskRepositoryTest {
     @Test
     public void save() {
         TaskStatus taskStatus = TaskStatus.REGISTERED;
-        TaskType taskType = TaskType.GROUP;
+        TaskType taskType = TaskType.SEQUENCE;
         String commandAddress = "test_address_";
         String commandBody = "test_body_";
         CommandStatus status = CommandStatus.REGISTERED;
+        Integer commandCounter = 10;
 
-        Task task = new Task(taskStatus, taskType);
+        Task task = new Task(taskStatus, taskType, commandCounter);
         Set<Command> commandSet = new HashSet<>();
 
-        for (Integer i = 0; i < 10; i++) {
-            commandSet.add(new Command(commandAddress + i, commandBody + i, status, i));
+        for (Integer i = 0; i < commandCounter; i++) {
+            commandSet.add(new Command(commandAddress + i, commandBody + i, status, i, task));
         }
 
         task.setCommands(commandSet);
 
         taskRepository.save(task);
         entityManager.flush();
+        entityManager.clear();
+
+        Task taskFromDb = entityManager.find(Task.class, task.getId());
+        assertThat(taskFromDb).isNotNull();
+        assertThat(taskFromDb.getCommands()).isNotNull();
+        assertThat(taskFromDb.getCommands().size()).isEqualTo(commandCounter);
+
+        for (Command commandFromDb : taskFromDb.getCommands()) {
+            assertThat(commandFromDb).isNotNull();
+            assertThat(commandFromDb.getTask()).isNotNull();
+        }
     }
 }
