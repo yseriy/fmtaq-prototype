@@ -11,7 +11,8 @@ import java.util.UUID;
 @ToString(exclude = "commands")
 @EqualsAndHashCode(exclude = "commands")
 @Entity
-public class Task {
+@Inheritance
+public abstract class Task {
 
     @Id
     @GeneratedValue
@@ -20,58 +21,23 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @Enumerated(EnumType.STRING)
-    private TaskType type;
-
     private Integer commandCount;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<Command> commands;
 
-    public Task(TaskStatus status, TaskType type, Integer commandCount) {
-        this.status = status;
-        this.type = type;
+    abstract Boolean hasNonFatalStatus();
+
+    abstract void setCommandSuccessStatus();
+
+    abstract void setCommandErrorStatus();
+
+    abstract void setLastCommandSuccessStatus();
+
+    abstract void setLastCommandErrorStatus();
+
+    Task(Integer commandCount) {
+        this.status = TaskStatus.REGISTERED;
         this.commandCount = commandCount;
-    }
-
-    Boolean hasNonFatalStatus() {
-        return getStatus() != TaskStatus.ERROR && getType() == TaskType.GROUP;
-    }
-
-    void setCommandSuccessStatus() {
-    }
-
-    void setCommandErrorStatus() {
-        if (getType() == TaskType.GROUP) {
-
-            if (getStatus() == TaskStatus.REGISTERED) {
-                setStatus(TaskStatus.HAS_ERROR);
-            }
-
-        } else {
-            setStatus(TaskStatus.ERROR);
-        }
-    }
-
-    void setLastCommandSuccessStatus() {
-        if (getType() == TaskType.GROUP) {
-
-            if (getStatus() == TaskStatus.HAS_ERROR) {
-                setStatus(TaskStatus.PARTIAL);
-            } else {
-                setStatus(TaskStatus.OK);
-            }
-
-        } else {
-            setStatus(TaskStatus.OK);
-        }
-    }
-
-    void setLastCommandErrorStatus() {
-        if (getType() == TaskType.GROUP) {
-            setStatus(TaskStatus.PARTIAL);
-        } else {
-            setStatus(TaskStatus.ERROR);
-        }
     }
 }

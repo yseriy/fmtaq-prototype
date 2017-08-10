@@ -3,9 +3,9 @@ package ys.prototype.fmtaq.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandStatus;
+import ys.prototype.fmtaq.domain.Group;
+import ys.prototype.fmtaq.domain.Sequence;
 import ys.prototype.fmtaq.domain.Task;
-import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.dto.CommandDTO;
 import ys.prototype.fmtaq.domain.dto.TaskDTO;
 import ys.prototype.fmtaq.repository.TaskRepository;
@@ -34,7 +34,19 @@ public class TaskService {
         Integer commandCounter = commandDTOList.size();
         Set<Command> commandSet = new HashSet<>();
 
-        Task task = new Task(TaskStatus.REGISTERED, taskDTO.getType(), commandCounter);
+        Task task;
+
+        switch (taskDTO.getType()) {
+            case SEQUENCE:
+                task = new Sequence(commandCounter);
+                break;
+            case GROUP:
+                task = new Group(commandCounter);
+                break;
+            default:
+                throw new RuntimeException("cannot identify task type: " + taskDTO.getType());
+        }
+
         Command firstCommand = copyCommand(commandDTOList.get(STEP_0), STEP_0, task);
 
         for (Integer step = STEP_1; step < commandCounter; step++) {
@@ -50,6 +62,6 @@ public class TaskService {
     }
 
     private Command copyCommand(CommandDTO commandDTO, Integer step, Task task) {
-        return new Command(commandDTO.getAddress(), commandDTO.getBody(), CommandStatus.REGISTERED, step, task);
+        return new Command(commandDTO.getAddress(), commandDTO.getBody(), step, task);
     }
 }

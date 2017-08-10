@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import ys.prototype.fmtaq.domain.*;
+import ys.prototype.fmtaq.domain.Command;
+import ys.prototype.fmtaq.domain.CommandStatus;
+import ys.prototype.fmtaq.domain.Sequence;
+import ys.prototype.fmtaq.domain.Task;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,18 +28,15 @@ public class TaskRepositoryTest {
 
     @Test
     public void save() {
-        TaskStatus taskStatus = TaskStatus.REGISTERED;
-        TaskType taskType = TaskType.SEQUENCE;
         String commandAddress = "test_address_";
         String commandBody = "test_body_";
-        CommandStatus status = CommandStatus.REGISTERED;
         Integer commandCounter = 10;
 
-        Task task = new Task(taskStatus, taskType, commandCounter);
+        Task task = new Sequence(commandCounter);
         Set<Command> commandSet = new HashSet<>();
 
         for (Integer i = 0; i < commandCounter; i++) {
-            commandSet.add(new Command(commandAddress + i, commandBody + i, status, i, task));
+            commandSet.add(new Command(commandAddress + i, commandBody + i, i, task));
         }
 
         task.setCommands(commandSet);
