@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 public class Group extends Task {
 
     public Group() {
+        super();
     }
 
     public Group(Integer commandCount) {

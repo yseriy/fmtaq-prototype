@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 public class Sequence extends Task {
 
     public Sequence() {
+        super();
     }
 
     public Sequence(Integer commandCount) {
