@@ -1,101 +1,115 @@
 package ys.prototype.fmtaq.repository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.domain.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@TestPropertySource(properties = "spring.jpa.show-sql=true")
 public class CommandRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
-
     @Autowired
     private CommandRepository commandRepository;
 
-    @Test
-    public void save() {
+    private Task task;
+    private Set<Command> commandSet;
+
+    @Before
+    public void setup() {
         TaskStatus taskStatus = TaskStatus.REGISTERED;
         TaskType taskType = TaskType.GROUP;
+        Integer commandCounter = 10;
         String commandAddress = "test_address_";
         String commandBody = "test_body_";
         CommandStatus status = CommandStatus.REGISTERED;
-
-        Task task = new Task(taskStatus, taskType);
         Set<Command> commandSet = new HashSet<>();
 
-        for (Integer i = 0; i < 10; i++) {
+        Task task = new Task(taskStatus, taskType, commandCounter);
+
+        for (int i = 0; i < commandCounter; i++) {
             commandSet.add(new Command(commandAddress + i, commandBody + i, status, i, task));
         }
 
-        commandRepository.save(commandSet);
+        task.setCommands(commandSet);
+
+        entityManager.persist(task);
         entityManager.flush();
         entityManager.clear();
 
-        task = entityManager.find(Task.class, task.getId());
+        this.task = task;
+        this.commandSet = commandSet;
+    }
 
-        assertThat(task.getStatus()).isEqualTo(taskStatus);
-        assertThat(task.getType()).isEqualTo(taskType);
+    @Test
+    public void findOne() {
+        final int step = 4;
+        Command command = commandSet.stream().filter(e -> e.getStep() == step).findFirst().orElse(null);
+        assertThat(command).isNotNull();
 
-        for (Command command : commandSet) {
-            Command commandFromDb = entityManager.find(Command.class, command.getId());
-            assertThat(commandFromDb.getAddress()).isEqualTo(command.getAddress());
-            assertThat(commandFromDb.getBody()).isEqualTo(command.getBody());
-            assertThat(commandFromDb.getStatus()).isEqualTo(command.getStatus());
-            assertThat(commandFromDb.getStep()).isEqualTo(command.getStep());
-            assertThat(commandFromDb.getTask()).isEqualTo(command.getTask());
-        }
+        Command commandFromDb = commandRepository.findOne(command.getId());
+
+        assertThat(commandFromDb).isNotNull();
+        assertThat(commandFromDb.getTask()).isNotNull();
+
+        assertThat(commandFromDb.getTask().getId()).isEqualTo(task.getId());
+        assertThat(commandFromDb.getTask().getStatus()).isEqualTo(task.getStatus());
+
+        assertThat(commandFromDb.getAddress()).isEqualTo(command.getAddress());
+        assertThat(commandFromDb.getBody()).isEqualTo(command.getBody());
+        assertThat(commandFromDb.getStatus()).isEqualTo(command.getStatus());
+        assertThat(commandFromDb.getStep()).isEqualTo(command.getStep());
+
+        entityManager.flush();
     }
 
     @Test
     public void getNextCommand() {
-        TaskStatus taskStatus = TaskStatus.REGISTERED;
-        TaskType taskType = TaskType.GROUP;
-        String commandAddress = "test_address_";
-        String commandBody = "test_body_";
-        CommandStatus status = CommandStatus.REGISTERED;
+        Integer commandCounter = commandSet.size();
+        Task nonExistTask = new Task(TaskStatus.REGISTERED, TaskType.SEQUENCE, 3);
 
-        Task task = new Task(taskStatus, taskType);
-        Set<Command> commandSet = new HashSet<>();
+        entityManager.persist(nonExistTask);
+        entityManager.flush();
+        entityManager.clear();
 
-        Command command0 = new Command(commandAddress + 0, commandBody + 0, status, 0, task);
-        commandSet.add(command0);
-
-        for (Integer i = 1; i < 10; i++) {
-            commandSet.add(new Command(commandAddress + i, commandBody + i, status, i, task));
+        for (int i = 0; i < commandCounter; i++) {
+            Command command = commandRepository.getNextCommand(nonExistTask, CommandStatus.REGISTERED, i);
+            assertThat(command).isNull();
         }
 
-        commandRepository.save(commandSet);
-        entityManager.flush();
         entityManager.clear();
 
-        List<Command> nextCommandList = commandRepository.getNextCommand(task, status, new PageRequest(0, 1));
+        Task taskFromDb = entityManager.find(Task.class, task.getId());
 
-        assertThat(nextCommandList).isNotNull();
-        assertThat(nextCommandList.get(0).getStep()).isEqualTo(0);
+        for (int i = 0; i < commandCounter; i++) {
+            Command command = commandRepository.getNextCommand(taskFromDb, CommandStatus.REGISTERED, i);
+            assertThat(command).isNotNull();
+        }
 
-        entityManager.flush();
         entityManager.clear();
 
-        Command command0FromDb = commandRepository.findOne(command0.getId());
-        command0FromDb.setStatusOk();
-        nextCommandList = commandRepository.getNextCommand(command0FromDb.getTask(), status, new PageRequest(0, 1));
+        taskFromDb = entityManager.find(Task.class, task.getId());
 
-        assertThat(nextCommandList).isNotNull();
-        assertThat(nextCommandList.get(0).getStep()).isEqualTo(1);
+        for (int i = 0; i < commandCounter; i++) {
+            Command command = commandRepository.getNextCommand(taskFromDb, CommandStatus.ERROR, i);
+            assertThat(command).isNull();
+        }
+
+        entityManager.clear();
+
+        taskFromDb = entityManager.find(Task.class, task.getId());
+        Command command = commandRepository.getNextCommand(taskFromDb, CommandStatus.REGISTERED, commandCounter + 1);
+        assertThat(command).isNull();
     }
 }

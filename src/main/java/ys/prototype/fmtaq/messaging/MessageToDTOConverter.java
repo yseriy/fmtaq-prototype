@@ -1,27 +1,50 @@
 package ys.prototype.fmtaq.messaging;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Message;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.domain.dto.CommandResultDTO;
+import ys.prototype.fmtaq.domain.CommandResponseStatus;
+import ys.prototype.fmtaq.domain.dto.CommandResponseDTO;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
 @Component
 public class MessageToDTOConverter {
 
-    public CommandResultDTO toDTO(Message message) {
-        CommandResultDTO commandResultDTO = new CommandResultDTO();
-        commandResultDTO.setBody(new String(message.getBody(), Charset.forName("UTF-8")));
+    private final ObjectMapper objectMapper;
 
-        return commandResultDTO;
+    public MessageToDTOConverter(Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
+        objectMapper = jackson2ObjectMapperBuilder.build();
     }
 
-    private UUID getCommandId() {
-        return null;
+    CommandResponseDTO toDTO(Message message) throws IOException {
+        String data = new String(message.getBody(), Charset.forName("UTF-8"));
+        JsonNode root = objectMapper.readTree(data);
+
+        return new CommandResponseDTO(getCommandId(root), getCommandResponseStatus(root), data);
     }
 
-    private Boolean isCommandStatusOk(String body) {
-        return null;
+    private UUID getCommandId(JsonNode root) {
+        JsonNode commandId = root.get("task_id");
+
+        if (commandId.isMissingNode()) {
+            throw new RuntimeException("cannot find field: 'task_id'");
+        }
+
+        return UUID.fromString(commandId.asText());
+    }
+
+    private CommandResponseStatus getCommandResponseStatus(JsonNode root) {
+        JsonNode commandResponseCode = root.get("result").get("rc");
+
+        if (commandResponseCode.isMissingNode()) {
+            throw new RuntimeException("cannot find field: 'result.rc'");
+        }
+
+        return commandResponseCode.asInt() == 0 ? CommandResponseStatus.OK : CommandResponseStatus.ERROR;
     }
 }

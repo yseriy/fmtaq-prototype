@@ -28,23 +28,49 @@ public class Command {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
-    public Command(String address, String body, CommandStatus status, Integer step) {
+    public Command(String address, String body, CommandStatus status, Integer step, Task task) {
         this.address = address;
         this.body = body;
         this.status = status;
         this.step = step;
-    }
-
-    public Command(String address, String body, CommandStatus status, Integer step, Task task) {
-        this(address, body, status, step);
         this.task = task;
     }
 
-    public void setStatusOk() {
-        status = CommandStatus.OK;
+    public Boolean hasNextCommand() {
+        return (getTask().getCommandCount() - getStep()) > 1 && getTask().hasNonFatalStatus();
     }
 
-    public void setStatusError() {
-        status = CommandStatus.ERROR;
+    public Integer nextStep() {
+        return getStep() + 1;
+    }
+
+    public void setStatusFromResponse(CommandResponseStatus responseStatus) {
+        if (responseStatus == CommandResponseStatus.OK) {
+            setStatus(CommandStatus.OK);
+        } else {
+            setStatus(CommandStatus.ERROR);
+        }
+
+        if (hasNextCommand()) {
+            updateTaskStatus(responseStatus);
+        } else {
+            updateEndTaskStatus(responseStatus);
+        }
+    }
+
+    private void updateTaskStatus(CommandResponseStatus responseStatus) {
+        if (responseStatus == CommandResponseStatus.OK) {
+            getTask().setCommandSuccessStatus();
+        } else {
+            getTask().setCommandErrorStatus();
+        }
+    }
+
+    private void updateEndTaskStatus(CommandResponseStatus responseStatus) {
+        if (responseStatus == CommandResponseStatus.OK) {
+            getTask().setLastCommandSuccessStatus();
+        } else {
+            getTask().setLastCommandErrorStatus();
+        }
     }
 }
