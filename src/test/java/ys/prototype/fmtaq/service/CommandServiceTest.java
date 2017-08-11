@@ -47,13 +47,16 @@ public class CommandServiceTest {
     private Task mockTask;
     private Command mockCommand;
     private Queue mockQueue;
+    private UUID uuid;
+    private CommandResponseStatus responseStatus;
 
     @Before
     public void setup() {
         Integer step = 0;
         String address = "test_address";
         String body = "test_body";
-        UUID uuid = UUID.fromString("2783eb47-7e4c-4871-b7b2-ba04a7b0ef75");
+        uuid = UUID.fromString("2783eb47-7e4c-4871-b7b2-ba04a7b0ef75");
+        responseStatus = CommandResponseStatus.OK;
 
         mockResponseDTO = mock(CommandResponseDTO.class);
         mockTask = mock(Task.class);
@@ -61,7 +64,7 @@ public class CommandServiceTest {
         mockQueue = mock(Queue.class);
 
         when(mockResponseDTO.getCommandId()).thenReturn(uuid);
-        when(mockResponseDTO.getResponseStatus()).thenReturn(CommandResponseStatus.OK);
+        when(mockResponseDTO.getResponseStatus()).thenReturn(responseStatus);
 
         when(mockCommand.getAddress()).thenReturn(address);
         when(mockCommand.getBody()).thenReturn(body);
@@ -82,8 +85,8 @@ public class CommandServiceTest {
 
         commandService.setStatusAndSendNextCommand(mockResponseDTO);
 
-        inOrder.verify(mockCommandRepository).findOne(mockResponseDTO.getCommandId());
-        inOrder.verify(mockCommand).setStatusFromResponse(mockResponseDTO.getResponseStatus());
+        inOrder.verify(mockCommandRepository).findOne(uuid);
+        inOrder.verify(mockCommand).setStatusFromResponse(responseStatus);
         inOrder.verify(mockCommandRepository).getNextCommand(mockTask, CommandStatus.REGISTERED, mockCommand.nextStep());
         inOrder.verify(mockFmtaqFactory).getQueue(mockCommand.getAddress());
         inOrder.verify(mockAmqpAdmin).declareQueue(mockQueue);
@@ -99,8 +102,8 @@ public class CommandServiceTest {
 
         commandService.setStatusAndSendNextCommand(mockResponseDTO);
 
-        inOrder.verify(mockCommandRepository).findOne(mockResponseDTO.getCommandId());
-        inOrder.verify(mockCommand).setStatusFromResponse(mockResponseDTO.getResponseStatus());
+        inOrder.verify(mockCommandRepository).findOne(uuid);
+        inOrder.verify(mockCommand).setStatusFromResponse(responseStatus);
         verify(mockCommandRepository, never()).getNextCommand(anyObject(), anyObject(), anyInt());
         verify(mockFmtaqFactory, never()).getQueue(anyString());
         verify(mockAmqpAdmin, never()).declareQueue(anyObject());
