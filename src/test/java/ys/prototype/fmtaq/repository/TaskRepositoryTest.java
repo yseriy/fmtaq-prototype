@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.Sequence;
 import ys.prototype.fmtaq.domain.Task;
 
