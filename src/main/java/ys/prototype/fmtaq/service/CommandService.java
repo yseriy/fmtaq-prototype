@@ -2,7 +2,6 @@ package ys.prototype.fmtaq.service;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
@@ -17,11 +16,14 @@ public class CommandService {
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
     private final CommandRepository commandRepository;
+    private final FmtaqFactory fmtaqFactory;
 
-    public CommandService(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, CommandRepository commandRepository) {
+    public CommandService(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, CommandRepository commandRepository,
+                          FmtaqFactory fmtaqFactory) {
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
         this.commandRepository = commandRepository;
+        this.fmtaqFactory = fmtaqFactory;
     }
 
     public void setStatusAndSendNextCommand(CommandResponseDTO commandResponseDTO) {
@@ -46,7 +48,7 @@ public class CommandService {
     }
 
     void sendCommand(Command command) {
-        amqpAdmin.declareQueue(new Queue(command.getAddress()));
+        amqpAdmin.declareQueue(fmtaqFactory.getQueue(command.getAddress()));
         amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
     }
 }
