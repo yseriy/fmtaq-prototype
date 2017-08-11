@@ -28,18 +28,15 @@ public class CommandRepositoryTest {
 
     @Before
     public void setup() {
-        TaskStatus taskStatus = TaskStatus.REGISTERED;
-        TaskType taskType = TaskType.GROUP;
         Integer commandCounter = 10;
         String commandAddress = "test_address_";
         String commandBody = "test_body_";
-        CommandStatus status = CommandStatus.REGISTERED;
         Set<Command> commandSet = new HashSet<>();
 
-        Task task = new Task(taskStatus, taskType, commandCounter);
+        Task task = new Group(commandCounter);
 
         for (int i = 0; i < commandCounter; i++) {
-            commandSet.add(new Command(commandAddress + i, commandBody + i, status, i, task));
+            commandSet.add(new Command(commandAddress + i, commandBody + i, i, task));
         }
 
         task.setCommands(commandSet);
@@ -77,7 +74,7 @@ public class CommandRepositoryTest {
     @Test
     public void getNextCommand() {
         Integer commandCounter = commandSet.size();
-        Task nonExistTask = new Task(TaskStatus.REGISTERED, TaskType.SEQUENCE, 3);
+        Task nonExistTask = new Sequence(3);
 
         entityManager.persist(nonExistTask);
         entityManager.flush();

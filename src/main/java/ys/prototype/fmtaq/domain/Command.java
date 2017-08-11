@@ -28,10 +28,10 @@ public class Command {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
-    public Command(String address, String body, CommandStatus status, Integer step, Task task) {
+    public Command(String address, String body, Integer step, Task task) {
         this.address = address;
         this.body = body;
-        this.status = status;
+        this.status = CommandStatus.REGISTERED;
         this.step = step;
         this.task = task;
     }
