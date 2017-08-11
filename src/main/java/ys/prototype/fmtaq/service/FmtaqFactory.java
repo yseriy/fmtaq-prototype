@@ -1,9 +1,9 @@
 package ys.prototype.fmtaq.service;
 
 import org.springframework.amqp.core.Queue;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class FmtaqFactory {
 
     Queue getQueue(String name) {
