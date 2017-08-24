@@ -5,6 +5,5 @@ public enum TaskStatus {
     ERROR,
     REGISTERED,
     HAS_ERROR,
-    HAS_ONLY_ERROR,
     PARTIAL
 }

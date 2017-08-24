@@ -5,9 +5,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.dto.CommandResponseDTO;
-import ys.prototype.fmtaq.repository.CommandRepository;
+
+import java.util.Set;
 
 @Service
 @Transactional
@@ -15,40 +14,20 @@ public class CommandService {
 
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
-    private final CommandRepository commandRepository;
     private final FmtaqFactory fmtaqFactory;
 
-    public CommandService(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, CommandRepository commandRepository,
-                          FmtaqFactory fmtaqFactory) {
+    public CommandService(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate, FmtaqFactory fmtaqFactory) {
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
-        this.commandRepository = commandRepository;
         this.fmtaqFactory = fmtaqFactory;
     }
 
-    public void setStatusAndSendNextCommand(CommandResponseDTO commandResponseDTO) {
-        Command command = commandRepository.findOne(commandResponseDTO.getCommandId());
-
-        if (command == null) {
-            throw new RuntimeException("command not found");
-        }
-
-        command.setStatusFromResponse(commandResponseDTO.getResponseStatus());
-
-        if (command.hasNextCommand()) {
-            Command nextCommand = commandRepository.getNextCommand(command.getTask(), CommandStatus.REGISTERED,
-                    command.nextStep());
-
-            if (nextCommand == null) {
-                throw new RuntimeException("cannot found next command");
-            }
-
-            sendCommand(nextCommand);
-        }
-    }
-
-    void sendCommand(Command command) {
+    private void sendCommand(Command command) {
         amqpAdmin.declareQueue(fmtaqFactory.getQueue(command.getAddress()));
         amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
+    }
+
+    void bulkSendCommand(Set<Command> commands) {
+        commands.forEach(this::sendCommand);
     }
 }

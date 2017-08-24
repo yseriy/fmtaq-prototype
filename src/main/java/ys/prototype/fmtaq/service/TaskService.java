@@ -2,66 +2,83 @@ package ys.prototype.fmtaq.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.Group;
-import ys.prototype.fmtaq.domain.Sequence;
-import ys.prototype.fmtaq.domain.Task;
+import ys.prototype.fmtaq.domain.*;
 import ys.prototype.fmtaq.domain.dto.CommandDTO;
 import ys.prototype.fmtaq.domain.dto.TaskDTO;
-import ys.prototype.fmtaq.repository.TaskRepository;
+import ys.prototype.fmtaq.repository.GroupCommandRepository;
+import ys.prototype.fmtaq.repository.LinkedCommandRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class TaskService {
 
-    private static final Integer STEP_0 = 0;
-    private static final Integer STEP_1 = 1;
-    private final TaskRepository taskRepository;
+    private final LinkedCommandRepository linkedCommandRepository;
+    private final GroupCommandRepository groupCommandRepository;
     private final CommandService commandService;
 
-    public TaskService(TaskRepository taskRepository, CommandService commandService) {
-        this.taskRepository = taskRepository;
+    public TaskService(LinkedCommandRepository linkedCommandRepository, GroupCommandRepository groupCommandRepository,
+                       CommandService commandService) {
+        this.linkedCommandRepository = linkedCommandRepository;
+        this.groupCommandRepository = groupCommandRepository;
         this.commandService = commandService;
     }
 
     public UUID registerTaskAndSendFirstCommand(TaskDTO taskDTO) {
         List<CommandDTO> commandDTOList = taskDTO.getCommandDTOList();
-        Integer commandCounter = commandDTOList.size();
-        Set<Command> commandSet = new HashSet<>();
-
         Task task;
 
         switch (taskDTO.getType()) {
             case SEQUENCE:
-                task = new Sequence(commandCounter);
+                task = saveSequenceFromDTO(commandDTOList);
                 break;
             case GROUP:
-                task = new Group(commandCounter);
+                task = saveGroupFromDTO(commandDTOList);
                 break;
             default:
                 throw new RuntimeException("cannot identify task type: " + taskDTO.getType());
         }
 
-        Command firstCommand = copyCommand(commandDTOList.get(STEP_0), STEP_0, task);
-
-        for (Integer step = STEP_1; step < commandCounter; step++) {
-            commandSet.add(copyCommand(commandDTOList.get(step), step, task));
-        }
-
-        commandSet.add(firstCommand);
-        task.setCommands(commandSet);
-        taskRepository.save(task);
-        commandService.sendCommand(firstCommand);
+        commandService.bulkSendCommand(task.getCommandsForStart());
 
         return task.getId();
     }
 
-    private Command copyCommand(CommandDTO commandDTO, Integer step, Task task) {
-        return new Command(commandDTO.getAddress(), commandDTO.getBody(), step, task);
+    private Task saveGroupFromDTO(List<CommandDTO> commandDTOList) {
+        final Group task = new Group(UUID.randomUUID(), commandDTOList.size());
+        Function<CommandDTO, GroupCommand> mapper = dto -> new GroupCommand(UUID.randomUUID(), dto.getAddress(),
+                dto.getBody(), task);
+        groupCommandRepository.save(commandDTOList.stream().map(mapper).collect(Collectors.toSet()));
+
+        return task;
+    }
+
+    private Task saveSequenceFromDTO(List<CommandDTO> commandDTOList) {
+        Sequence task = new Sequence(UUID.randomUUID());
+        Set<LinkedCommand> commands = loadCommandSetFromDTO(commandDTOList, task);
+        linkedCommandRepository.save(commands);
+
+        return task;
+    }
+
+    private Set<LinkedCommand> loadCommandSetFromDTO(List<CommandDTO> commandDTOList, Sequence task) {
+        Set<LinkedCommand> commands = new HashSet<>();
+        ListIterator<CommandDTO> iterator = commandDTOList.listIterator(commandDTOList.size());
+
+        UUID currentCommandId;
+        UUID nextCommandId = null;
+
+        while (iterator.hasPrevious()) {
+            CommandDTO commandDTO = iterator.previous();
+            currentCommandId = UUID.randomUUID();
+            commands.add(new LinkedCommand(currentCommandId, nextCommandId, commandDTO.getAddress(),
+                    commandDTO.getBody(), task));
+            nextCommandId = currentCommandId;
+        }
+
+        return commands;
     }
 }

@@ -1,40 +1,44 @@
 package ys.prototype.fmtaq.domain;
 
-import javax.persistence.Entity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Sequence extends Task {
+public class Sequence implements Task {
 
-    public Sequence() {
-        super();
-    }
+    @Id
+    private UUID id;
 
-    public Sequence(Integer commandCount) {
-        super(commandCount);
-    }
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status = TaskStatus.REGISTERED;
+    private UUID firstCommandId;
 
-    @Override
-    Boolean hasNonFatalStatus() {
-        return getStatus() != TaskStatus.ERROR;
-    }
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Set<LinkedCommand> commands;
 
-    @Override
-    void setCommandSuccessStatus() {
-
+    public Sequence(UUID id) {
+        this.id = id;
     }
 
     @Override
-    void setCommandErrorStatus() {
-        setStatus(TaskStatus.ERROR);
+    public Set<Command> getCommandsForStart() {
+        Predicate<LinkedCommand> filter = linkedCommand -> linkedCommand.getId() == getFirstCommandId();
+        return commands.stream().filter(filter).collect(Collectors.toSet());
     }
 
     @Override
-    void setLastCommandSuccessStatus() {
-        setStatus(TaskStatus.OK);
-    }
-
-    @Override
-    void setLastCommandErrorStatus() {
-        setStatus(TaskStatus.ERROR);
+    public String toString() {
+        return getClass().getSimpleName() + "-" + getId();
     }
 }
