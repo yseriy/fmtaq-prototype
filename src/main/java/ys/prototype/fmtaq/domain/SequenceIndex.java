@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.UUID;
@@ -14,21 +15,21 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Command {
+public class SequenceIndex {
 
     @Id
+    @GeneratedValue
     private UUID id;
-    private String address;
-    private String body;
-    private CommandStatus status = CommandStatus.REGISTERED;
+    private UUID commandId;
+    private UUID nextCommandId;
 
     @ManyToOne
-    private Task task;
+    private SequenceMetadata sequenceMetadata;
 
-    public Command(UUID id, String address, String body) {
-        this.id = id;
-        this.address = address;
-        this.body = body;
+    SequenceIndex(UUID commandId, UUID nextCommandId, SequenceMetadata sequenceMetadata) {
+        this.commandId = commandId;
+        this.nextCommandId = nextCommandId;
+        this.sequenceMetadata = sequenceMetadata;
     }
 
     @Override
