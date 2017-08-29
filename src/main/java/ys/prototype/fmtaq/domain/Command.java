@@ -26,9 +26,9 @@ public abstract class Command {
     @Version
     private Long version;
 
-    public Command(UUID id, String address, String body) {
-        this.id = id;
-        this.address = address;
-        this.body = body;
+    Command(UUID id, String address, String body) {
+        setId(id);
+        setAddress(address);
+        setBody(body);
     }
 }

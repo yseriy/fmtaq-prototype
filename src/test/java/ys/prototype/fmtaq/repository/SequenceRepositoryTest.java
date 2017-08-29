@@ -22,24 +22,23 @@ public class SequenceRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private SequenceRepository sequenceRepository;
-
-    @Autowired
     private CommandRepository commandRepository;
+
+    @Autowired TaskRepository taskRepository;
 
     @Test
     public void save() {
-        Sequence task = new Sequence(UUID.randomUUID());
+        UUID taskId = UUID.randomUUID();
+        Sequence task = new Sequence(taskId);
         UUID commandId = UUID.randomUUID();
+        Set<LinkedCommand> commands = new HashSet<>();
+        commands.add(new LinkedCommand(UUID.randomUUID(), UUID.randomUUID(), "address_1", "body1"));
+        commands.add(new LinkedCommand(commandId, UUID.randomUUID(), "address_2", "body2"));
+        commands.add(new LinkedCommand(UUID.randomUUID(), UUID.randomUUID(), "address_3", "body3"));
 
-//        Set<LinkedCommand> commands = new HashSet<>();
-//        commands.add(new LinkedCommand(UUID.randomUUID(), "address_1", "body1"));
-//        commands.add(new LinkedCommand(commandId, "address_2", "body2"));
-//        commands.add(new LinkedCommand(UUID.randomUUID(), "address_3", "body3"));
-//
-//        task.loadCommands(commands);
+        task.loadCommands(commands);
 
-        sequenceRepository.save(task);
+        taskRepository.save(task);
         testEntityManager.flush();
         testEntityManager.clear();
 

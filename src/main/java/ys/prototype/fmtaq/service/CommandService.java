@@ -6,8 +6,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.dto.CommandResponseDTO;
+
+import java.util.Set;
 
 @Service
 @Transactional
@@ -21,8 +21,12 @@ public class CommandService {
         this.amqpTemplate = amqpTemplate;
     }
 
-    void sendCommand(Command command) {
+    private void sendCommand(Command command) {
         amqpAdmin.declareQueue(new Queue(command.getAddress()));
         amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
+    }
+
+    void bulkSendCommand(Set<Command> commands) {
+        commands.forEach(this::sendCommand);
     }
 }
