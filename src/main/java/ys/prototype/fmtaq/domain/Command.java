@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import java.util.UUID;
 
 @Setter
@@ -24,6 +25,9 @@ public class Command {
 
     @ManyToOne
     private Task task;
+
+    @Version
+    private Long version;
 
     public Command(UUID id, String address, String body) {
         this.id = id;

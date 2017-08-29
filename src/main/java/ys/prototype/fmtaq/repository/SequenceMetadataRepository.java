@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface SequenceMetadataRepository extends CrudRepository<SequenceMetadata, UUID> {
-    @Query("select sm from SequenceMetadata sm left join fetch sm.sequenceIndices si left join sm.task t left join t.commands c where c.id = :id")
+    @Query("select sm from SequenceMetadata sm left join fetch sm.command c left join fetch c.task t where c.id = :id")
     SequenceMetadata getByCommandId(@Param("id") UUID id);
 }
