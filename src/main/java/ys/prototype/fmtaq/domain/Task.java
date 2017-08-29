@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -19,8 +20,12 @@ public abstract class Task {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.REGISTERED;
 
     @Version
     private Long version;
+
+    public Task(UUID id) {
+        this.id = id;
+    }
 }

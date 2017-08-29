@@ -21,8 +21,14 @@ public abstract class Command {
     private String body;
 
     @Enumerated(EnumType.STRING)
-    private CommandStatus status;
+    private CommandStatus status = CommandStatus.REGISTERED;
 
     @Version
     private Long version;
+
+    public Command(UUID id, String address, String body) {
+        this.id = id;
+        this.address = address;
+        this.body = body;
+    }
 }

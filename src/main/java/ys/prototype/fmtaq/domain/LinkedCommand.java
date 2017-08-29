@@ -20,6 +20,11 @@ public class LinkedCommand extends Command {
     @ManyToOne
     private Sequence task;
 
+    public LinkedCommand(UUID id, String address, String body, Sequence task) {
+        super(id, address, body);
+        this.task = task;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "-" + getId();
