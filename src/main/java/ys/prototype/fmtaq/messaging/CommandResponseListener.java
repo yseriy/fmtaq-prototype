@@ -23,6 +23,5 @@ public class CommandResponseListener {
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue("response"), exchange = @Exchange(""), key = "response"))
     public void processResponse(Message message) throws IOException {
-        commandService.setStatusAndSendNextCommand(toDTOConverter.toDTO(message));
     }
 }

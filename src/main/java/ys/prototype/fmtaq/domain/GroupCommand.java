@@ -6,19 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.Set;
+import javax.persistence.ManyToOne;
 
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Group extends Task {
+public class GroupCommand extends Command {
 
-    private Integer commandCounter;
-
-    @OneToMany(mappedBy = "task")
-    private Set<GroupCommand> commands;
+    @ManyToOne
+    private Group task;
 
     @Override
     public String toString() {

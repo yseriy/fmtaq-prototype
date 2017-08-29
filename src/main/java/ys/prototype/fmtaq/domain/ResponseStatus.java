@@ -1,6 +1,6 @@
 package ys.prototype.fmtaq.domain;
 
-public enum CommandResponseStatus {
+public enum ResponseStatus {
     OK,
     ERROR
 }
