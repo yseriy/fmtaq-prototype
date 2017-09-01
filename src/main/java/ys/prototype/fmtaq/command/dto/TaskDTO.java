@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class TaskDTO {
-    private TaskType type;
-    private List<CommandDTO> commandDTOList;
+    private final TaskType type;
+    private final List<CommandDTO> commandDTOList;
 }
