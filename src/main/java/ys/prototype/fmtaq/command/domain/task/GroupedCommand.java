@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain;
+package ys.prototype.fmtaq.command.domain.task;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,16 +13,13 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class LinkedCommand extends Command {
-
-    private UUID nextCommandId;
+public class GroupedCommand extends Command {
 
     @ManyToOne
-    private Sequence task;
+    private TaskGroup task;
 
-    public LinkedCommand(UUID id, UUID nextCommandId, String address, String body) {
+    public GroupedCommand(UUID id, String address, String body) {
         super(id, address, body);
-        setNextCommandId(nextCommandId);
     }
 
     @Override

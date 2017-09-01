@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-class TaskSqlMapper {
+class SqlToTaskQueryDTOMapper {
 
     List<TaskQueryDTO> map(ResultSet rs) throws SQLException {
         Map<Integer, TaskQueryDTO> taskMap = new HashMap<>();

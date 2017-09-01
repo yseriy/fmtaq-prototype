@@ -1,7 +1,7 @@
-package ys.prototype.fmtaq.domain.dto;
+package ys.prototype.fmtaq.command.dto;
 
 import lombok.Data;
-import ys.prototype.fmtaq.domain.TaskType;
+import ys.prototype.fmtaq.command.domain.TaskType;
 
 import java.util.List;
 

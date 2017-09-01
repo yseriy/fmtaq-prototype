@@ -1,10 +1,11 @@
-package ys.prototype.fmtaq.domain;
+package ys.prototype.fmtaq.command.domain.task;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Set;
@@ -14,20 +15,20 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Group extends Task {
+public class TaskSequence extends Task {
 
-    private Integer commandCounter;
+    private UUID firstCommandId;
 
-    @OneToMany(mappedBy = "task")
-    private Set<GroupedCommand> commands;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
+    private Set<LinkedCommand> commands;
 
-    public Group(UUID id) {
-        super(id);
-    }
-
-    public void loadCommands(Set<GroupedCommand> commands) {
+    void loadCommands(Set<LinkedCommand> commands) {
         setCommands(commands);
         getCommands().forEach(command -> command.setTask(this));
+    }
+
+    public TaskSequence(UUID id) {
+        super(id);
     }
 
     @Override

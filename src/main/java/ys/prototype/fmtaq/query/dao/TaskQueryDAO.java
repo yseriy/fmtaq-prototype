@@ -10,11 +10,11 @@ import java.util.List;
 public class TaskQueryDAO {
 
     private final JdbcTemplate jdbcTemplate;
-    private final TaskSqlMapper taskSqlMapper;
+    private final SqlToTaskQueryDTOMapper sqlToTaskQueryDTOMapper;
 
-    public TaskQueryDAO(JdbcTemplate jdbcTemplate, TaskSqlMapper taskSqlMapper) {
+    public TaskQueryDAO(JdbcTemplate jdbcTemplate, SqlToTaskQueryDTOMapper sqlToTaskQueryDTOMapper) {
         this.jdbcTemplate = jdbcTemplate;
-        this.taskSqlMapper = taskSqlMapper;
+        this.sqlToTaskQueryDTOMapper = sqlToTaskQueryDTOMapper;
     }
 
     public List<TaskQueryDTO> getById(Integer id) {
@@ -24,6 +24,6 @@ public class TaskQueryDAO {
                 "     left join command c" +
                 "            on t.id = c.task_id" +
                 "     where t.id = ?";
-        return jdbcTemplate.query(sql, new Object[]{id}, taskSqlMapper::map);
+        return jdbcTemplate.query(sql, new Object[]{id}, sqlToTaskQueryDTOMapper::map);
     }
 }

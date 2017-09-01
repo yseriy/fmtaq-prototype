@@ -1,33 +1,23 @@
-package ys.prototype.fmtaq.service;
+package ys.prototype.fmtaq.command.domain.task;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ys.prototype.fmtaq.domain.*;
-import ys.prototype.fmtaq.domain.dto.CommandDTO;
-import ys.prototype.fmtaq.domain.dto.TaskDTO;
-import ys.prototype.fmtaq.repository.TaskRepository;
+import org.springframework.stereotype.Component;
+import ys.prototype.fmtaq.command.domain.ModelFactory;
+import ys.prototype.fmtaq.command.dto.CommandDTO;
+import ys.prototype.fmtaq.command.dto.TaskDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
-@Transactional
-public class TaskService {
+@Component
+public class TaskFactory {
 
     private final ModelFactory modelFactory;
-    private final TaskRepository taskRepository;
 
-    public TaskService(ModelFactory modelFactory, TaskRepository taskRepository) {
+    public TaskFactory(ModelFactory modelFactory) {
         this.modelFactory = modelFactory;
-        this.taskRepository = taskRepository;
     }
 
-    public void startTask(TaskDTO taskDTO) {
-        Task task = fromDTO(taskDTO);
-        taskRepository.save(task);
-    }
-
-    private Task fromDTO(TaskDTO taskDTO) {
+    public Task createTask(TaskDTO taskDTO) {
         switch (taskDTO.getType()) {
             case SEQUENCE:
                 return sequenceFromDTO(taskDTO.getCommandDTOList());
@@ -38,8 +28,8 @@ public class TaskService {
         }
     }
 
-    private Sequence sequenceFromDTO(List<CommandDTO> commandDTOList) {
-        Sequence sequence = modelFactory.createSequence(UUID.randomUUID());
+    private TaskSequence sequenceFromDTO(List<CommandDTO> commandDTOList) {
+        TaskSequence taskSequence = modelFactory.createSequence(UUID.randomUUID());
         Set<LinkedCommand> linkedCommands = new HashSet<>();
         ListIterator<CommandDTO> iterator = commandDTOList.listIterator(commandDTOList.size());
 
@@ -53,22 +43,22 @@ public class TaskService {
             nextCommandId = currentCommandId;
         }
 
-        sequence.loadCommands(linkedCommands);
-        sequence.setFirstCommandId(nextCommandId);
+        taskSequence.loadCommands(linkedCommands);
+        taskSequence.setFirstCommandId(nextCommandId);
 
-        return sequence;
+        return taskSequence;
     }
 
     private LinkedCommand linkedCommandFromDTO(UUID currentCommandId, UUID nextCommandId, CommandDTO commandDTO) {
         return modelFactory.createLinkedCommand(currentCommandId, nextCommandId, commandDTO.getAddress(), commandDTO.getBody());
     }
 
-    private Group groupFromDTO(List<CommandDTO> commandDTOList) {
-        Group group = modelFactory.createGroup(UUID.randomUUID());
-        group.setCommandCounter(commandDTOList.size());
-        group.loadCommands(commandDTOList.stream().map(this::groupedCommandFromDTO).collect(Collectors.toSet()));
+    private TaskGroup groupFromDTO(List<CommandDTO> commandDTOList) {
+        TaskGroup taskGroup = modelFactory.createGroup(UUID.randomUUID());
+        taskGroup.setCommandCounter(commandDTOList.size());
+        taskGroup.loadCommands(commandDTOList.stream().map(this::groupedCommandFromDTO).collect(Collectors.toSet()));
 
-        return group;
+        return taskGroup;
     }
 
     private GroupedCommand groupedCommandFromDTO(CommandDTO commandDTO) {
