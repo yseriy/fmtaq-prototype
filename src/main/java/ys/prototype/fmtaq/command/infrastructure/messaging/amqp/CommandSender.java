@@ -19,7 +19,7 @@ public class CommandSender {
         this.amqpTemplate = amqpTemplate;
     }
 
-    private void send(Command command) {
+    public void send(Command command) {
         amqpAdmin.declareQueue(new Queue(command.getAddress()));
         amqpTemplate.convertAndSend(command.getAddress(), command.getBody());
     }
