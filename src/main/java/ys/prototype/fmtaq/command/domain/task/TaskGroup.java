@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,6 +24,11 @@ public class TaskGroup extends Task {
 
     public TaskGroup(UUID id) {
         super(id);
+    }
+
+    @Override
+    public Set<Command> getStartCommands() {
+        return new HashSet<>(getCommands());
     }
 
     void loadCommands(Set<CommandGroup> commands) {

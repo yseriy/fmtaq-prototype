@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -27,4 +28,6 @@ public abstract class Task {
     Task(UUID id) {
         setId(id);
     }
+
+    public abstract Set<Command> getStartCommands();
 }
