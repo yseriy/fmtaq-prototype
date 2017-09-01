@@ -14,12 +14,12 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class GroupedCommand extends Command {
+public class CommandGroup extends Command {
 
     @ManyToOne
     private TaskGroup task;
 
-    public GroupedCommand(UUID id, String address, String body) {
+    public CommandGroup(UUID id, String address, String body) {
         super(id, address, body);
     }
 

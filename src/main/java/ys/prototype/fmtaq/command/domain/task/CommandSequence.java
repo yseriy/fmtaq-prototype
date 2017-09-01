@@ -14,14 +14,14 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class LinkedCommand extends Command {
+public class CommandSequence extends Command {
 
     private UUID nextCommandId;
 
     @ManyToOne
     private TaskSequence task;
 
-    public LinkedCommand(UUID id, UUID nextCommandId, String address, String body) {
+    public CommandSequence(UUID id, UUID nextCommandId, String address, String body) {
         super(id, address, body);
         setNextCommandId(nextCommandId);
     }

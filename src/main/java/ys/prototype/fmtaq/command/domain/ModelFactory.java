@@ -1,8 +1,8 @@
 package ys.prototype.fmtaq.command.domain;
 
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.command.domain.task.GroupedCommand;
-import ys.prototype.fmtaq.command.domain.task.LinkedCommand;
+import ys.prototype.fmtaq.command.domain.task.CommandGroup;
+import ys.prototype.fmtaq.command.domain.task.CommandSequence;
 import ys.prototype.fmtaq.command.domain.task.TaskGroup;
 import ys.prototype.fmtaq.command.domain.task.TaskSequence;
 
@@ -19,11 +19,11 @@ public class ModelFactory {
         return new TaskGroup(id);
     }
 
-    public LinkedCommand createLinkedCommand(UUID id, UUID nextCommandId, String address, String body) {
-        return new LinkedCommand(id, nextCommandId, address, body);
+    public CommandSequence createCommandSequence(UUID id, UUID nextCommandId, String address, String body) {
+        return new CommandSequence(id, nextCommandId, address, body);
     }
 
-    public GroupedCommand createGroupedCommand(UUID id, String address, String body) {
-        return new GroupedCommand(id, address, body);
+    public CommandGroup createCommandGroup(UUID id, String address, String body) {
+        return new CommandGroup(id, address, body);
     }
 }
