@@ -49,10 +49,6 @@ class SqlToTaskQueryDTOMapper {
             commandMap.put(commandId, commandQueryDTO);
         }
 
-        if (taskQueryDTO.getCommands() == null) {
-            taskQueryDTO.setCommands(new ArrayList<>());
-        }
-
         if (!taskQueryDTO.getCommands().contains(commandQueryDTO)) {
             taskQueryDTO.getCommands().add(commandQueryDTO);
         }

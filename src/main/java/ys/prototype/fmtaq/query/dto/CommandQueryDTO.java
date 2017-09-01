@@ -1,13 +1,11 @@
 package ys.prototype.fmtaq.query.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class CommandQueryDTO {
-    private String id;
-    private String status;
-    private String address;
-    private String body;
+    private final String id;
+    private final String status;
+    private final String address;
+    private final String body;
 }
