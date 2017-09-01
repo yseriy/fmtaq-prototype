@@ -30,7 +30,7 @@ public class TaskFactory {
 
     private TaskSequence sequenceFromDTO(List<CommandDTO> commandDTOList) {
         TaskSequence taskSequence = modelFactory.createSequence(UUID.randomUUID());
-        Set<LinkedCommand> linkedCommands = new HashSet<>();
+        Set<CommandSequence> commandSequences = new HashSet<>();
         ListIterator<CommandDTO> iterator = commandDTOList.listIterator(commandDTOList.size());
 
         UUID currentCommandId;
@@ -39,29 +39,29 @@ public class TaskFactory {
         while (iterator.hasPrevious()) {
             CommandDTO commandDTO = iterator.previous();
             currentCommandId = UUID.randomUUID();
-            linkedCommands.add(linkedCommandFromDTO(currentCommandId, nextCommandId, commandDTO));
+            commandSequences.add(commandSequenceFromDTO(currentCommandId, nextCommandId, commandDTO));
             nextCommandId = currentCommandId;
         }
 
-        taskSequence.loadCommands(linkedCommands);
+        taskSequence.loadCommands(commandSequences);
         taskSequence.setFirstCommandId(nextCommandId);
 
         return taskSequence;
     }
 
-    private LinkedCommand linkedCommandFromDTO(UUID currentCommandId, UUID nextCommandId, CommandDTO commandDTO) {
-        return modelFactory.createLinkedCommand(currentCommandId, nextCommandId, commandDTO.getAddress(), commandDTO.getBody());
+    private CommandSequence commandSequenceFromDTO(UUID currentCommandId, UUID nextCommandId, CommandDTO commandDTO) {
+        return modelFactory.createCommandSequence(currentCommandId, nextCommandId, commandDTO.getAddress(), commandDTO.getBody());
     }
 
     private TaskGroup groupFromDTO(List<CommandDTO> commandDTOList) {
         TaskGroup taskGroup = modelFactory.createGroup(UUID.randomUUID());
         taskGroup.setCommandCounter(commandDTOList.size());
-        taskGroup.loadCommands(commandDTOList.stream().map(this::groupedCommandFromDTO).collect(Collectors.toSet()));
+        taskGroup.loadCommands(commandDTOList.stream().map(this::commandGroupFromDTO).collect(Collectors.toSet()));
 
         return taskGroup;
     }
 
-    private GroupedCommand groupedCommandFromDTO(CommandDTO commandDTO) {
-        return modelFactory.createGroupedCommand(UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody());
+    private CommandGroup commandGroupFromDTO(CommandDTO commandDTO) {
+        return modelFactory.createCommandGroup(UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody());
     }
 }

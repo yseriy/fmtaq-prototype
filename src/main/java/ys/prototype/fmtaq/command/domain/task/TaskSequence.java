@@ -20,9 +20,9 @@ public class TaskSequence extends Task {
     private UUID firstCommandId;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
-    private Set<LinkedCommand> commands;
+    private Set<CommandSequence> commands;
 
-    void loadCommands(Set<LinkedCommand> commands) {
+    void loadCommands(Set<CommandSequence> commands) {
         setCommands(commands);
         getCommands().forEach(command -> command.setTask(this));
     }

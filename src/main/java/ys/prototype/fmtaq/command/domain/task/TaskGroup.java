@@ -19,13 +19,13 @@ public class TaskGroup extends Task {
     private Integer commandCounter;
 
     @OneToMany(mappedBy = "task")
-    private Set<GroupedCommand> commands;
+    private Set<CommandGroup> commands;
 
     public TaskGroup(UUID id) {
         super(id);
     }
 
-    void loadCommands(Set<GroupedCommand> commands) {
+    void loadCommands(Set<CommandGroup> commands) {
         setCommands(commands);
         getCommands().forEach(command -> command.setTask(this));
     }
