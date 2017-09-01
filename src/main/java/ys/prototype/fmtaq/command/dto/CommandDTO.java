@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CommandDTO {
-    private String address;
-    private String body;
+    private final String address;
+    private final String body;
 }

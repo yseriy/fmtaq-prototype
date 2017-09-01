@@ -12,8 +12,8 @@ public class DTOFactory {
         return new TaskDTO();
     }
 
-    public CommandDTO createCommandDTO() {
-        return new CommandDTO();
+    public CommandDTO createCommandDTO(String address, String body) {
+        return new CommandDTO(address, body);
     }
 
     public ResponseDTO createResponseDTO(UUID commandId, ResponseStatus responseStatus, String body) {
