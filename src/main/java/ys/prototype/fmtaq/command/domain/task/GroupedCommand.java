@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.ResponseStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -20,6 +21,22 @@ public class GroupedCommand extends Command {
 
     public GroupedCommand(UUID id, String address, String body) {
         super(id, address, body);
+    }
+
+    @Override
+    public UUID updateStatusAndGetNextCommandId(ResponseStatus responseStatus) {
+        setCommandStatus(responseStatus);
+        getTask().decreaseCommandCounter();
+
+        if (getTask().isLastCommand()) {
+            setTaskEndStatus();
+        }
+
+        return null;
+    }
+
+    private void setTaskEndStatus() {
+        getTask().setStatus(TaskStatus.OK);
     }
 
     @Override

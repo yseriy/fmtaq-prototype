@@ -30,6 +30,14 @@ public class TaskGroup extends Task {
         getCommands().forEach(command -> command.setTask(this));
     }
 
+    void decreaseCommandCounter() {
+        setCommandCounter(getCommandCounter() - 1);
+    }
+
+    Boolean isLastCommand() {
+        return getCommandCounter() <= 0;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "-" + getId();

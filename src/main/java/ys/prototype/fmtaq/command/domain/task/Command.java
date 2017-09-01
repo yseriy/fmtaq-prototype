@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.ResponseStatus;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -31,4 +32,19 @@ public abstract class Command {
         setAddress(address);
         setBody(body);
     }
+
+    void setCommandStatus(ResponseStatus responseStatus) {
+        switch (responseStatus) {
+            case OK:
+                setStatus(CommandStatus.OK);
+                break;
+            case ERROR:
+                setStatus(CommandStatus.ERROR);
+                break;
+            default:
+                throw new RuntimeException("unknown command response status: " + responseStatus);
+        }
+    }
+
+    public abstract UUID updateStatusAndGetNextCommandId(ResponseStatus responseStatus);
 }
