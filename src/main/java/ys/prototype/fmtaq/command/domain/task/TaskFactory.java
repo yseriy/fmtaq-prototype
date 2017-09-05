@@ -2,6 +2,10 @@ package ys.prototype.fmtaq.command.domain.task;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.command.domain.ModelFactory;
+import ys.prototype.fmtaq.command.domain.task.group.CommandGroup;
+import ys.prototype.fmtaq.command.domain.task.group.TaskGroup;
+import ys.prototype.fmtaq.command.domain.task.sequence.CommandSequence;
+import ys.prototype.fmtaq.command.domain.task.sequence.TaskSequence;
 import ys.prototype.fmtaq.command.dto.CommandDTO;
 import ys.prototype.fmtaq.command.dto.TaskDTO;
 

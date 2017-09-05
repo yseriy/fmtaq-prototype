@@ -1,9 +1,11 @@
-package ys.prototype.fmtaq.command.domain.task;
+package ys.prototype.fmtaq.command.domain.task.sequence;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.task.Command;
+import ys.prototype.fmtaq.command.domain.task.Task;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -43,7 +45,7 @@ public class TaskSequence extends Task {
         return new RuntimeException("cannot find first command. task: " + this);
     }
 
-    void loadCommands(Set<CommandSequence> commands) {
+    public void loadCommands(Set<CommandSequence> commands) {
         setCommands(commands);
         getCommands().forEach(command -> command.setTask(this));
     }

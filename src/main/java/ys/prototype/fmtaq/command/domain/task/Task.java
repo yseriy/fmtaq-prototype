@@ -19,13 +19,15 @@ public abstract class Task {
     @Id
     private UUID id;
 
+    private String responseAddress;
+
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.REGISTERED;
 
     @Version
     private Long version;
 
-    Task(UUID id) {
+    public Task(UUID id) {
         setId(id);
     }
 

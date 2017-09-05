@@ -1,10 +1,10 @@
 package ys.prototype.fmtaq.command.domain;
 
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.command.domain.task.CommandGroup;
-import ys.prototype.fmtaq.command.domain.task.CommandSequence;
-import ys.prototype.fmtaq.command.domain.task.TaskGroup;
-import ys.prototype.fmtaq.command.domain.task.TaskSequence;
+import ys.prototype.fmtaq.command.domain.task.group.CommandGroup;
+import ys.prototype.fmtaq.command.domain.task.sequence.CommandSequence;
+import ys.prototype.fmtaq.command.domain.task.group.TaskGroup;
+import ys.prototype.fmtaq.command.domain.task.sequence.TaskSequence;
 
 import java.util.UUID;
 

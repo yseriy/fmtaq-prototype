@@ -27,13 +27,13 @@ public abstract class Command {
     @Version
     private Long version;
 
-    Command(UUID id, String address, String body) {
+    public Command(UUID id, String address, String body) {
         setId(id);
         setAddress(address);
         setBody(body);
     }
 
-    void setCommandStatus(ResponseStatus responseStatus) {
+    protected void setCommandStatus(ResponseStatus responseStatus) {
         switch (responseStatus) {
             case OK:
                 setStatus(CommandStatus.OK);

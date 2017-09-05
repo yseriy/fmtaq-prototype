@@ -1,9 +1,11 @@
-package ys.prototype.fmtaq.command.domain.task;
+package ys.prototype.fmtaq.command.domain.task.group;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.task.Command;
+import ys.prototype.fmtaq.command.domain.task.Task;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -31,7 +33,7 @@ public class TaskGroup extends Task {
         return new HashSet<>(getCommands());
     }
 
-    void loadCommands(Set<CommandGroup> commands) {
+    public void loadCommands(Set<CommandGroup> commands) {
         setCommands(commands);
         getCommands().forEach(command -> command.setTask(this));
     }
