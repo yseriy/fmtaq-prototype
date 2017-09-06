@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.ResponseStatus;
 import ys.prototype.fmtaq.command.domain.task.Command;
 import ys.prototype.fmtaq.command.domain.task.Task;
+import ys.prototype.fmtaq.command.domain.task.TaskStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -31,6 +33,16 @@ public class TaskGroup extends Task {
     @Override
     public Set<Command> getStartCommands() {
         return new HashSet<>(getCommands());
+    }
+
+    @Override
+    public String getResponseAddress() {
+        return null;
+    }
+
+    @Override
+    public void setTaskEndStatus(ResponseStatus responseStatus) {
+        setStatus(TaskStatus.OK);
     }
 
     public void loadCommands(Set<CommandGroup> commands) {

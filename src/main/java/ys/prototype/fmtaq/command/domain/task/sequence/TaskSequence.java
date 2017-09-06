@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.command.domain.ResponseStatus;
 import ys.prototype.fmtaq.command.domain.task.Command;
 import ys.prototype.fmtaq.command.domain.task.Task;
+import ys.prototype.fmtaq.command.domain.task.TaskStatus;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -35,6 +37,25 @@ public class TaskSequence extends Task {
         commands.add(getCommands().stream().filter(this::isFirstCommand).findFirst().orElseThrow(this::exceptionSupplier));
 
         return commands;
+    }
+
+    @Override
+    public String getResponseAddress() {
+        return null;
+    }
+
+    @Override
+    public void setTaskEndStatus(ResponseStatus responseStatus) {
+        switch (responseStatus) {
+            case OK:
+                setStatus(TaskStatus.OK);
+                break;
+            case ERROR:
+                setStatus(TaskStatus.ERROR);
+                break;
+            default:
+                throw new RuntimeException("unknown command response status: " + responseStatus);
+        }
     }
 
     private Boolean isFirstCommand(Command command) {

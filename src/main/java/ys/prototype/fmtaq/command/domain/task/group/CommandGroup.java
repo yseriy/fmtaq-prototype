@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.command.domain.ResponseStatus;
 import ys.prototype.fmtaq.command.domain.task.Command;
-import ys.prototype.fmtaq.command.domain.task.TaskStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -30,15 +29,15 @@ public class CommandGroup extends Command {
         setCommandStatus(responseStatus);
         getTask().decreaseCommandCounter();
 
-        if (getTask().isLastCommand()) {
-            setTaskEndStatus();
+        if (isLastCommand()) {
+            getTask().setTaskEndStatus(responseStatus);
         }
 
         return null;
     }
 
-    private void setTaskEndStatus() {
-        getTask().setStatus(TaskStatus.OK);
+    private Boolean isLastCommand() {
+        return getTask().isLastCommand();
     }
 
     @Override
