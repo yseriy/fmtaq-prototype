@@ -1,40 +1,15 @@
 package ys.prototype.fmtaq.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Sequence extends Task {
-
-    public Sequence() {
-        super();
-    }
-
-    public Sequence(Integer commandCount) {
-        super(commandCount);
-    }
-
-    @Override
-    Boolean hasNonFatalStatus() {
-        return getStatus() != TaskStatus.ERROR;
-    }
-
-    @Override
-    void setCommandSuccessStatus() {
-
-    }
-
-    @Override
-    void setCommandErrorStatus() {
-        setStatus(TaskStatus.ERROR);
-    }
-
-    @Override
-    void setLastCommandSuccessStatus() {
-        setStatus(TaskStatus.OK);
-    }
-
-    @Override
-    void setLastCommandErrorStatus() {
-        setStatus(TaskStatus.ERROR);
-    }
 }
