@@ -13,15 +13,32 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Inheritance
-public abstract class Task {
+public abstract class Task implements Synchronous {
 
     @Id
-    @GeneratedValue
     private UUID id;
+
+    @Embedded
+    private Synchronous synchronous;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.REGISTERED;
 
     @Version
     private Long version;
+
+    public Task(UUID id, Synchronous synchronous) {
+        this.id = id;
+        this.synchronous = synchronous;
+    }
+
+    @Override
+    public String getResponseAddress() {
+        return synchronous.getResponseAddress();
+    }
+
+    @Override
+    public void setResponseAddress(String address) {
+        synchronous.setResponseAddress(address);
+    }
 }

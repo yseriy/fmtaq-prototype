@@ -16,7 +16,6 @@ import java.util.UUID;
 public abstract class Command {
 
     @Id
-    @GeneratedValue
     private UUID id;
     private String address;
     private String body;
