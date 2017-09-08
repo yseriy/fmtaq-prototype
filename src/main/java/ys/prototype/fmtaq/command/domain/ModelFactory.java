@@ -1,29 +1,30 @@
 package ys.prototype.fmtaq.command.domain;
 
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.command.domain.task.group.CommandGroup;
-import ys.prototype.fmtaq.command.domain.task.sequence.CommandSequence;
-import ys.prototype.fmtaq.command.domain.task.group.TaskGroup;
-import ys.prototype.fmtaq.command.domain.task.sequence.TaskSequence;
+import ys.prototype.fmtaq.command.domain.task.impl.ParallelCommand;
+import ys.prototype.fmtaq.command.domain.task.impl.ParallelTask;
+import ys.prototype.fmtaq.command.domain.task.impl.SequenceCommand;
+import ys.prototype.fmtaq.command.domain.task.impl.SequenceTask;
 
 import java.util.UUID;
 
 @Component
 public class ModelFactory {
 
-    public TaskSequence createSequence(UUID id) {
-        return new TaskSequence(id);
+    public SequenceTask createSequenceTask(UUID id) {
+        return new SequenceTask(id);
     }
 
-    public TaskGroup createGroup(UUID id) {
-        return new TaskGroup(id);
+    public ParallelTask createParallelTask(UUID id) {
+        return new ParallelTask(id);
     }
 
-    public CommandSequence createCommandSequence(UUID id, UUID nextCommandId, String address, String body) {
-        return new CommandSequence(id, nextCommandId, address, body);
+    public SequenceCommand createSequenceCommand(UUID id, UUID nextCommandId, String address, String body,
+                                                 SequenceTask task) {
+        return new SequenceCommand(id, nextCommandId, address, body, task);
     }
 
-    public CommandGroup createCommandGroup(UUID id, String address, String body) {
-        return new CommandGroup(id, address, body);
+    public ParallelCommand createParallelCommand(UUID id, String address, String body, ParallelTask task) {
+        return new ParallelCommand(id, address, body, task);
     }
 }

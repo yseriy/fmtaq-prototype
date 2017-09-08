@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.command.domain.ResponseStatus;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -30,9 +29,5 @@ public abstract class Task {
         setId(id);
     }
 
-    public abstract Set<Command> getStartCommands();
-
-    public abstract String getResponseAddress();
-
-    public abstract void setTaskEndStatus(ResponseStatus responseStatus);
+    public abstract Set<Command> getStartCommandSet();
 }

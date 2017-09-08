@@ -27,7 +27,7 @@ public class TaskService {
     public UUID startTask(TaskDTO taskDTO) {
         Task task = taskFactory.createTask(taskDTO);
         taskRepository.save(task);
-        commandSender.bulkSend(task.getStartCommands());
+        commandSender.bulkSend(task.getStartCommandSet());
 
         return task.getId();
     }

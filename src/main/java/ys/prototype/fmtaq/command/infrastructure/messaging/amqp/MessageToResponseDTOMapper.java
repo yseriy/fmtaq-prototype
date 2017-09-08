@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.command.domain.ResponseStatus;
+import ys.prototype.fmtaq.command.domain.CommandReturnStatus;
 import ys.prototype.fmtaq.command.dto.DTOFactory;
 import ys.prototype.fmtaq.command.dto.ResponseDTO;
 
@@ -42,13 +42,13 @@ public class MessageToResponseDTOMapper {
         return UUID.fromString(commandId.asText());
     }
 
-    private ResponseStatus getCommandResponseStatus(JsonNode root) {
+    private CommandReturnStatus getCommandResponseStatus(JsonNode root) {
         JsonNode responseCode = root.get("result").get("rc");
 
         if (responseCode.isMissingNode()) {
             throw new RuntimeException("cannot find field: 'result.rc'");
         }
 
-        return responseCode.asInt() == 0 ? ResponseStatus.OK : ResponseStatus.ERROR;
+        return responseCode.asInt() == 0 ? CommandReturnStatus.OK : CommandReturnStatus.ERROR;
     }
 }

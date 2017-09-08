@@ -1,7 +1,7 @@
 package ys.prototype.fmtaq.command.dto;
 
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.command.domain.ResponseStatus;
+import ys.prototype.fmtaq.command.domain.CommandReturnStatus;
 import ys.prototype.fmtaq.command.domain.TaskType;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class DTOFactory {
         return new CommandDTO(address, body);
     }
 
-    public ResponseDTO createResponseDTO(UUID commandId, ResponseStatus responseStatus, String body) {
-        return new ResponseDTO(commandId, responseStatus, body);
+    public ResponseDTO createResponseDTO(UUID commandId, CommandReturnStatus commandReturnStatus, String body) {
+        return new ResponseDTO(commandId, commandReturnStatus, body);
     }
 }
