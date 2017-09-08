@@ -58,8 +58,8 @@ public class TaskFactory {
     private ParallelTask parallelTaskFromDTO(List<CommandDTO> commandDTOList) {
         ParallelTask parallelTask = modelFactory.createParallelTask(UUID.randomUUID());
         parallelTask.setCommandCounter(commandDTOList.size());
-        Function<CommandDTO, ParallelCommand> mapper = c -> modelFactory.createParallelCommand(UUID.randomUUID(),
-                c.getAddress(), c.getBody(), parallelTask);
+        Function<CommandDTO, ParallelCommand> mapper = commandDTO -> modelFactory.createParallelCommand(
+                UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody(), parallelTask);
         parallelTask.setParallelCommands(commandDTOList.stream().map(mapper).collect(Collectors.toSet()));
 
         return parallelTask;
