@@ -15,6 +15,9 @@ import java.util.UUID;
 @Inheritance
 public abstract class Command {
 
+    @Transient
+    private CommandInfrastructureService infrastructureService;
+
     @Id
     private UUID id;
     private String address;

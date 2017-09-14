@@ -46,10 +46,24 @@ public class SequenceCommand extends Command {
     }
 
     private Command findCommandById(UUID nextCommandId) {
-        return null;
+        checkInfrastructureService();
+        Command command = getInfrastructureService().findCommandById(nextCommandId);
+
+        if (command == null) {
+            throw new RuntimeException("cannot find next command. id: " + nextCommandId);
+        }
+
+        return command;
     }
 
     private void sendCommand(Command command) {
+        checkInfrastructureService();
+        getInfrastructureService().sendCommand(command);
+    }
 
+    private void checkInfrastructureService() {
+        if (getInfrastructureService() == null) {
+            throw new RuntimeException("InfrastructureService not defined.");
+        }
     }
 }
