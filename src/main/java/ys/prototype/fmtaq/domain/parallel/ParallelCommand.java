@@ -27,6 +27,8 @@ public class ParallelCommand extends Command {
 
     @Override
     protected void handleOkResponse() {
+        setCommandStatus(CommandStatus.OK);
+
         if (isLastCommand()) {
             getParallelTask().setTaskStatus(TaskStatus.OK);
         }
@@ -34,6 +36,8 @@ public class ParallelCommand extends Command {
 
     @Override
     protected void handleErrorResponse() {
+        setCommandStatus(CommandStatus.ERROR);
+
         if (isLastCommand()) {
             getParallelTask().setTaskStatus(TaskStatus.ERROR);
         }

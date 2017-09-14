@@ -43,11 +43,9 @@ public abstract class Command {
     public void handleResponse(CommandResponseStatus responseStatus) {
         switch (responseStatus) {
             case OK:
-                setCommandStatus(CommandStatus.OK);
                 handleOkResponse();
                 break;
             case ERROR:
-                setCommandStatus(CommandStatus.ERROR);
                 handleErrorResponse();
                 break;
             default:

@@ -28,6 +28,8 @@ public class SequenceCommand extends Command {
 
     @Override
     protected void handleOkResponse() {
+        setCommandStatus(CommandStatus.OK);
+
         if (isLastCommand()) {
             getTask().setTaskStatus(TaskStatus.OK);
         } else {
@@ -38,6 +40,7 @@ public class SequenceCommand extends Command {
 
     @Override
     protected void handleErrorResponse() {
+        setCommandStatus(CommandStatus.ERROR);
         getTask().setTaskStatus(TaskStatus.ERROR);
     }
 
