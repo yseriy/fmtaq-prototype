@@ -6,19 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import java.util.UUID;
 
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class GeneralTaskData {
+public class SequenceCommandData {
 
-    @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    private UUID nextCommandId;
 
-    public GeneralTaskData(TaskStatus taskStatus) {
-        setTaskStatus(taskStatus);
+    public SequenceCommandData(UUID nextCommandId) {
+        setNextCommandId(nextCommandId);
     }
 }

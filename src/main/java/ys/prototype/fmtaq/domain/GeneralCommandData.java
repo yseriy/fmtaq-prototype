@@ -13,12 +13,12 @@ import javax.persistence.Enumerated;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class GeneralTaskData {
+public class GeneralCommandData {
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    private CommandStatus commandStatus;
 
-    public GeneralTaskData(TaskStatus taskStatus) {
-        setTaskStatus(taskStatus);
+    public GeneralCommandData(CommandStatus commandStatus) {
+        setCommandStatus(commandStatus);
     }
 }
