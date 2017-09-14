@@ -37,12 +37,14 @@ public abstract class Command {
         this.task = task;
     }
 
-    public final void handleResponse(CommandResponseStatus responseStatus) {
+    public void handleResponse(CommandResponseStatus responseStatus) {
         switch (responseStatus) {
             case OK:
+                setCommandStatus(CommandStatus.OK);
                 handleOkResponse();
                 break;
             case ERROR:
+                setCommandStatus(CommandStatus.ERROR);
                 handleErrorResponse();
                 break;
             default:

@@ -4,10 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.Command;
-import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.Task;
-import ys.prototype.fmtaq.domain.TaskStatus;
+import ys.prototype.fmtaq.domain.*;
 
 import javax.persistence.Entity;
 import java.util.UUID;
@@ -22,19 +19,21 @@ public class ParallelCommand extends Command {
         super(id, address, body, commandStatus, task);
     }
 
-    protected void handleOkResponse() {
+    @Override
+    public void handleResponse(CommandResponseStatus responseStatus) {
         reduceCommandCounter();
-        setCommandStatus(CommandStatus.OK);
+        super.handleResponse(responseStatus);
+    }
 
+    @Override
+    protected void handleOkResponse() {
         if (isLastCommand()) {
             getParallelTask().setTaskStatus(TaskStatus.OK);
         }
     }
 
+    @Override
     protected void handleErrorResponse() {
-        reduceCommandCounter();
-        setCommandStatus(CommandStatus.ERROR);
-
         if (isLastCommand()) {
             getParallelTask().setTaskStatus(TaskStatus.ERROR);
         }
