@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.messaging;
+package ys.prototype.fmtaq.infrastructure.messaging.amqp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.messaging;
+package ys.prototype.fmtaq.infrastructure.messaging.amqp;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
