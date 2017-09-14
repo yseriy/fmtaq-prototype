@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Inheritance
 public abstract class Command {
 
     @Id
