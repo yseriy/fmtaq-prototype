@@ -21,7 +21,7 @@ public abstract class Command {
     private String body;
 
     @Enumerated(EnumType.STRING)
-    private CommandStatus status;
+    private CommandStatus commandStatus;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;

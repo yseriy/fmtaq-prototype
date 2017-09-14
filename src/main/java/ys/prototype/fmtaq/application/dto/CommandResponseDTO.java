@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.dto;
+package ys.prototype.fmtaq.application.dto;
 
 import lombok.Data;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;

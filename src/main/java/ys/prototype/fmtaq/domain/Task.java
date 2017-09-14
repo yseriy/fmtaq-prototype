@@ -19,5 +19,5 @@ public abstract class Task {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private TaskStatus taskStatus;
 }
