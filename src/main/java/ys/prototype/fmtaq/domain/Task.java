@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Inheritance
-abstract class Task {
+public abstract class Task {
 
     @Id
     private UUID id;
@@ -24,7 +24,7 @@ abstract class Task {
     @Version
     private Long version;
 
-    Task(UUID id) {
+    protected Task(UUID id) {
         setId(id);
     }
 }

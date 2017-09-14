@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Inheritance
-abstract class Command {
+public abstract class Command {
 
     @Id
     private UUID id;
@@ -24,7 +24,7 @@ abstract class Command {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
-    Command(UUID id, Task task) {
+    protected Command(UUID id, Task task) {
         setId(id);
         setTask(task);
     }
