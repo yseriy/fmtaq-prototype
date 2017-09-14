@@ -24,7 +24,7 @@ public abstract class Task {
     @Version
     private Long version;
 
-    protected Task(UUID id, TaskStatus taskStatus) {
+    public Task(UUID id, TaskStatus taskStatus) {
         this.id = id;
         this.taskStatus = taskStatus;
     }

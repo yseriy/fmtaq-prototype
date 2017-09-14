@@ -7,6 +7,7 @@ import lombok.Setter;
 import ys.prototype.fmtaq.domain.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.Task;
+import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.Entity;
 import java.util.UUID;
@@ -23,5 +24,33 @@ public class SequenceCommand extends Command {
                            Task task) {
         super(id, address, body, commandStatus, task);
         this.nextCommandId = nextCommandId;
+    }
+
+    protected void handleOkResponse() {
+        setCommandStatus(CommandStatus.OK);
+
+        if (isLastCommand()) {
+            getTask().setTaskStatus(TaskStatus.OK);
+        } else {
+            Command command = findCommandById(nextCommandId);
+            sendCommand(command);
+        }
+    }
+
+    protected void handleErrorResponse() {
+        setCommandStatus(CommandStatus.ERROR);
+        getTask().setTaskStatus(TaskStatus.ERROR);
+    }
+
+    private Boolean isLastCommand() {
+        return nextCommandId == null;
+    }
+
+    private Command findCommandById(UUID nextCommandId) {
+        return null;
+    }
+
+    private void sendCommand(Command command) {
+
     }
 }

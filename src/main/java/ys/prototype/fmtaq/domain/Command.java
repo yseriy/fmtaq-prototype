@@ -29,11 +29,28 @@ public abstract class Command {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
-    protected Command(UUID id, String address, String body, CommandStatus commandStatus, Task task) {
+    public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task) {
         this.id = id;
         this.address = address;
         this.body = body;
         this.commandStatus = commandStatus;
         this.task = task;
     }
+
+    public final void handleResponse(CommandResponseStatus responseStatus) {
+        switch (responseStatus) {
+            case OK:
+                handleOkResponse();
+                break;
+            case ERROR:
+                handleErrorResponse();
+                break;
+            default:
+                throw new RuntimeException("unknown commandResponse status: " + responseStatus);
+        }
+    }
+
+    protected abstract void handleOkResponse();
+
+    protected abstract void handleErrorResponse();
 }
