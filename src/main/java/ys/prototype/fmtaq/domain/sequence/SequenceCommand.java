@@ -19,8 +19,8 @@ public class SequenceCommand extends Command {
 
     private UUID nextCommandId;
 
-    public SequenceCommand(UUID id, String address, String body, CommandStatus commandStatus, Task task,
-                           UUID nextCommandId) {
+    public SequenceCommand(UUID id, UUID nextCommandId, String address, String body, CommandStatus commandStatus,
+                           Task task) {
         super(id, address, body, commandStatus, task);
         this.nextCommandId = nextCommandId;
     }
