@@ -20,4 +20,12 @@ public abstract class Task {
 
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
+
+    @Version
+    private Long version;
+
+    public Task(UUID id, TaskStatus taskStatus) {
+        this.id = id;
+        this.taskStatus = taskStatus;
+    }
 }

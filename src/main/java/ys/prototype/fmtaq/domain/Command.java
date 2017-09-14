@@ -23,6 +23,17 @@ public abstract class Command {
     @Enumerated(EnumType.STRING)
     private CommandStatus commandStatus;
 
+    @Version
+    private Long version;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
+
+    public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task) {
+        this.id = id;
+        this.address = address;
+        this.body = body;
+        this.commandStatus = commandStatus;
+        this.task = task;
+    }
 }
