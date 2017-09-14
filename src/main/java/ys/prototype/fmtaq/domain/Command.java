@@ -29,7 +29,7 @@ public abstract class Command {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Task task;
 
-    public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task) {
+    protected Command(UUID id, String address, String body, CommandStatus commandStatus, Task task) {
         this.id = id;
         this.address = address;
         this.body = body;
