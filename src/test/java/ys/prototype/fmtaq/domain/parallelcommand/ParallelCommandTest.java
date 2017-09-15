@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.parallel;
+package ys.prototype.fmtaq.domain.parallelcommand;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import ys.prototype.fmtaq.domain.Command;
+import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.Task;
+import ys.prototype.fmtaq.domain.command.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import java.util.UUID;

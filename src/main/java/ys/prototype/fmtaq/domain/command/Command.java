@@ -1,9 +1,12 @@
-package ys.prototype.fmtaq.domain;
+package ys.prototype.fmtaq.domain.command;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.domain.CommandResponseStatus;
+import ys.prototype.fmtaq.domain.CommandSendService;
+import ys.prototype.fmtaq.domain.CommandStatus;
 
 import javax.persistence.*;
 import java.util.UUID;

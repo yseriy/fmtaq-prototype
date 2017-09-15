@@ -1,6 +1,7 @@
 package ys.prototype.fmtaq.domain;
 
 import org.springframework.stereotype.Service;
+import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.infrastructure.messaging.amqp.CommandSender;
 
 @Service

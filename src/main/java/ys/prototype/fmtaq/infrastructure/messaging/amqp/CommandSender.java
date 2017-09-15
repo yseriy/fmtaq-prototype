@@ -4,7 +4,7 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.domain.Command;
+import ys.prototype.fmtaq.domain.command.Command;
 
 import java.util.Set;
 
