@@ -16,7 +16,7 @@ import java.util.UUID;
 public abstract class Command {
 
     @Transient
-    private CommandInfrastructureService infrastructureService;
+    private CommandSendService sendService;
 
     @Id
     private UUID id;

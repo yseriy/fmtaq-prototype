@@ -10,6 +10,8 @@ import ys.prototype.fmtaq.domain.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.util.UUID;
 
 @Setter
@@ -18,12 +20,14 @@ import java.util.UUID;
 @Entity
 public class SequenceCommand extends Command {
 
-    private UUID nextCommandId;
+    @OneToOne
+    @JoinColumn(name = "next_command_id", referencedColumnName = "id")
+    private SequenceCommand nextCommand;
 
-    public SequenceCommand(UUID id, UUID nextCommandId, String address, String body, CommandStatus commandStatus,
-                           Task task) {
+    public SequenceCommand(UUID id, SequenceCommand nextCommand, String address, String body,
+                           CommandStatus commandStatus, Task task) {
         super(id, address, body, commandStatus, task);
-        this.nextCommandId = nextCommandId;
+        this.nextCommand = nextCommand;
     }
 
     @Override
@@ -33,8 +37,7 @@ public class SequenceCommand extends Command {
         if (isLastCommand()) {
             getTask().setTaskStatus(TaskStatus.OK);
         } else {
-            Command command = findCommandById(nextCommandId);
-            sendCommand(command);
+            sendCommand(nextCommand);
         }
     }
 
@@ -45,28 +48,14 @@ public class SequenceCommand extends Command {
     }
 
     private Boolean isLastCommand() {
-        return nextCommandId == null;
-    }
-
-    private Command findCommandById(UUID nextCommandId) {
-        checkInfrastructureService();
-        Command command = getInfrastructureService().findCommandById(nextCommandId);
-
-        if (command == null) {
-            throw new RuntimeException("cannot find next command. id: " + nextCommandId);
-        }
-
-        return command;
+        return nextCommand == null;
     }
 
     private void sendCommand(Command command) {
-        checkInfrastructureService();
-        getInfrastructureService().sendCommand(command);
-    }
-
-    private void checkInfrastructureService() {
-        if (getInfrastructureService() == null) {
-            throw new RuntimeException("InfrastructureService not defined.");
+        if (getSendService() == null) {
+            throw new RuntimeException("SendService not defined.");
         }
+
+        getSendService().sendCommand(command);
     }
 }
