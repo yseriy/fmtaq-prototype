@@ -33,11 +33,11 @@ public class ParallelCommandTest {
 
         Task task = new ParallelTask(taskId, TaskStatus.REGISTERED, 3, null);
         ParallelCommand command1 = new ParallelCommand(command1Id, "address_p_1",
-                "body_p_1", CommandStatus.REGISTERED, task);
+                "body_p_1", CommandStatus.REGISTERED, task, null);
         ParallelCommand command2 = new ParallelCommand(command2Id, "address_p_2",
-                "body_p_2", CommandStatus.REGISTERED, task);
+                "body_p_2", CommandStatus.REGISTERED, task, null);
         ParallelCommand command3 = new ParallelCommand(command3Id, "address_p_3",
-                "body_p_3", CommandStatus.REGISTERED, task);
+                "body_p_3", CommandStatus.REGISTERED, task, null);
 
         entityManager.persist(command1);
         entityManager.persist(command2);

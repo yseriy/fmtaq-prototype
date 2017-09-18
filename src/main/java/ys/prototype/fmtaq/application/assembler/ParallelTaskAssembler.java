@@ -40,6 +40,6 @@ public class ParallelTaskAssembler {
 
     private Command createGroupCommand(CommandDTO commandDTO, ParallelTask parallelTask) {
         return new ParallelCommand(UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody(),
-                CommandStatus.REGISTERED, parallelTask);
+                CommandStatus.REGISTERED, parallelTask, sendService);
     }
 }

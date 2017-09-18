@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.command.Command;
@@ -25,8 +26,8 @@ public class SequenceCommand extends Command {
     private SequenceCommand nextCommand;
 
     public SequenceCommand(UUID id, SequenceCommand nextCommand, String address, String body,
-                           CommandStatus commandStatus, Task task) {
-        super(id, address, body, commandStatus, task);
+                           CommandStatus commandStatus, Task task, CommandSendService sendService) {
+        super(id, address, body, commandStatus, task, sendService);
         this.nextCommand = nextCommand;
     }
 

@@ -33,11 +33,11 @@ public class SequenceCommandTest {
 
         Task task = new SequenceTask(taskId, TaskStatus.REGISTERED, null);
         SequenceCommand command1 = new SequenceCommand(command1Id, null, "address_1",
-                "body_1", CommandStatus.REGISTERED, task);
+                "body_1", CommandStatus.REGISTERED, task, null);
         SequenceCommand command2 = new SequenceCommand(command2Id, command1, "address_2",
-                "body_2", CommandStatus.REGISTERED, task);
+                "body_2", CommandStatus.REGISTERED, task, null);
         SequenceCommand command3 = new SequenceCommand(command3Id, command2, "address_3",
-                "body_3", CommandStatus.REGISTERED, task);
+                "body_3", CommandStatus.REGISTERED, task, null);
 
         entityManager.persist(command1);
         entityManager.persist(command2);

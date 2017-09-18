@@ -39,7 +39,7 @@ public class SequenceTaskAssembler {
             CommandDTO commandDTO = commandDTOIterator.previous();
             currentCommandId = UUID.randomUUID();
             nextCommand = new SequenceCommand(currentCommandId, nextCommand, commandDTO.getAddress(),
-                    commandDTO.getBody(), CommandStatus.REGISTERED, sequenceTask);
+                    commandDTO.getBody(), CommandStatus.REGISTERED, sequenceTask, sendService);
             commandList.add(nextCommand);
         }
 
