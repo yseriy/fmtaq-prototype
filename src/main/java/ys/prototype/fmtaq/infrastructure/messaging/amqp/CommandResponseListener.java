@@ -12,10 +12,10 @@ import java.io.IOException;
 @Component
 public class CommandResponseListener {
 
-    private final MessageToDTOConverter toDTOConverter;
+    private final CommandResponseConverter commandResponseConverter;
 
-    public CommandResponseListener(MessageToDTOConverter toDTOConverter) {
-        this.toDTOConverter = toDTOConverter;
+    public CommandResponseListener(CommandResponseConverter commandResponseConverter) {
+        this.commandResponseConverter = commandResponseConverter;
     }
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue("response"), exchange = @Exchange(""), key = "response"))

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.CommandSendService;
+import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Task;
 
@@ -19,17 +19,17 @@ public class ParallelTask extends Task {
 
     private Integer commandCounter;
 
-    public ParallelTask(UUID id, TaskStatus taskStatus, Integer commandCounter, CommandSendService sendService) {
-        super(id, taskStatus, sendService);
+    public ParallelTask(UUID id, TaskStatus taskStatus, Integer commandCounter, CommandSender commandSender) {
+        super(id, taskStatus, commandSender);
         this.commandCounter = commandCounter;
     }
 
     @Override
     public void start() {
-        if (getSendService() == null) {
+        if (this.getCommandSender() == null) {
             throw new RuntimeException("SendService not defined.");
         }
 
-        getCommandSet().forEach(command -> getSendService().sendCommand(command));
+        getCommandSet().forEach(command -> this.getCommandSender().send(command));
     }
 }

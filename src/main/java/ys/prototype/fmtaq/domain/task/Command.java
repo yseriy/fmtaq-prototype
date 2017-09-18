@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
-import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ import java.util.UUID;
 public abstract class Command {
 
     @Transient
-    private CommandSendService sendService;
+    private CommandSender commandSender;
 
     @Id
     private UUID id;
@@ -36,13 +35,13 @@ public abstract class Command {
     private Task task;
 
     public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task,
-                   CommandSendService sendService) {
+                   CommandSender commandSender) {
         this.id = id;
         this.address = address;
         this.body = body;
         this.commandStatus = commandStatus;
         this.task = task;
-        this.sendService = sendService;
+        this.commandSender = commandSender;
     }
 
     public void handleResponse(CommandResponseStatus responseStatus) {

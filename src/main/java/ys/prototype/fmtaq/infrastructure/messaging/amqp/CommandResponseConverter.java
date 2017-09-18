@@ -13,11 +13,11 @@ import java.nio.charset.Charset;
 import java.util.UUID;
 
 @Component
-public class MessageToDTOConverter {
+public class CommandResponseConverter {
 
     private final ObjectMapper objectMapper;
 
-    public MessageToDTOConverter(Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
+    public CommandResponseConverter(Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
         objectMapper = jackson2ObjectMapperBuilder.build();
     }
 

@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ import java.util.UUID;
 public abstract class Task {
 
     @Transient
-    private CommandSendService sendService;
+    private CommandSender commandSender;
 
     @Id
     private UUID id;
@@ -33,10 +32,10 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
     private Set<Command> commandSet;
 
-    public Task(UUID id, TaskStatus taskStatus, CommandSendService sendService) {
+    public Task(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
         this.id = id;
         this.taskStatus = taskStatus;
-        this.sendService = sendService;
+        this.commandSender = commandSender;
     }
 
     public abstract void start();

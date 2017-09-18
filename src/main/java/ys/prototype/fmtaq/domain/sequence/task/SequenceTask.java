@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.CommandSendService;
+import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.Task;
@@ -20,8 +20,8 @@ public class SequenceTask extends Task {
 
     private UUID firstCommandId;
 
-    public SequenceTask(UUID id, TaskStatus taskStatus, CommandSendService sendService) {
-        super(id, taskStatus, sendService);
+    public SequenceTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
+        super(id, taskStatus, commandSender);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SequenceTask extends Task {
             throw new RuntimeException("SendService not defined.");
         }
 
-        getSendService().sendCommand(firstCommand);
+        this.getCommandSender().send(firstCommand);
     }
 
     private Boolean isFirstCommand(Command command) {

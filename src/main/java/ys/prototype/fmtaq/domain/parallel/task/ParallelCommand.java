@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
-import ys.prototype.fmtaq.domain.CommandSendService;
+import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
@@ -21,8 +21,8 @@ import java.util.UUID;
 public class ParallelCommand extends Command {
 
     public ParallelCommand(UUID id, String address, String body, CommandStatus commandStatus, Task task,
-                           CommandSendService sendService) {
-        super(id, address, body, commandStatus, task, sendService);
+                           CommandSender commandSender) {
+        super(id, address, body, commandStatus, task, commandSender);
     }
 
     @Override
