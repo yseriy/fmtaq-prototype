@@ -31,7 +31,7 @@ public class SequenceCommandTest {
         UUID command2Id = UUID.randomUUID();
         UUID command3Id = UUID.randomUUID();
 
-        Task task = new SequenceTask(taskId, TaskStatus.REGISTERED);
+        Task task = new SequenceTask(taskId, TaskStatus.REGISTERED, null);
         SequenceCommand command1 = new SequenceCommand(command1Id, null, "address_1",
                 "body_1", CommandStatus.REGISTERED, task);
         SequenceCommand command2 = new SequenceCommand(command2Id, command1, "address_2",

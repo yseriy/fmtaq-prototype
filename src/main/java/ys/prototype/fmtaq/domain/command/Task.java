@@ -33,9 +33,10 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
     private Set<Command> commandSet;
 
-    public Task(UUID id, TaskStatus taskStatus) {
+    public Task(UUID id, TaskStatus taskStatus, CommandSendService sendService) {
         this.id = id;
         this.taskStatus = taskStatus;
+        this.sendService = sendService;
     }
 
     public abstract void start();

@@ -4,10 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.command.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
+import ys.prototype.fmtaq.domain.command.Command;
+import ys.prototype.fmtaq.domain.command.Task;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

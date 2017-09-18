@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.command.Task;
@@ -19,8 +20,8 @@ public class SequenceTask extends Task {
 
     private UUID firstCommandId;
 
-    public SequenceTask(UUID id, TaskStatus taskStatus) {
-        super(id, taskStatus);
+    public SequenceTask(UUID id, TaskStatus taskStatus, CommandSendService sendService) {
+        super(id, taskStatus, sendService);
     }
 
     @Override

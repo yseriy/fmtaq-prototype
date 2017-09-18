@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.*;
+import ys.prototype.fmtaq.domain.CommandResponseStatus;
+import ys.prototype.fmtaq.domain.CommandStatus;
+import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.command.Task;
 

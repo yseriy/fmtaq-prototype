@@ -31,7 +31,7 @@ public class ParallelCommandTest {
         UUID command2Id = UUID.randomUUID();
         UUID command3Id = UUID.randomUUID();
 
-        Task task = new ParallelTask(taskId, TaskStatus.REGISTERED, 3);
+        Task task = new ParallelTask(taskId, TaskStatus.REGISTERED, 3, null);
         ParallelCommand command1 = new ParallelCommand(command1Id, "address_p_1",
                 "body_p_1", CommandStatus.REGISTERED, task);
         ParallelCommand command2 = new ParallelCommand(command2Id, "address_p_2",
