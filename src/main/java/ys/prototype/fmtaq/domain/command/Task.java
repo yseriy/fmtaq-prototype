@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ import java.util.UUID;
 @Entity
 @Inheritance
 public abstract class Task {
+
+    @Transient
+    private CommandSendService sendService;
 
     @Id
     private UUID id;
@@ -33,4 +37,6 @@ public abstract class Task {
         this.id = id;
         this.taskStatus = taskStatus;
     }
+
+    public abstract void start();
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.TaskStatus;
+import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.command.Task;
 
 import javax.persistence.Entity;
@@ -20,5 +21,25 @@ public class SequenceTask extends Task {
 
     public SequenceTask(UUID id, TaskStatus taskStatus) {
         super(id, taskStatus);
+    }
+
+    @Override
+    public void start() {
+        Command firstCommand = getCommandSet().stream().filter(this::isFirstCommand).findFirst()
+                .orElseThrow(this::exceptionSupplier);
+
+        if (getCommandSet() == null) {
+            throw new RuntimeException("SendService not defined.");
+        }
+
+        getSendService().sendCommand(firstCommand);
+    }
+
+    private Boolean isFirstCommand(Command command) {
+        return command.getId() == firstCommandId;
+    }
+
+    private RuntimeException exceptionSupplier() {
+        return new RuntimeException("cannot find first command.");
     }
 }
