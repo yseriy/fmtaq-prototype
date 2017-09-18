@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.parallel.command;
+package ys.prototype.fmtaq.domain.parallel.task;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,8 +8,8 @@ import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.command.Command;
-import ys.prototype.fmtaq.domain.command.Task;
+import ys.prototype.fmtaq.domain.task.Command;
+import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
 import java.util.UUID;

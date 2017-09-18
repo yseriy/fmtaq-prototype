@@ -2,8 +2,8 @@ package ys.prototype.fmtaq.application.assembler;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.TaskDTO;
-import ys.prototype.fmtaq.domain.command.Task;
-import ys.prototype.fmtaq.domain.command.TaskRepository;
+import ys.prototype.fmtaq.domain.task.Task;
+import ys.prototype.fmtaq.domain.task.TaskRepository;
 
 @Component
 public class TaskAssembler {

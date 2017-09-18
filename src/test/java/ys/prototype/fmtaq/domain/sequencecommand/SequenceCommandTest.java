@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import ys.prototype.fmtaq.domain.command.Command;
+import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.command.Task;
+import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.sequence.command.SequenceCommand;
-import ys.prototype.fmtaq.domain.sequence.command.SequenceTask;
+import ys.prototype.fmtaq.domain.sequence.task.SequenceCommand;
+import ys.prototype.fmtaq.domain.sequence.task.SequenceTask;
 
 import java.util.UUID;
 

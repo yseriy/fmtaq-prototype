@@ -3,7 +3,7 @@ package ys.prototype.fmtaq.application;
 import org.springframework.stereotype.Service;
 import ys.prototype.fmtaq.application.assembler.CommandAssembler;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
-import ys.prototype.fmtaq.domain.command.Command;
+import ys.prototype.fmtaq.domain.task.Command;
 
 @Service
 public class CommandService {

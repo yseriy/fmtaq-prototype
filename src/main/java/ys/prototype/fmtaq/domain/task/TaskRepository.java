@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.command;
+package ys.prototype.fmtaq.domain.task;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -6,10 +6,10 @@ import ys.prototype.fmtaq.application.dto.TaskDTO;
 import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.command.Command;
-import ys.prototype.fmtaq.domain.command.Task;
-import ys.prototype.fmtaq.domain.sequence.command.SequenceCommand;
-import ys.prototype.fmtaq.domain.sequence.command.SequenceTask;
+import ys.prototype.fmtaq.domain.task.Command;
+import ys.prototype.fmtaq.domain.task.Task;
+import ys.prototype.fmtaq.domain.sequence.task.SequenceCommand;
+import ys.prototype.fmtaq.domain.sequence.task.SequenceTask;
 
 import java.util.*;
 

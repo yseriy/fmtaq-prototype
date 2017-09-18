@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ys.prototype.fmtaq.application.assembler.TaskAssembler;
 import ys.prototype.fmtaq.application.dto.TaskDTO;
-import ys.prototype.fmtaq.domain.command.Task;
+import ys.prototype.fmtaq.domain.task.Task;
 
 @Service
 @Transactional

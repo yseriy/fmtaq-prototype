@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.sequence.command;
+package ys.prototype.fmtaq.domain.sequence.task;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.command.Command;
-import ys.prototype.fmtaq.domain.command.Task;
+import ys.prototype.fmtaq.domain.task.Command;
+import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
 import java.util.UUID;
