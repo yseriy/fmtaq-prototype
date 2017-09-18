@@ -4,8 +4,8 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Command;
+import ys.prototype.fmtaq.domain.task.CommandSender;
 
 @Component
 public class CommandAmqpSender implements CommandSender {

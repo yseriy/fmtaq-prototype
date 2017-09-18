@@ -1,15 +1,16 @@
 package ys.prototype.fmtaq.application.assembler;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandDTO;
 import ys.prototype.fmtaq.application.dto.TaskDTO;
-import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.task.Command;
-import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.sequence.task.SequenceCommand;
 import ys.prototype.fmtaq.domain.sequence.task.SequenceTask;
+import ys.prototype.fmtaq.domain.task.Command;
+import ys.prototype.fmtaq.domain.task.CommandSender;
+import ys.prototype.fmtaq.domain.task.Task;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class SequenceTaskAssembler {
 
     private final CommandSender sendService;
 
-    public SequenceTaskAssembler(CommandSender sendService) {
+    public SequenceTaskAssembler(@Qualifier(value = "commandAmqpSender") CommandSender sendService) {
         this.sendService = sendService;
     }
 
