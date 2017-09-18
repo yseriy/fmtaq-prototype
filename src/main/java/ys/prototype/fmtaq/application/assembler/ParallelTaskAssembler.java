@@ -28,8 +28,7 @@ public class ParallelTaskAssembler {
     Task fromDTO(TaskDTO taskDTO) {
         ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED,
                 taskDTO.getCommandDTOList().size(), sendService);
-        Set<Command> commandSet = createGroupCommandSet(parallelTask, taskDTO.getCommandDTOList());
-        parallelTask.setCommandSet(commandSet);
+        parallelTask.setCommandSet(createGroupCommandSet(parallelTask, taskDTO.getCommandDTOList()));
 
         return parallelTask;
     }
