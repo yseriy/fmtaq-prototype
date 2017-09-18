@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.parallelcommand;
+package ys.prototype.fmtaq.domain.parallel.command;
 
 import lombok.AccessLevel;
 import lombok.Getter;

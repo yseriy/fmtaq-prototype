@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.sequencecommand;
+package ys.prototype.fmtaq.domain.sequence.command;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.domain.CommandSendService;

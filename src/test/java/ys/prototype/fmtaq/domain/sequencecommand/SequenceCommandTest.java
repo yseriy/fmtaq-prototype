@@ -10,6 +10,8 @@ import ys.prototype.fmtaq.domain.command.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.command.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
+import ys.prototype.fmtaq.domain.sequence.command.SequenceCommand;
+import ys.prototype.fmtaq.domain.sequence.command.SequenceTask;
 
 import java.util.UUID;
 

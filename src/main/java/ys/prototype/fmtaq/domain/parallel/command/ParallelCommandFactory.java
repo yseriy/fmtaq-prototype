@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.parallelcommand;
+package ys.prototype.fmtaq.domain.parallel.command;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.domain.CommandSendService;
