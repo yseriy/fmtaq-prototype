@@ -7,6 +7,7 @@ import lombok.Setter;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -24,6 +25,9 @@ public abstract class Task {
 
     @Version
     private Long version;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
+    private Set<Command> commandSet;
 
     public Task(UUID id, TaskStatus taskStatus) {
         this.id = id;
