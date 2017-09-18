@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
-import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
+import ys.prototype.fmtaq.domain.CommandResponseStatus;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
