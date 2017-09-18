@@ -18,9 +18,9 @@ public class TaskAssembler {
     public Task fromDTO(TaskDTO taskDTO) {
         switch (taskDTO.getType()) {
             case SEQUENCE:
-                return sequenceTaskAssembler.fromDTO(taskDTO.getCommandDTOList());
+                return sequenceTaskAssembler.fromDTO(taskDTO);
             case GROUP:
-                return parallelTaskAssembler.fromDTO(taskDTO.getCommandDTOList());
+                return parallelTaskAssembler.fromDTO(taskDTO);
             default:
                 throw new RuntimeException("unknown task type: " + taskDTO.getType());
         }

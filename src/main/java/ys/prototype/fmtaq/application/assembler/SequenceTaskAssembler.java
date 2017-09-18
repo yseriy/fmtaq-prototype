@@ -2,6 +2,7 @@ package ys.prototype.fmtaq.application.assembler;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandDTO;
+import ys.prototype.fmtaq.application.dto.TaskDTO;
 import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
@@ -21,9 +22,9 @@ public class SequenceTaskAssembler {
         this.sendService = sendService;
     }
 
-    Task fromDTO(List<CommandDTO> commandDTOList) {
+    Task fromDTO(TaskDTO taskDTO) {
         SequenceTask sequenceTask = new SequenceTask(UUID.randomUUID(), TaskStatus.REGISTERED, sendService);
-        Set<Command> commandSet = createSequenceCommandSet(sequenceTask, commandDTOList);
+        Set<Command> commandSet = createSequenceCommandSet(sequenceTask, taskDTO.getCommandDTOList());
         sequenceTask.setCommandSet(commandSet);
 
         return sequenceTask;

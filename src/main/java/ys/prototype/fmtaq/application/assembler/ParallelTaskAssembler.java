@@ -2,6 +2,7 @@ package ys.prototype.fmtaq.application.assembler;
 
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandDTO;
+import ys.prototype.fmtaq.application.dto.TaskDTO;
 import ys.prototype.fmtaq.domain.CommandSendService;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
@@ -24,10 +25,10 @@ public class ParallelTaskAssembler {
         this.sendService = sendService;
     }
 
-    Task fromDTO(List<CommandDTO> commandDTOList) {
-        ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED, commandDTOList.size(),
-                sendService);
-        Set<Command> commandSet = createGroupCommandSet(parallelTask, commandDTOList);
+    Task fromDTO(TaskDTO taskDTO) {
+        ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED,
+                taskDTO.getCommandDTOList().size(), sendService);
+        Set<Command> commandSet = createGroupCommandSet(parallelTask, taskDTO.getCommandDTOList());
         parallelTask.setCommandSet(commandSet);
 
         return parallelTask;
