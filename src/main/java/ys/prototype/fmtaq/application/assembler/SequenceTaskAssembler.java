@@ -25,7 +25,7 @@ public class SequenceTaskAssembler {
 
     Task fromDTO(TaskDTO taskDTO) {
         SequenceTask sequenceTask = new SequenceTask(UUID.randomUUID(), TaskStatus.REGISTERED, sendService);
-        sequenceTask.setCommandSet(createSequenceCommandSet(sequenceTask, taskDTO.getCommandDTOList()));
+        sequenceTask.setCommandSet(createSequenceCommandSet(sequenceTask, taskDTO.getCommandList()));
 
         return sequenceTask;
     }

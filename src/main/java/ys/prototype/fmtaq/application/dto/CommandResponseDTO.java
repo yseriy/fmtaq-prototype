@@ -3,15 +3,18 @@ package ys.prototype.fmtaq.application.dto;
 import lombok.Data;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
 public class CommandResponseDTO {
-    private final UUID CommandId;
-    private final CommandResponseStatus responseStatus;
-    private final String body;
 
-    public Boolean isStatusOk() {
-        return responseStatus == CommandResponseStatus.OK;
-    }
+    @NotNull
+    private final UUID CommandId;
+
+    @NotNull
+    private final CommandResponseStatus responseStatus;
+
+    @NotNull
+    private final String body;
 }
