@@ -34,7 +34,7 @@ public class SingleTaskAssembler {
     }
 
     private Set<Command> createSingleCommandSet(SingleTask singleTask, List<CommandDTO> commandDTOList) {
-        return commandDTOList.stream().map(commandDTO -> createSingleCommand(singleTask, commandDTO)).limit(1)
+        return commandDTOList.stream().limit(1).map(commandDTO -> createSingleCommand(singleTask, commandDTO))
                 .collect(Collectors.toSet());
     }
 
