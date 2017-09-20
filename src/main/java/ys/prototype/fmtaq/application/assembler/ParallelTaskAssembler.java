@@ -35,11 +35,11 @@ public class ParallelTaskAssembler {
     }
 
     private Set<Command> createGroupCommandSet(ParallelTask parallelTask, List<CommandDTO> commandDTOList) {
-        return commandDTOList.stream().map(commandDTO -> createGroupCommand(commandDTO, parallelTask))
+        return commandDTOList.stream().map(commandDTO -> createGroupCommand(parallelTask, commandDTO))
                 .collect(Collectors.toSet());
     }
 
-    private Command createGroupCommand(CommandDTO commandDTO, ParallelTask parallelTask) {
+    private Command createGroupCommand(ParallelTask parallelTask, CommandDTO commandDTO) {
         return new ParallelCommand(UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody(),
                 CommandStatus.REGISTERED, parallelTask, sendService);
     }

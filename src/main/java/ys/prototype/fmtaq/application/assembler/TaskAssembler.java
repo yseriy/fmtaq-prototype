@@ -8,12 +8,14 @@ import ys.prototype.fmtaq.domain.task.TaskRepository;
 @Component
 public class TaskAssembler {
 
+    private final SingleTaskAssembler singleTaskAssembler;
     private final SequenceTaskAssembler sequenceTaskAssembler;
     private final ParallelTaskAssembler parallelTaskAssembler;
     private final TaskRepository taskRepository;
 
-    public TaskAssembler(SequenceTaskAssembler sequenceTaskAssembler, ParallelTaskAssembler parallelTaskAssembler,
-                         TaskRepository taskRepository) {
+    public TaskAssembler(SingleTaskAssembler singleTaskAssembler, SequenceTaskAssembler sequenceTaskAssembler,
+                         ParallelTaskAssembler parallelTaskAssembler, TaskRepository taskRepository) {
+        this.singleTaskAssembler = singleTaskAssembler;
         this.sequenceTaskAssembler = sequenceTaskAssembler;
         this.parallelTaskAssembler = parallelTaskAssembler;
         this.taskRepository = taskRepository;
@@ -23,10 +25,13 @@ public class TaskAssembler {
         Task task;
 
         switch (taskDTO.getType()) {
+            case SINGLE:
+                task = singleTaskAssembler.fromDTO(taskDTO);
+                break;
             case SEQUENCE:
                 task = sequenceTaskAssembler.fromDTO(taskDTO);
                 break;
-            case GROUP:
+            case PARALLEL:
                 task = parallelTaskAssembler.fromDTO(taskDTO);
                 break;
             default:

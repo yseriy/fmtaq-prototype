@@ -1,6 +1,7 @@
 package ys.prototype.fmtaq.domain;
 
 public enum TaskType {
-    GROUP,
+    SINGLE,
+    PARALLEL,
     SEQUENCE
 }
