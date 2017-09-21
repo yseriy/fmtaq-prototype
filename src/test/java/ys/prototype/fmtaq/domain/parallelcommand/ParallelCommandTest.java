@@ -10,8 +10,8 @@ import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.parallel.task.ParallelCommand;
-import ys.prototype.fmtaq.domain.parallel.task.ParallelTask;
+import ys.prototype.fmtaq.domain.paralleltask.ParallelCommand;
+import ys.prototype.fmtaq.domain.paralleltask.ParallelTask;
 
 import java.util.UUID;
 

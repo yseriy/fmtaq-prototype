@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.single.task;
+package ys.prototype.fmtaq.domain.singletask;
 
 import lombok.AccessLevel;
 import lombok.Getter;
