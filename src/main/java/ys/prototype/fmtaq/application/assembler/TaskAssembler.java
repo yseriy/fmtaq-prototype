@@ -25,13 +25,13 @@ public class TaskAssembler {
         Task task;
 
         switch (taskDTO.getType()) {
-            case SINGLE:
+            case "SINGLE":
                 task = singleTaskAssembler.fromDTO(taskDTO);
                 break;
-            case SEQUENCE:
+            case "SEQUENCE":
                 task = sequenceTaskAssembler.fromDTO(taskDTO);
                 break;
-            case PARALLEL:
+            case "PARALLEL":
                 task = parallelTaskAssembler.fromDTO(taskDTO);
                 break;
             default:
