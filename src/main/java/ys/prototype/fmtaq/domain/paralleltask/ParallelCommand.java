@@ -27,7 +27,7 @@ public class ParallelCommand extends Command {
 
     @Override
     public void handleResponse(CommandResponseStatus responseStatus) {
-        reduceCommandCounter();
+        getParallelTask().reduceCommandCounter();
         super.handleResponse(responseStatus);
     }
 
@@ -47,10 +47,6 @@ public class ParallelCommand extends Command {
         if (isLastCommand()) {
             getParallelTask().setTaskStatus(TaskStatus.ERROR);
         }
-    }
-
-    private void reduceCommandCounter() {
-        getParallelTask().setCommandCounter(getParallelTask().getCommandCounter() - 1);
     }
 
     private Boolean isLastCommand() {

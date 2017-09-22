@@ -28,4 +28,8 @@ public class ParallelTask extends Task {
     public void start() {
         getCommandSet().forEach(command -> this.getCommandSender().send(command));
     }
+
+    void reduceCommandCounter() {
+        commandCounter--;
+    }
 }
