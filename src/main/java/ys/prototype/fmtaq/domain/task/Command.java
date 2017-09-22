@@ -31,7 +31,7 @@ public abstract class Command {
     @Version
     private Long version;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Task task;
 
     public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task,

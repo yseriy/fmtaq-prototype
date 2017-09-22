@@ -26,10 +26,6 @@ public class ParallelTask extends Task {
 
     @Override
     public void start() {
-        if (this.getCommandSender() == null) {
-            throw new RuntimeException("SendService not defined.");
-        }
-
         getCommandSet().forEach(command -> this.getCommandSender().send(command));
     }
 }

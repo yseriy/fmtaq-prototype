@@ -24,10 +24,6 @@ public class SingleTask extends Task {
 
     @Override
     public void start() {
-        if (getCommandSender() == null) {
-            throw new RuntimeException("SendService not defined.");
-        }
-
         Command command = getCommandSet().stream().findFirst().orElseThrow(this::exceptionSupplier);
         getCommandSender().send(command);
     }

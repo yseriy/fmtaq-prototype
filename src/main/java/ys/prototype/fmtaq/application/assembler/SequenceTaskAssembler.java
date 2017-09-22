@@ -33,18 +33,16 @@ public class SequenceTaskAssembler {
     private Set<Command> createSequenceCommandSet(SequenceTask sequenceTask, List<CommandDTO> commandDTOList) {
         Set<Command> commandList = new HashSet<>();
         ListIterator<CommandDTO> commandDTOIterator = commandDTOList.listIterator(commandDTOList.size());
-        UUID currentCommandId = null;
         SequenceCommand nextCommand = null;
 
         while (commandDTOIterator.hasPrevious()) {
             CommandDTO commandDTO = commandDTOIterator.previous();
-            currentCommandId = UUID.randomUUID();
-            nextCommand = new SequenceCommand(currentCommandId, nextCommand, commandDTO.getAddress(),
+            nextCommand = new SequenceCommand(UUID.randomUUID(), nextCommand, commandDTO.getAddress(),
                     commandDTO.getBody(), CommandStatus.REGISTERED, sequenceTask, sendService);
             commandList.add(nextCommand);
         }
 
-        sequenceTask.setFirstCommandId(currentCommandId);
+        sequenceTask.setFirstCommand(nextCommand);
 
         return commandList;
     }

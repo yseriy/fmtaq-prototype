@@ -10,6 +10,7 @@ import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Entity
 public class SequenceCommand extends Command {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "next_command_id", referencedColumnName = "id")
     private SequenceCommand nextCommand;
 
@@ -38,7 +39,7 @@ public class SequenceCommand extends Command {
         if (isLastCommand()) {
             getTask().setTaskStatus(TaskStatus.OK);
         } else {
-            sendCommand(nextCommand);
+            getCommandSender().send(nextCommand);
         }
     }
 
@@ -50,13 +51,5 @@ public class SequenceCommand extends Command {
 
     private Boolean isLastCommand() {
         return nextCommand == null;
-    }
-
-    private void sendCommand(Command command) {
-        if (getCommandSender() == null) {
-            throw new RuntimeException("SendService not defined.");
-        }
-
-        this.getCommandSender().send(command);
     }
 }

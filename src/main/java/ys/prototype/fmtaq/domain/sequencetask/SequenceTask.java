@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.TaskStatus;
-import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.util.UUID;
 
 @Setter
@@ -18,7 +19,9 @@ import java.util.UUID;
 @Entity
 public class SequenceTask extends Task {
 
-    private UUID firstCommandId;
+    @OneToOne
+    @JoinColumn(name = "first_command_id", referencedColumnName = "id")
+    private SequenceCommand firstCommand;
 
     public SequenceTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
         super(id, taskStatus, commandSender);
@@ -26,21 +29,6 @@ public class SequenceTask extends Task {
 
     @Override
     public void start() {
-        Command firstCommand = getCommandSet().stream().filter(this::isFirstCommand).findFirst()
-                .orElseThrow(this::exceptionSupplier);
-
-        if (getCommandSet() == null) {
-            throw new RuntimeException("SendService not defined.");
-        }
-
-        this.getCommandSender().send(firstCommand);
-    }
-
-    private Boolean isFirstCommand(Command command) {
-        return command.getId() == firstCommandId;
-    }
-
-    private RuntimeException exceptionSupplier() {
-        return new RuntimeException("cannot find first command.");
+        getCommandSender().send(firstCommand);
     }
 }
