@@ -8,10 +8,10 @@ import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.paralleltask.ParallelCommand;
 import ys.prototype.fmtaq.domain.paralleltask.ParallelTask;
-import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -27,19 +27,24 @@ public class ParallelTaskAssembler {
     }
 
     Task fromDTO(TaskDTO taskDTO) {
-        ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED,
-                taskDTO.getCommandList().size(), sendService);
-        parallelTask.setCommandSet(createGroupCommandSet(parallelTask, taskDTO.getCommandList()));
+        Integer commandCounter = taskDTO.getCommandList().size();
+        ParallelTask parallelTask = createParallelTask(commandCounter);
+        Set<ParallelCommand> parallelCommandSet = createParallelCommandSet(parallelTask, taskDTO.getCommandList());
+        parallelTask.setCommandSet(new HashSet<>(parallelCommandSet));
 
         return parallelTask;
     }
 
-    private Set<Command> createGroupCommandSet(ParallelTask parallelTask, List<CommandDTO> commandDTOList) {
-        return commandDTOList.stream().map(commandDTO -> createGroupCommand(parallelTask, commandDTO))
+    private ParallelTask createParallelTask(Integer commandCounter) {
+        return new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED, commandCounter, sendService);
+    }
+
+    private Set<ParallelCommand> createParallelCommandSet(ParallelTask parallelTask, List<CommandDTO> commandDTOList) {
+        return commandDTOList.stream().map(commandDTO -> createParallelCommand(parallelTask, commandDTO))
                 .collect(Collectors.toSet());
     }
 
-    private Command createGroupCommand(ParallelTask parallelTask, CommandDTO commandDTO) {
+    private ParallelCommand createParallelCommand(ParallelTask parallelTask, CommandDTO commandDTO) {
         return new ParallelCommand(UUID.randomUUID(), commandDTO.getAddress(), commandDTO.getBody(),
                 CommandStatus.REGISTERED, parallelTask, sendService);
     }

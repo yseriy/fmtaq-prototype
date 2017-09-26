@@ -6,6 +6,7 @@ import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandRepository;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -21,15 +22,15 @@ public class CommandAssembler {
     }
 
     public Command getById(UUID id) {
-        Command command = commandRepository.findOne(id);
+        Optional<Command> commandOptional = Optional.ofNullable(commandRepository.findOne(id));
+        commandOptional.ifPresent(command -> command.setCommandSender(sendService));
+        commandOptional.ifPresent(command -> command.getTask().setCommandSender(sendService));
 
-        if (command == null) {
-            throw new RuntimeException("cannot find command by id: " + id);
-        }
+        return commandOptional.orElseThrow(() -> commandNotFound(id));
+    }
 
-        command.setCommandSender(sendService);
-        command.getTask().setCommandSender(sendService);
-
-        return command;
+    private RuntimeException commandNotFound(UUID id) {
+        String exceptionString = String.format("cannot find command by id: %s", id);
+        return new RuntimeException(exceptionString);
     }
 }

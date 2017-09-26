@@ -8,7 +8,6 @@ import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.sequencetask.SequenceCommand;
 import ys.prototype.fmtaq.domain.sequencetask.SequenceTask;
-import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
@@ -17,6 +16,7 @@ import java.util.*;
 @Component
 public class SequenceTaskAssembler {
 
+    private final static Integer FIRST_ELEMENT = 0;
     private final CommandSender sendService;
 
     public SequenceTaskAssembler(@Qualifier(value = "commandAmqpSender") CommandSender sendService) {
@@ -24,26 +24,36 @@ public class SequenceTaskAssembler {
     }
 
     Task fromDTO(TaskDTO taskDTO) {
-        SequenceTask sequenceTask = new SequenceTask(UUID.randomUUID(), TaskStatus.REGISTERED, sendService);
-        sequenceTask.setCommandSet(createSequenceCommandSet(sequenceTask, taskDTO.getCommandList()));
+        SequenceTask sequenceTask = createSequenceTask();
+        List<SequenceCommand> sequenceCommandList = createSequenceCommandList(sequenceTask, taskDTO.getCommandList());
+        sequenceTask.setFirstCommand(sequenceCommandList.get(FIRST_ELEMENT));
+        sequenceTask.setCommandSet(new HashSet<>(sequenceCommandList));
 
         return sequenceTask;
     }
 
-    private Set<Command> createSequenceCommandSet(SequenceTask sequenceTask, List<CommandDTO> commandDTOList) {
-        Set<Command> commandList = new HashSet<>();
+    private SequenceTask createSequenceTask() {
+        return new SequenceTask(UUID.randomUUID(), TaskStatus.REGISTERED, sendService);
+    }
+
+    private List<SequenceCommand> createSequenceCommandList(SequenceTask sequenceTask, List<CommandDTO> commandDTOList) {
+        List<SequenceCommand> sequenceCommandList = new ArrayList<>();
         ListIterator<CommandDTO> commandDTOIterator = commandDTOList.listIterator(commandDTOList.size());
         SequenceCommand nextCommand = null;
 
         while (commandDTOIterator.hasPrevious()) {
             CommandDTO commandDTO = commandDTOIterator.previous();
-            nextCommand = new SequenceCommand(UUID.randomUUID(), nextCommand, commandDTO.getAddress(),
-                    commandDTO.getBody(), CommandStatus.REGISTERED, sequenceTask, sendService);
-            commandList.add(nextCommand);
+            nextCommand = createSequenceCommand(sequenceTask, commandDTO, nextCommand);
+            sequenceCommandList.add(nextCommand);
         }
 
-        sequenceTask.setFirstCommand(nextCommand);
+        Collections.reverse(sequenceCommandList);
+        return sequenceCommandList;
+    }
 
-        return commandList;
+    private SequenceCommand createSequenceCommand(SequenceTask sequenceTask, CommandDTO commandDTO,
+                                                  SequenceCommand nextCommand) {
+        return new SequenceCommand(UUID.randomUUID(), nextCommand, commandDTO.getAddress(), commandDTO.getBody(),
+                CommandStatus.REGISTERED, sequenceTask, sendService);
     }
 }
