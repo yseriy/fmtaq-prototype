@@ -10,6 +10,7 @@ import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
+import java.util.Optional;
 import java.util.UUID;
 
 @Setter
@@ -24,11 +25,13 @@ public class SingleTask extends Task {
 
     @Override
     public void start() {
-        Command command = getCommandSet().stream().findFirst().orElseThrow(this::exceptionSupplier);
+        Optional<Command> commandOptional = getCommandSet().stream().findFirst();
+        Command command = commandOptional.orElseThrow(this::emptyCommandSet);
         getCommandSender().send(command);
     }
 
-    private RuntimeException exceptionSupplier() {
-        return new RuntimeException("cannot get command for SingeTask: " + this);
+    private RuntimeException emptyCommandSet() {
+        String exceptionString = String.format("empty command set in: %s", this);
+        return new RuntimeException(exceptionString);
     }
 }

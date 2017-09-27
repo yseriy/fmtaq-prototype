@@ -23,10 +23,11 @@ public class CommandAssembler {
 
     public Command getById(UUID id) {
         Optional<Command> commandOptional = Optional.ofNullable(commandRepository.findOne(id));
-        commandOptional.ifPresent(command -> command.setCommandSender(sendService));
-        commandOptional.ifPresent(command -> command.getTask().setCommandSender(sendService));
+        Command command = commandOptional.orElseThrow(() -> commandNotFound(id));
+        command.setCommandSender(sendService);
+        command.getTask().setCommandSender(sendService);
 
-        return commandOptional.orElseThrow(() -> commandNotFound(id));
+        return command;
     }
 
     private RuntimeException commandNotFound(UUID id) {

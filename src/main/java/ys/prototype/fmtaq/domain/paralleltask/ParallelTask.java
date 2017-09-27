@@ -26,7 +26,7 @@ public class ParallelTask extends Task {
 
     @Override
     public void start() {
-        getCommandSet().forEach(command -> this.getCommandSender().send(command));
+        getCommandSet().forEach(command -> getCommandSender().send(command));
     }
 
     void reduceCommandCounter() {
