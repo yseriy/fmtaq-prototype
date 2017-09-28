@@ -53,7 +53,7 @@ public abstract class Command {
                 handleErrorResponse();
                 break;
             default:
-                throw new RuntimeException("unknown commandResponse status: " + responseStatus);
+                throw new RuntimeException("unknown command response status: " + responseStatus);
         }
     }
 
