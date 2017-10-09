@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.CommandService;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 
 @Component
@@ -28,23 +27,25 @@ public class CommandResponseListener {
     @RabbitListener(queues = "${app.transport.amqp.queue.response.name}")
     public void processResponse(Message message) {
         try {
-            convertAndProcessJsonResponse(message);
+            processJsonResponse(message);
         } catch (Exception e) {
             logException(e, message);
         }
     }
 
-    private void convertAndProcessJsonResponse(Message message) throws IOException {
-        String response = new String(message.getBody(), Charset.forName(CHARSET));
-        CommandResponseDTO commandResponseDTO = commandResponseJsonConverter.toDTO(response);
+    private void processJsonResponse(Message message) {
+        String messageBody = getMessageBody(message);
+        CommandResponseDTO commandResponseDTO = commandResponseJsonConverter.toDTO(messageBody);
         commandService.handleResponse(commandResponseDTO);
     }
 
+    private String getMessageBody(Message message) {
+        return new String(message.getBody(), Charset.forName(CHARSET));
+    }
+
     private void logException(Exception e, Message message) {
-        String logMessageFormat = "command response processing error:\ninput amqp message: '%s'\n" +
-                "decoded message body: '%s'";
-        String logMessage = String.format(logMessageFormat, message.toString(), new String(message.getBody(),
-                Charset.forName(CHARSET)));
+        String logMessageFormat = "command response processing error:\ninput amqp message: '%s'\n";
+        String logMessage = String.format(logMessageFormat, message.toString());
         logger.error(logMessage, e);
     }
 }

@@ -26,6 +26,8 @@ public class CommandResponseListenerTest {
 
     private final static String CHARSET = "UTF-8";
     private String commandResponseJsonString;
+    private Message message;
+    private CommandResponseListener commandResponseListener;
 
     @MockBean
     private CommandResponseJsonConverter commandResponseJsonConverter;
@@ -38,23 +40,30 @@ public class CommandResponseListenerTest {
         Path commandResponseJsonFile = Paths.get("src/test/resources/command_response.json");
         byte[] commandResponseJsonByteArray = Files.readAllBytes(commandResponseJsonFile);
         commandResponseJsonString = new String(commandResponseJsonByteArray, Charset.forName(CHARSET));
+        MessageProperties messageProperties = new MessageProperties();
+        message = new Message(commandResponseJsonString.getBytes(CHARSET), messageProperties);
+        commandResponseListener = new CommandResponseListener(commandResponseJsonConverter, commandService);
     }
 
     @Test
     public void processResponse() throws Exception {
-        MessageProperties messageProperties = new MessageProperties();
-        Message message = new Message(commandResponseJsonString.getBytes(CHARSET), messageProperties);
         UUID commandResponseId = UUID.randomUUID();
         String commandResponseBody = "test_body";
         CommandResponseDTO commandResponseDTO = new CommandResponseDTO(commandResponseId, CommandResponseStatus.OK,
                 commandResponseBody);
-        CommandResponseListener commandResponseListener = new CommandResponseListener(commandResponseJsonConverter,
-                commandService);
         when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenReturn(commandResponseDTO);
 
         commandResponseListener.processResponse(message);
 
         verify(commandResponseJsonConverter).toDTO(commandResponseJsonString);
         verify(commandService).handleResponse(commandResponseDTO);
+    }
+
+    @Test
+    public void processResponseException() throws IOException {
+        Throwable testException = new RuntimeException("test_exception");
+        when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenThrow(testException);
+
+        commandResponseListener.processResponse(message);
     }
 }
