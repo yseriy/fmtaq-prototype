@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.exception.ErrorCode;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
 import ys.prototype.fmtaq.exception.FmtaqException;
-import ys.prototype.fmtaq.exception.JsonConvertingCode;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -39,9 +39,9 @@ public class CommandResponseJsonConverter {
     private JsonNode getMessageBodyJsonRoot(String messageBody) {
         try {
             Optional<JsonNode> rootOptional = Optional.ofNullable(objectMapper.readTree(messageBody));
-            return rootOptional.orElseThrow(() -> exception(JsonConvertingCode.NO_CONTENT_TO_BIND));
+            return rootOptional.orElseThrow(() -> exception(FmtaqErrorList.NO_CONTENT_TO_BIND));
         } catch (IOException e) {
-            throw exception(JsonConvertingCode.BAD_JSON_FORMAT, e).set("json string", messageBody);
+            throw exception(FmtaqErrorList.BAD_JSON_FORMAT, e).set("json string", messageBody);
         }
     }
 
@@ -49,17 +49,17 @@ public class CommandResponseJsonConverter {
         JsonNode commandIdJsonNode = root.path(COMMAND_ID_NODE_NAME);
 
         if (commandIdJsonNode.isMissingNode()) {
-            throw exception(JsonConvertingCode.MISSING_NODE).set("node path", COMMAND_ID_NODE_NAME);
+            throw exception(FmtaqErrorList.MISSING_NODE).set("node path", COMMAND_ID_NODE_NAME);
         }
 
         if (!commandIdJsonNode.isTextual()) {
-            throw exception(JsonConvertingCode.CANNOT_BE_CONVERTED_TO_A_TEXT).set("node path", COMMAND_ID_NODE_NAME);
+            throw exception(FmtaqErrorList.CANNOT_BE_CONVERTED_TO_A_TEXT).set("node path", COMMAND_ID_NODE_NAME);
         }
 
         try {
             return UUID.fromString(commandIdJsonNode.asText());
         } catch (IllegalArgumentException e) {
-            throw exception(JsonConvertingCode.BAD_UUID_FORMAT, e).set("node path", COMMAND_ID_NODE_NAME)
+            throw exception(FmtaqErrorList.BAD_UUID_FORMAT, e).set("node path", COMMAND_ID_NODE_NAME)
                     .set("node value", commandIdJsonNode.asText());
         }
     }
@@ -68,12 +68,12 @@ public class CommandResponseJsonConverter {
         JsonNode commandResponseCodeJsonNode = root.path(RESPONSE_NODE_NAME).path(RESPONSE_CODE_NODE_NAME);
 
         if (commandResponseCodeJsonNode.isMissingNode()) {
-            throw exception(JsonConvertingCode.MISSING_NODE)
+            throw exception(FmtaqErrorList.MISSING_NODE)
                     .set("node path", RESPONSE_NODE_NAME + "." + RESPONSE_CODE_NODE_NAME);
         }
 
         if (!commandResponseCodeJsonNode.isInt()) {
-            throw exception(JsonConvertingCode.CANNOT_BE_CONVERTED_TO_AN_INT)
+            throw exception(FmtaqErrorList.CANNOT_BE_CONVERTED_TO_AN_INT)
                     .set("node path", RESPONSE_NODE_NAME + "." + RESPONSE_CODE_NODE_NAME);
         }
 
