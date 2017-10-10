@@ -7,6 +7,8 @@ import ys.prototype.fmtaq.domain.sequencetask.SequenceTaskBuilder;
 import ys.prototype.fmtaq.domain.singletask.SingleTaskBuilder;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.TaskBuilder;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
+import ys.prototype.fmtaq.exception.FmtaqException;
 
 @Component
 public class TaskBuilderSelector {
@@ -26,12 +28,7 @@ public class TaskBuilderSelector {
             case "PARALLEL":
                 return new ParallelTaskBuilder(commandSender);
             default:
-                throw unknownTaskType(taskType);
+                throw new FmtaqException(FmtaqErrorList.UNKNOWN_TASK_TYPE).set("task type", taskType);
         }
-    }
-
-    private RuntimeException unknownTaskType(String taskType) {
-        String exceptionString = String.format("unknown task type: %s", taskType);
-        return new RuntimeException(exceptionString);
     }
 }

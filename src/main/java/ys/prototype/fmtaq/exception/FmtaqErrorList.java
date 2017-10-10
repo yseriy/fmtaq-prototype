@@ -6,7 +6,11 @@ public enum FmtaqErrorList implements FmtaqError {
     CANNOT_BE_CONVERTED_TO_AN_INT(102),
     CANNOT_BE_CONVERTED_TO_A_TEXT(103),
     MISSING_NODE(104),
-    NO_CONTENT_TO_BIND(105);
+    NO_CONTENT_TO_BIND(105),
+    UNKNOWN_COMMAND_RESPONSE_STATUS(106),
+    COMMAND_NOT_FOUND(107),
+    EMPTY_COMMAND_SET(108),
+    UNKNOWN_TASK_TYPE(109);
 
     private final Integer code;
 

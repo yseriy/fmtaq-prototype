@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandRepository;
 import ys.prototype.fmtaq.domain.task.CommandSender;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
+import ys.prototype.fmtaq.exception.FmtaqException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +32,7 @@ public class CommandAssembler {
         return command;
     }
 
-    private RuntimeException commandNotFound(UUID id) {
-        String exceptionString = String.format("cannot find command by id: %s", id);
-        return new RuntimeException(exceptionString);
+    private FmtaqException commandNotFound(UUID id) {
+        return new FmtaqException(FmtaqErrorList.COMMAND_NOT_FOUND).set("command id", id.toString());
     }
 }

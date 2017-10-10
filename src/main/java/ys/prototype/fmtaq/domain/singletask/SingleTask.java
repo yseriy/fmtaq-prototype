@@ -8,6 +8,8 @@ import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
+import ys.prototype.fmtaq.exception.FmtaqException;
 
 import javax.persistence.Entity;
 import java.util.HashSet;
@@ -21,7 +23,7 @@ import java.util.UUID;
 @Entity
 public class SingleTask extends Task {
 
-    public SingleTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
+    SingleTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
         super(id, taskStatus, commandSender);
     }
 
@@ -32,9 +34,8 @@ public class SingleTask extends Task {
         getCommandSender().send(command);
     }
 
-    private RuntimeException emptyCommandSet() {
-        String exceptionString = String.format("empty command set in: %s", this);
-        return new RuntimeException(exceptionString);
+    private FmtaqException emptyCommandSet() {
+        return new FmtaqException(FmtaqErrorList.EMPTY_COMMAND_SET).set("task", this.toString());
     }
 
     void loadCommandList(List<SingleCommand> singleCommandList) {

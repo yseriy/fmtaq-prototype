@@ -40,8 +40,13 @@ public abstract class Task {
 
     public abstract void start();
 
-    public void setCommandSet(Set<Command> commandSet) {
+    protected void setCommandSet(Set<Command> commandSet) {
         commandSet.forEach(command -> command.setTask(this));
         this.commandSet = commandSet;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "-" + getId();
     }
 }

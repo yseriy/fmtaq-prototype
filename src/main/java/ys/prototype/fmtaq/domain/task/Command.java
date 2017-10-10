@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.domain.CommandStatus;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
+import ys.prototype.fmtaq.exception.FmtaqException;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -57,11 +59,17 @@ public abstract class Command {
                 handleErrorResponse();
                 break;
             default:
-                throw new RuntimeException("unknown command response status: " + responseStatus);
+                throw new FmtaqException(FmtaqErrorList.UNKNOWN_COMMAND_RESPONSE_STATUS).set("response status",
+                        responseStatus.toString());
         }
     }
 
     protected abstract void handleOkResponse();
 
     protected abstract void handleErrorResponse();
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "-" + getId();
+    }
 }
