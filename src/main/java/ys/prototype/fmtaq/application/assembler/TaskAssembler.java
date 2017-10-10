@@ -3,7 +3,6 @@ package ys.prototype.fmtaq.application.assembler;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandDTO;
 import ys.prototype.fmtaq.application.dto.TaskDTO;
-import ys.prototype.fmtaq.domain.TaskBuilderSelector;
 import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.task.TaskBuilder;
 

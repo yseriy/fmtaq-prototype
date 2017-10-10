@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain;
+package ys.prototype.fmtaq.application.assembler;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class TaskBuilderSelector {
         this.commandSender = commandSender;
     }
 
-    public TaskBuilder getTaskBuilderByTaskType(String taskType) {
+    TaskBuilder getTaskBuilderByTaskType(String taskType) {
         switch (taskType) {
             case "SINGLE":
                 return new SingleTaskBuilder(commandSender);
