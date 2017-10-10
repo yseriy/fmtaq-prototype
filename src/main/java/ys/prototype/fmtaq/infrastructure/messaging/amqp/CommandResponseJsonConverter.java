@@ -6,7 +6,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
-import ys.prototype.fmtaq.exception.ErrorCode;
+import ys.prototype.fmtaq.exception.FmtaqError;
 import ys.prototype.fmtaq.exception.FmtaqErrorList;
 import ys.prototype.fmtaq.exception.FmtaqException;
 
@@ -80,11 +80,11 @@ public class CommandResponseJsonConverter {
         return commandResponseCodeJsonNode.asInt() == 0 ? CommandResponseStatus.OK : CommandResponseStatus.ERROR;
     }
 
-    private FmtaqException exception(ErrorCode errorCode) {
-        return new FmtaqException(errorCode);
+    private FmtaqException exception(FmtaqError fmtaqError) {
+        return new FmtaqException(fmtaqError);
     }
 
-    private FmtaqException exception(ErrorCode errorCode, Throwable cause) {
-        return new FmtaqException(errorCode, cause);
+    private FmtaqException exception(FmtaqError fmtaqError, Throwable cause) {
+        return new FmtaqException(fmtaqError, cause);
     }
 }

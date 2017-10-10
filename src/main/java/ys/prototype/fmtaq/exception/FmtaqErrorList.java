@@ -1,6 +1,6 @@
 package ys.prototype.fmtaq.exception;
 
-public enum FmtaqErrorList implements ErrorCode {
+public enum FmtaqErrorList implements FmtaqError {
     BAD_JSON_FORMAT(100),
     BAD_UUID_FORMAT(101),
     CANNOT_BE_CONVERTED_TO_AN_INT(102),

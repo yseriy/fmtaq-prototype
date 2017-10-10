@@ -1,5 +1,5 @@
 package ys.prototype.fmtaq.exception;
 
-public interface ErrorCode {
+public interface FmtaqError {
     Integer getCode();
 }

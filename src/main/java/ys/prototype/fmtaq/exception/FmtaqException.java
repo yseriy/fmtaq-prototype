@@ -6,21 +6,21 @@ import java.util.List;
 public class FmtaqException extends RuntimeException {
 
     private final static String EMPTY_STRING = "";
-    private final ErrorCode errorCode;
+    private final FmtaqError fmtaqError;
     private final List<String> properties = new ArrayList<>();
 
-    public FmtaqException(ErrorCode errorCode) {
-        super(errorCode.toString());
-        this.errorCode = errorCode;
+    public FmtaqException(FmtaqError fmtaqError) {
+        super(fmtaqError.toString());
+        this.fmtaqError = fmtaqError;
     }
 
-    public FmtaqException(ErrorCode errorCode, Throwable cause) {
-        super(errorCode.toString(), cause);
-        this.errorCode = errorCode;
+    public FmtaqException(FmtaqError fmtaqError, Throwable cause) {
+        super(fmtaqError.toString(), cause);
+        this.fmtaqError = fmtaqError;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public FmtaqError getFmtaqError() {
+        return fmtaqError;
     }
 
     public FmtaqException set(String name, String value) {
