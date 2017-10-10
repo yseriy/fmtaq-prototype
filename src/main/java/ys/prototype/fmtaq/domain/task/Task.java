@@ -33,10 +33,15 @@ public abstract class Task {
     private Set<Command> commandSet;
 
     public Task(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
-        this.id = id;
-        this.taskStatus = taskStatus;
-        this.commandSender = commandSender;
+        setId(id);
+        setTaskStatus(taskStatus);
+        setCommandSender(commandSender);
     }
 
     public abstract void start();
+
+    public void setCommandSet(Set<Command> commandSet) {
+        commandSet.forEach(command -> command.setTask(this));
+        this.commandSet = commandSet;
+    }
 }

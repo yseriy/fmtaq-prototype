@@ -10,6 +10,8 @@ import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,5 +35,9 @@ public class SingleTask extends Task {
     private RuntimeException emptyCommandSet() {
         String exceptionString = String.format("empty command set in: %s", this);
         return new RuntimeException(exceptionString);
+    }
+
+    void loadCommandList(List<SingleCommand> singleCommandList) {
+        setCommandSet(new HashSet<>(singleCommandList));
     }
 }

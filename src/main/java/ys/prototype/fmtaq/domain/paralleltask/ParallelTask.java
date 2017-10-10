@@ -9,6 +9,8 @@ import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -17,11 +19,10 @@ import java.util.UUID;
 @Entity
 public class ParallelTask extends Task {
 
-    private Integer commandCounter;
+    private Integer commandCounter = 0;
 
-    public ParallelTask(UUID id, TaskStatus taskStatus, Integer commandCounter, CommandSender commandSender) {
+    public ParallelTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
         super(id, taskStatus, commandSender);
-        this.commandCounter = commandCounter;
     }
 
     @Override
@@ -29,7 +30,12 @@ public class ParallelTask extends Task {
         getCommandSet().forEach(command -> getCommandSender().send(command));
     }
 
+    void loadCommandList(List<ParallelCommand> parallelCommandList) {
+        setCommandCounter(parallelCommandList.size());
+        setCommandSet(new HashSet<>(parallelCommandList));
+    }
+
     void reduceCommandCounter() {
-        commandCounter--;
+        if (commandCounter > 0) commandCounter--;
     }
 }

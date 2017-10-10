@@ -8,7 +8,6 @@ import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
-import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,10 +25,8 @@ public class SequenceCommand extends Command {
     @JoinColumn(name = "next_command_id", referencedColumnName = "id")
     private SequenceCommand nextCommand;
 
-    public SequenceCommand(UUID id, SequenceCommand nextCommand, String address, String body,
-                           CommandStatus commandStatus, Task task, CommandSender commandSender) {
-        super(id, address, body, commandStatus, task, commandSender);
-        this.nextCommand = nextCommand;
+    SequenceCommand(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
+        super(id, address, body, commandStatus, commandSender);
     }
 
     @Override
@@ -50,6 +47,6 @@ public class SequenceCommand extends Command {
     }
 
     private Boolean isLastCommand() {
-        return nextCommand == null;
+        return getNextCommand() == null;
     }
 }

@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.UUID;
 
 @Setter
@@ -31,5 +34,20 @@ public class SequenceTask extends Task {
     @Override
     public void start() {
         getCommandSender().send(firstCommand);
+    }
+
+    void loadCommandList(List<SequenceCommand> sequenceCommandList) {
+        ListIterator<SequenceCommand> sequenceCommandListIterator =
+                sequenceCommandList.listIterator(sequenceCommandList.size());
+        SequenceCommand nextCommand = null;
+
+        while (sequenceCommandListIterator.hasPrevious()) {
+            SequenceCommand sequenceCommand = sequenceCommandListIterator.previous();
+            sequenceCommand.setNextCommand(nextCommand);
+            nextCommand = sequenceCommand;
+        }
+
+        setFirstCommand(nextCommand);
+        setCommandSet(new HashSet<>(sequenceCommandList));
     }
 }

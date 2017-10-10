@@ -36,12 +36,16 @@ public abstract class Command {
 
     public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task,
                    CommandSender commandSender) {
-        this.id = id;
-        this.address = address;
-        this.body = body;
-        this.commandStatus = commandStatus;
+        this(id, address, body, commandStatus, commandSender);
         this.task = task;
-        this.commandSender = commandSender;
+    }
+
+    public Command(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
+        setId(id);
+        setAddress(address);
+        setBody(body);
+        setCommandStatus(commandStatus);
+        setCommandSender(commandSender);
     }
 
     public void handleResponse(CommandResponseStatus responseStatus) {

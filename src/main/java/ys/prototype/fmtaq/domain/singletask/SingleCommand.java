@@ -8,7 +8,6 @@ import ys.prototype.fmtaq.domain.CommandStatus;
 import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
-import ys.prototype.fmtaq.domain.task.Task;
 
 import javax.persistence.Entity;
 import java.util.UUID;
@@ -19,9 +18,8 @@ import java.util.UUID;
 @Entity
 public class SingleCommand extends Command {
 
-    public SingleCommand(UUID id, String address, String body, CommandStatus commandStatus, Task task,
-                         CommandSender commandSender) {
-        super(id, address, body, commandStatus, task, commandSender);
+    SingleCommand(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
+        super(id, address, body, commandStatus, commandSender);
     }
 
     @Override
