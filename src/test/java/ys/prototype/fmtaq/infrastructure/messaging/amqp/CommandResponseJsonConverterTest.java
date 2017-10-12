@@ -25,7 +25,7 @@ public class CommandResponseJsonConverterTest {
                 "\"address\":\"tst100-uweb00\"," +
                 "\"id\":\"28ea0c3a-bac2-11e6-a2d2-9105eba229dc\"," +
                 "\"result\":{\"rc\":0}," +
-                "\"task_id\":\"28ea196e-bac2-11e6-a2d2-9105eba229dc\"}";
+                "\"task_id\":\"28ea196ebac2-11e6-a2d2-9105eba229dc\"}";
         String messageString1 = "";
         try {
             CommandResponseDTO commandResponseDTO = commandResponseJsonConverter.toDTO(messageString);

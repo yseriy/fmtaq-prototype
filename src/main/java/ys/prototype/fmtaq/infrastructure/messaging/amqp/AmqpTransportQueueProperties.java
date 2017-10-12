@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Configuration
 @ConfigurationProperties("app.transport.amqp.queue")
-public class TransportQueueProperties {
+public class AmqpTransportQueueProperties {
 
     @Setter
     @Getter

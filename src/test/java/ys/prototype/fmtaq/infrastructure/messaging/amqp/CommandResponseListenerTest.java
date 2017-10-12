@@ -5,11 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.application.CommandService;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
+import ys.prototype.fmtaq.exception.FmtaqErrorList;
+import ys.prototype.fmtaq.exception.FmtaqException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -28,12 +32,14 @@ public class CommandResponseListenerTest {
     private String commandResponseJsonString;
     private Message message;
     private CommandResponseListener commandResponseListener;
+    private AmqpTransportLogger logger = new AmqpTransportLogger();
 
     @MockBean
     private CommandResponseJsonConverter commandResponseJsonConverter;
 
     @MockBean
     private CommandService commandService;
+
 
     @Before
     public void setup() throws IOException {
@@ -42,11 +48,11 @@ public class CommandResponseListenerTest {
         commandResponseJsonString = new String(commandResponseJsonByteArray, Charset.forName(CHARSET));
         MessageProperties messageProperties = new MessageProperties();
         message = new Message(commandResponseJsonString.getBytes(CHARSET), messageProperties);
-        commandResponseListener = new CommandResponseListener(commandResponseJsonConverter, commandService);
+        commandResponseListener = new CommandResponseListener(logger, commandResponseJsonConverter, commandService);
     }
 
     @Test
-    public void processResponse() throws Exception {
+    public void processResponse() {
         UUID commandResponseId = UUID.randomUUID();
         String commandResponseBody = "test_body";
         CommandResponseDTO commandResponseDTO = new CommandResponseDTO(commandResponseId, CommandResponseStatus.OK,
@@ -60,9 +66,11 @@ public class CommandResponseListenerTest {
     }
 
     @Test
-    public void processResponseException() throws IOException {
+    public void processResponseException() {
         Throwable testException = new RuntimeException("test_exception");
-        when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenThrow(testException);
+        Throwable fmtaqException = new FmtaqException(FmtaqErrorList.CANNOT_SEND_COMMAND, testException)
+                .set("test1", "test_p1").set("test2", "test_p2");
+        when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenThrow(fmtaqException);
 
         commandResponseListener.processResponse(message);
     }

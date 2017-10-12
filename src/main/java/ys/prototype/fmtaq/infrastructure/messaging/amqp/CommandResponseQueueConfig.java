@@ -7,18 +7,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CommandResponseQueueConfig {
 
-    private final TransportQueueProperties transportQueueProperties;
+    private final AmqpTransportQueueProperties amqpTransportQueueProperties;
 
-    public CommandResponseQueueConfig(TransportQueueProperties transportQueueProperties) {
-        this.transportQueueProperties = transportQueueProperties;
+    public CommandResponseQueueConfig(AmqpTransportQueueProperties amqpTransportQueueProperties) {
+        this.amqpTransportQueueProperties = amqpTransportQueueProperties;
     }
 
     @Bean
     public Queue responseQueue() {
-        String name = transportQueueProperties.getResponse().getName();
-        Boolean durable = transportQueueProperties.getResponse().getDurable();
-        Boolean exclusive = transportQueueProperties.getResponse().getExclusive();
-        Boolean autoDelete = transportQueueProperties.getResponse().getAutoDelete();
+        String name = amqpTransportQueueProperties.getResponse().getName();
+        Boolean durable = amqpTransportQueueProperties.getResponse().getDurable();
+        Boolean exclusive = amqpTransportQueueProperties.getResponse().getExclusive();
+        Boolean autoDelete = amqpTransportQueueProperties.getResponse().getAutoDelete();
 
         return new Queue(name, durable, exclusive, autoDelete);
     }

@@ -10,7 +10,9 @@ public enum FmtaqErrorList implements FmtaqError {
     UNKNOWN_COMMAND_RESPONSE_STATUS(106),
     COMMAND_NOT_FOUND(107),
     EMPTY_COMMAND_SET(108),
-    UNKNOWN_TASK_TYPE(109);
+    UNKNOWN_TASK_TYPE(109),
+    CANNOT_DECLARE_QUEUE(110),
+    CANNOT_SEND_COMMAND(111);
 
     private final Integer code;
 
