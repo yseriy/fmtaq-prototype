@@ -15,7 +15,7 @@ public class TaskBuilderSelector {
 
     private final CommandSender commandSender;
 
-    public TaskBuilderSelector(@Qualifier(value = "commandAmqpSender") CommandSender commandSender) {
+    public TaskBuilderSelector(@Qualifier(value = "amqpTransportCommandSender") CommandSender commandSender) {
         this.commandSender = commandSender;
     }
 

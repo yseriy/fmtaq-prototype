@@ -17,7 +17,7 @@ public class CommandAssembler {
     private final CommandSender sendService;
     private final CommandRepository commandRepository;
 
-    public CommandAssembler(@Qualifier(value = "commandAmqpSender") CommandSender sendService,
+    public CommandAssembler(@Qualifier(value = "amqpTransportCommandSender") CommandSender sendService,
                             CommandRepository commandRepository) {
         this.sendService = sendService;
         this.commandRepository = commandRepository;

@@ -12,15 +12,15 @@ import ys.prototype.fmtaq.exception.FmtaqErrorList;
 import ys.prototype.fmtaq.exception.FmtaqException;
 
 @Component
-public class CommandAmqpSender implements CommandSender {
+public class AmqpTransportCommandSender implements CommandSender {
 
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
     private final AmqpTransportQueueProperties amqpTransportQueueProperties;
     private final AmqpTransportLogger logger;
 
-    public CommandAmqpSender(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate,
-                             AmqpTransportQueueProperties amqpTransportQueueProperties, AmqpTransportLogger logger) {
+    public AmqpTransportCommandSender(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate,
+                                      AmqpTransportQueueProperties amqpTransportQueueProperties, AmqpTransportLogger logger) {
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
         this.amqpTransportQueueProperties = amqpTransportQueueProperties;
