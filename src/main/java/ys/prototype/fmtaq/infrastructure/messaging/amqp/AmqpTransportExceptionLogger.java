@@ -22,10 +22,10 @@ public class AmqpTransportExceptionLogger {
         String logMessageFormat = "command response processing error:\n"
                 + "input amqp message: '%s'\n"
                 + "decoded message body: '%s'\n"
-                + "exception category: '%s', exception string: '%s'\n"
+                + "exception code: '%s', exception category list: '%s', exception string: '%s'\n"
                 + "%s";
-        String logMessage = String.format(logMessageFormat, messageDebugString, messageBody, fmtaqError.getCategory(),
-                fmtaqError.getErrorMessage(), e.printProperties());
+        String logMessage = String.format(logMessageFormat, messageDebugString, messageBody, fmtaqError.getCode(),
+                fmtaqError.getCategory(), fmtaqError.getErrorMessage(), e.printProperties());
         logger.error(logMessage, e);
     }
 
