@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.exception;
+package ys.prototype.fmtaq.domain;
 
 import java.util.ArrayList;
 import java.util.List;

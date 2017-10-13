@@ -7,9 +7,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
-import ys.prototype.fmtaq.exception.FmtaqError;
-import ys.prototype.fmtaq.exception.FmtaqErrorList;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqError;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 @Component
 public class AmqpTransportCommandSender implements CommandSender {
@@ -17,14 +16,12 @@ public class AmqpTransportCommandSender implements CommandSender {
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate amqpTemplate;
     private final AmqpTransportQueueProperties amqpTransportQueueProperties;
-    private final AmqpTransportLogger logger;
 
     public AmqpTransportCommandSender(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate,
-                                      AmqpTransportQueueProperties amqpTransportQueueProperties, AmqpTransportLogger logger) {
+                                      AmqpTransportQueueProperties amqpTransportQueueProperties) {
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
         this.amqpTransportQueueProperties = amqpTransportQueueProperties;
-        this.logger = logger;
     }
 
     public void send(Command command) {
@@ -32,11 +29,9 @@ public class AmqpTransportCommandSender implements CommandSender {
         assert command.getAddress() != null : "command address cannot be null";
         assert command.getBody() != null : "command body cannot be null";
 
-        logger.logSendCommand(command);
         Queue queue = createQueue(command.getAddress());
         tryDeclareQueue(queue);
         tryConvertAndSend(command.getAddress(), command.getBody());
-        logger.logSendCommandOk();
     }
 
     private Queue createQueue(String name) {
@@ -51,7 +46,7 @@ public class AmqpTransportCommandSender implements CommandSender {
         try {
             amqpAdmin.declareQueue(queue);
         } catch (AmqpException e) {
-            throw exception(FmtaqErrorList.CANNOT_DECLARE_QUEUE, e).set("queue", queue.toString());
+            throw exception(AmqpTransportErrorList.CANNOT_DECLARE_QUEUE, e).set("queue", queue.toString());
         }
     }
 
@@ -59,7 +54,7 @@ public class AmqpTransportCommandSender implements CommandSender {
         try {
             amqpTemplate.convertAndSend(address, body);
         } catch (AmqpException e) {
-            throw exception(FmtaqErrorList.CANNOT_SEND_COMMAND, e).set("address", address).set("body", body);
+            throw exception(AmqpTransportErrorList.CANNOT_SEND_COMMAND, e).set("address", address).set("body", body);
         }
     }
 

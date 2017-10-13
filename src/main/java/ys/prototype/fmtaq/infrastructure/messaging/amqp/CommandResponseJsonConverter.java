@@ -6,9 +6,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
-import ys.prototype.fmtaq.exception.FmtaqError;
-import ys.prototype.fmtaq.exception.FmtaqErrorList;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqError;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -39,9 +38,9 @@ public class CommandResponseJsonConverter {
     private JsonNode getMessageBodyJsonRoot(String messageBody) {
         try {
             Optional<JsonNode> rootOptional = Optional.ofNullable(objectMapper.readTree(messageBody));
-            return rootOptional.orElseThrow(() -> exception(FmtaqErrorList.NO_CONTENT_TO_BIND));
+            return rootOptional.orElseThrow(() -> exception(AmqpTransportErrorList.NO_CONTENT_TO_BIND));
         } catch (IOException e) {
-            throw exception(FmtaqErrorList.BAD_JSON_FORMAT, e).set("json string", messageBody);
+            throw exception(AmqpTransportErrorList.BAD_JSON_FORMAT, e).set("json string", messageBody);
         }
     }
 
@@ -49,17 +48,17 @@ public class CommandResponseJsonConverter {
         JsonNode commandIdJsonNode = root.path(COMMAND_ID_NODE_NAME);
 
         if (commandIdJsonNode.isMissingNode()) {
-            throw exception(FmtaqErrorList.MISSING_NODE).set("node path", COMMAND_ID_NODE_NAME);
+            throw exception(AmqpTransportErrorList.MISSING_NODE).set("node path", COMMAND_ID_NODE_NAME);
         }
 
         if (!commandIdJsonNode.isTextual()) {
-            throw exception(FmtaqErrorList.CANNOT_BE_CONVERTED_TO_A_TEXT).set("node path", COMMAND_ID_NODE_NAME);
+            throw exception(AmqpTransportErrorList.CANNOT_BE_CONVERTED_TO_A_TEXT).set("node path", COMMAND_ID_NODE_NAME);
         }
 
         try {
             return UUID.fromString(commandIdJsonNode.asText());
         } catch (IllegalArgumentException e) {
-            throw exception(FmtaqErrorList.BAD_UUID_FORMAT, e).set("node path", COMMAND_ID_NODE_NAME)
+            throw exception(AmqpTransportErrorList.BAD_UUID_FORMAT, e).set("node path", COMMAND_ID_NODE_NAME)
                     .set("node value", commandIdJsonNode.asText());
         }
     }
@@ -68,12 +67,12 @@ public class CommandResponseJsonConverter {
         JsonNode commandResponseCodeJsonNode = root.path(RESPONSE_NODE_NAME).path(RESPONSE_CODE_NODE_NAME);
 
         if (commandResponseCodeJsonNode.isMissingNode()) {
-            throw exception(FmtaqErrorList.MISSING_NODE)
+            throw exception(AmqpTransportErrorList.MISSING_NODE)
                     .set("node path", RESPONSE_NODE_NAME + "." + RESPONSE_CODE_NODE_NAME);
         }
 
         if (!commandResponseCodeJsonNode.isInt()) {
-            throw exception(FmtaqErrorList.CANNOT_BE_CONVERTED_TO_AN_INT)
+            throw exception(AmqpTransportErrorList.CANNOT_BE_CONVERTED_TO_AN_INT)
                     .set("node path", RESPONSE_NODE_NAME + "." + RESPONSE_CODE_NODE_NAME);
         }
 

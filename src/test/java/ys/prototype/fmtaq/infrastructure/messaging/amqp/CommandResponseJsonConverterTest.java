@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 import java.util.UUID;
 

@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.exception.FmtaqErrorList;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqErrorList;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 import javax.persistence.*;
 import java.util.UUID;

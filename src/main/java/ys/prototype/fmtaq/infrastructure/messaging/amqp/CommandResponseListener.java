@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.CommandService;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 import java.nio.charset.Charset;
 
@@ -13,24 +13,21 @@ import java.nio.charset.Charset;
 public class CommandResponseListener {
 
     private final static Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
-    private final AmqpTransportLogger logger;
     private final CommandResponseJsonConverter commandResponseJsonConverter;
     private final CommandService commandService;
+    private final AmqpTransportExceptionLogger logger;
 
-    public CommandResponseListener(AmqpTransportLogger logger,
-                                   CommandResponseJsonConverter commandResponseJsonConverter,
-                                   CommandService commandService) {
-        this.logger = logger;
+    public CommandResponseListener(CommandResponseJsonConverter commandResponseJsonConverter,
+                                   CommandService commandService, AmqpTransportExceptionLogger logger) {
         this.commandResponseJsonConverter = commandResponseJsonConverter;
         this.commandService = commandService;
+        this.logger = logger;
     }
 
     @RabbitListener(queues = "${app.transport.amqp.queue.response.name}")
-    public void processResponse(Message message) {
+    public void tryProcessResponse(Message message) {
         try {
-            logger.logReceiveMessage(message);
             processJsonResponse(message);
-            logger.logHandleMessageOk();
         } catch (FmtaqException e) {
             logger.logFmtaqException(e, message);
         } catch (Exception e) {

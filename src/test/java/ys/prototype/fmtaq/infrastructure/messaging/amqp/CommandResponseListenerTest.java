@@ -5,15 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.application.CommandService;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
-import ys.prototype.fmtaq.exception.FmtaqErrorList;
-import ys.prototype.fmtaq.exception.FmtaqException;
+import ys.prototype.fmtaq.domain.FmtaqException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -32,7 +29,7 @@ public class CommandResponseListenerTest {
     private String commandResponseJsonString;
     private Message message;
     private CommandResponseListener commandResponseListener;
-    private AmqpTransportLogger logger = new AmqpTransportLogger();
+    private AmqpTransportExceptionLogger logger = new AmqpTransportExceptionLogger();
 
     @MockBean
     private CommandResponseJsonConverter commandResponseJsonConverter;
@@ -48,7 +45,7 @@ public class CommandResponseListenerTest {
         commandResponseJsonString = new String(commandResponseJsonByteArray, Charset.forName(CHARSET));
         MessageProperties messageProperties = new MessageProperties();
         message = new Message(commandResponseJsonString.getBytes(CHARSET), messageProperties);
-        commandResponseListener = new CommandResponseListener(logger, commandResponseJsonConverter, commandService);
+        commandResponseListener = new CommandResponseListener(commandResponseJsonConverter, commandService, logger);
     }
 
     @Test
@@ -59,7 +56,7 @@ public class CommandResponseListenerTest {
                 commandResponseBody);
         when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenReturn(commandResponseDTO);
 
-        commandResponseListener.processResponse(message);
+        commandResponseListener.tryProcessResponse(message);
 
         verify(commandResponseJsonConverter).toDTO(commandResponseJsonString);
         verify(commandService).handleResponse(commandResponseDTO);
@@ -68,10 +65,10 @@ public class CommandResponseListenerTest {
     @Test
     public void processResponseException() {
         Throwable testException = new RuntimeException("test_exception");
-        Throwable fmtaqException = new FmtaqException(FmtaqErrorList.CANNOT_SEND_COMMAND, testException)
+        Throwable fmtaqException = new FmtaqException(AmqpTransportErrorList.MISSING_NODE, testException)
                 .set("test1", "test_p1").set("test2", "test_p2");
         when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenThrow(fmtaqException);
 
-        commandResponseListener.processResponse(message);
+        commandResponseListener.tryProcessResponse(message);
     }
 }
