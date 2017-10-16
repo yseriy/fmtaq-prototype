@@ -25,9 +25,9 @@ public class CommandResponseListener {
     }
 
     @RabbitListener(queues = "${app.transport.amqp.queue.response.name}")
-    public void tryProcessResponse(Message message) {
+    public void processResponse(Message message) {
         try {
-            processJsonResponse(message);
+            tryProcessJsonResponse(message);
         } catch (FmtaqException e) {
             logger.logFmtaqException(e, message);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class CommandResponseListener {
         }
     }
 
-    private void processJsonResponse(Message message) {
+    private void tryProcessJsonResponse(Message message) {
         assert message != null : "amqp message cannot be null";
         assert message.getBody() != null : "amqp message body cannot be null";
 

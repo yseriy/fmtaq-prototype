@@ -56,7 +56,7 @@ public class CommandResponseListenerTest {
                 commandResponseBody);
         when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenReturn(commandResponseDTO);
 
-        commandResponseListener.tryProcessResponse(message);
+        commandResponseListener.processResponse(message);
 
         verify(commandResponseJsonConverter).toDTO(commandResponseJsonString);
         verify(commandService).handleResponse(commandResponseDTO);
@@ -69,6 +69,6 @@ public class CommandResponseListenerTest {
                 .set("test1", "test_p1").set("test2", "test_p2");
         when(commandResponseJsonConverter.toDTO(commandResponseJsonString)).thenThrow(fmtaqException);
 
-        commandResponseListener.tryProcessResponse(message);
+        commandResponseListener.processResponse(message);
     }
 }
