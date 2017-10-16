@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
@@ -21,8 +20,8 @@ public class ParallelTask extends Task {
 
     private Integer commandCounter = 0;
 
-    public ParallelTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
-        super(id, taskStatus, commandSender);
+    public ParallelTask(UUID id, String account, String serviceType, CommandSender commandSender) {
+        super(id, account, serviceType, commandSender);
     }
 
     @Override

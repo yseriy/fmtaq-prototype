@@ -1,7 +1,5 @@
 package ys.prototype.fmtaq.domain.sequencetask;
 
-import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.task.TaskBuilder;
@@ -14,6 +12,9 @@ public class SequenceTaskBuilder implements TaskBuilder {
 
     private final List<SequenceCommand> sequenceCommandList = new ArrayList<>();
     private final CommandSender commandSender;
+    private String account;
+    private String serviceType;
+
 
     public SequenceTaskBuilder(CommandSender commandSender) {
         this.commandSender = commandSender;
@@ -21,16 +22,27 @@ public class SequenceTaskBuilder implements TaskBuilder {
 
     @Override
     public Task build() {
-        SequenceTask sequenceTask = new SequenceTask(UUID.randomUUID(), TaskStatus.REGISTERED, commandSender);
+        SequenceTask sequenceTask = new SequenceTask(UUID.randomUUID(), account, serviceType, commandSender);
         sequenceTask.loadCommandList(sequenceCommandList);
 
         return sequenceTask;
     }
 
     @Override
+    public TaskBuilder setAccount(String account) {
+        this.account = account;
+        return this;
+    }
+
+    @Override
+    public TaskBuilder setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+        return this;
+    }
+
+    @Override
     public void addCommand(String address, String body) {
-        SequenceCommand sequenceCommand = new SequenceCommand(UUID.randomUUID(), address, body,
-                CommandStatus.REGISTERED, commandSender);
+        SequenceCommand sequenceCommand = new SequenceCommand(UUID.randomUUID(), address, body, commandSender);
         sequenceCommandList.add(sequenceCommand);
     }
 }

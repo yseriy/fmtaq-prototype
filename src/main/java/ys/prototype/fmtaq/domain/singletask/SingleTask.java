@@ -4,12 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.TaskStatus;
+import ys.prototype.fmtaq.domain.FmtaqErrorList;
+import ys.prototype.fmtaq.domain.FmtaqException;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
-import ys.prototype.fmtaq.domain.FmtaqErrorList;
-import ys.prototype.fmtaq.domain.FmtaqException;
 
 import javax.persistence.Entity;
 import java.util.HashSet;
@@ -23,8 +22,8 @@ import java.util.UUID;
 @Entity
 public class SingleTask extends Task {
 
-    public SingleTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
-        super(id, taskStatus, commandSender);
+    public SingleTask(UUID id, String account, String serviceType, CommandSender commandSender) {
+        super(id, account, serviceType, commandSender);
     }
 
     @Override

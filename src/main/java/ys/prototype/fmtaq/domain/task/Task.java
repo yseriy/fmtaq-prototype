@@ -7,6 +7,8 @@ import lombok.Setter;
 import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,6 +24,10 @@ public abstract class Task {
 
     @Id
     private UUID id;
+    private LocalDateTime startTimestamp;
+    private LocalDateTime statusTimestamp;
+    private String account;
+    private String serviceType;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
@@ -32,9 +38,15 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
     private Set<Command> commandSet;
 
-    public Task(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
+    protected Task(UUID id, String account, String serviceType, CommandSender commandSender) {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC+3"));
+
         setId(id);
-        setTaskStatus(taskStatus);
+        setStartTimestamp(localDateTime);
+        setStatusTimestamp(localDateTime);
+        setAccount(account);
+        setServiceType(serviceType);
+        setTaskStatus(TaskStatus.REGISTERED);
         setCommandSender(commandSender);
     }
 

@@ -10,6 +10,8 @@ import ys.prototype.fmtaq.domain.FmtaqErrorList;
 import ys.prototype.fmtaq.domain.FmtaqException;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Setter
@@ -24,6 +26,8 @@ public abstract class Command {
 
     @Id
     private UUID id;
+    private LocalDateTime startTimestamp;
+    private LocalDateTime statusTimestamp;
     private String address;
     private String body;
 
@@ -36,17 +40,15 @@ public abstract class Command {
     @ManyToOne
     private Task task;
 
-    public Command(UUID id, String address, String body, CommandStatus commandStatus, Task task,
-                   CommandSender commandSender) {
-        this(id, address, body, commandStatus, commandSender);
-        this.task = task;
-    }
+    protected Command(UUID id, String address, String body, CommandSender commandSender) {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC+3"));
 
-    public Command(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
         setId(id);
+        setStartTimestamp(localDateTime);
+        setStatusTimestamp(localDateTime);
         setAddress(address);
         setBody(body);
-        setCommandStatus(commandStatus);
+        setCommandStatus(CommandStatus.REGISTERED);
         setCommandSender(commandSender);
     }
 

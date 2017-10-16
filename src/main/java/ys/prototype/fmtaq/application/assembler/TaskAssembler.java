@@ -18,7 +18,8 @@ public class TaskAssembler {
     }
 
     public Task fromDTO(TaskDTO taskDTO) {
-        TaskBuilder taskBuilder = taskBuilderSelector.getTaskBuilderByTaskType(taskDTO.getType());
+        TaskBuilder taskBuilder = taskBuilderSelector.getTaskBuilderByTaskType(taskDTO.getType())
+                .setAccount(taskDTO.getAccount()).setServiceType(taskDTO.getServiceType());
         List<CommandDTO> commandDTOList = taskDTO.getCommandList();
         commandDTOList.forEach(commandDTO -> taskBuilder.addCommand(commandDTO.getAddress(), commandDTO.getBody()));
 

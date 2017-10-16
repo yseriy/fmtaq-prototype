@@ -25,8 +25,8 @@ public class SequenceCommand extends Command {
     @JoinColumn(name = "next_command_id", referencedColumnName = "id")
     private SequenceCommand nextCommand;
 
-    SequenceCommand(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
-        super(id, address, body, commandStatus, commandSender);
+    SequenceCommand(UUID id, String address, String body, CommandSender commandSender) {
+        super(id, address, body, commandSender);
     }
 
     @Override

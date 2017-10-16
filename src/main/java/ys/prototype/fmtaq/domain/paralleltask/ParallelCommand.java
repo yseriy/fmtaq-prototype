@@ -19,8 +19,8 @@ import java.util.UUID;
 @Entity
 public class ParallelCommand extends Command {
 
-    ParallelCommand(UUID id, String address, String body, CommandStatus commandStatus, CommandSender commandSender) {
-        super(id, address, body, commandStatus, commandSender);
+    ParallelCommand(UUID id, String address, String body, CommandSender commandSender) {
+        super(id, address, body, commandSender);
     }
 
     @Override

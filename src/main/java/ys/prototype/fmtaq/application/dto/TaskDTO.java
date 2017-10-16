@@ -8,5 +8,7 @@ import java.util.List;
 public class TaskDTO {
 
     private final String type;
+    private final String account;
+    private final String serviceType;
     private final List<CommandDTO> commandList;
 }

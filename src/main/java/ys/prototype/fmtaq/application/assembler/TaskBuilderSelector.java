@@ -3,12 +3,12 @@ package ys.prototype.fmtaq.application.assembler;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ys.prototype.fmtaq.application.ApplicationErrorList;
+import ys.prototype.fmtaq.domain.FmtaqException;
 import ys.prototype.fmtaq.domain.paralleltask.ParallelTaskBuilder;
 import ys.prototype.fmtaq.domain.sequencetask.SequenceTaskBuilder;
 import ys.prototype.fmtaq.domain.singletask.SingleTaskBuilder;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.TaskBuilder;
-import ys.prototype.fmtaq.domain.FmtaqException;
 
 @Component
 public class TaskBuilderSelector {

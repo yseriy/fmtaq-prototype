@@ -1,7 +1,5 @@
 package ys.prototype.fmtaq.domain.paralleltask;
 
-import ys.prototype.fmtaq.domain.CommandStatus;
-import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 import ys.prototype.fmtaq.domain.task.TaskBuilder;
@@ -14,6 +12,8 @@ public class ParallelTaskBuilder implements TaskBuilder {
 
     private final List<ParallelCommand> parallelCommandList = new ArrayList<>();
     private final CommandSender commandSender;
+    private String account;
+    private String serviceType;
 
     public ParallelTaskBuilder(CommandSender commandSender) {
         this.commandSender = commandSender;
@@ -21,16 +21,27 @@ public class ParallelTaskBuilder implements TaskBuilder {
 
     @Override
     public Task build() {
-        ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), TaskStatus.REGISTERED, commandSender);
+        ParallelTask parallelTask = new ParallelTask(UUID.randomUUID(), account, serviceType, commandSender);
         parallelTask.loadCommandList(parallelCommandList);
 
         return parallelTask;
     }
 
     @Override
+    public TaskBuilder setAccount(String account) {
+        this.account = account;
+        return this;
+    }
+
+    @Override
+    public TaskBuilder setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+        return this;
+    }
+
+    @Override
     public void addCommand(String address, String body) {
-        ParallelCommand parallelCommand = new ParallelCommand(UUID.randomUUID(), address, body,
-                CommandStatus.REGISTERED, commandSender);
+        ParallelCommand parallelCommand = new ParallelCommand(UUID.randomUUID(), address, body, commandSender);
         parallelCommandList.add(parallelCommand);
     }
 }

@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
@@ -27,8 +26,8 @@ public class SequenceTask extends Task {
     @JoinColumn(name = "first_command_id", referencedColumnName = "id")
     private SequenceCommand firstCommand;
 
-    public SequenceTask(UUID id, TaskStatus taskStatus, CommandSender commandSender) {
-        super(id, taskStatus, commandSender);
+    public SequenceTask(UUID id, String account, String serviceType, CommandSender commandSender) {
+        super(id, account, serviceType, commandSender);
     }
 
     @Override
