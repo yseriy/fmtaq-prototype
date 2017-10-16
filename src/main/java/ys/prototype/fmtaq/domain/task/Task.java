@@ -8,7 +8,6 @@ import ys.prototype.fmtaq.domain.TaskStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,11 +38,8 @@ public abstract class Task {
     private Set<Command> commandSet;
 
     protected Task(UUID id, String account, String serviceType, CommandSender commandSender) {
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC+3"));
-
         setId(id);
-        setStartTimestamp(localDateTime);
-        setStatusTimestamp(localDateTime);
+        setStartTimestamp(LocalDateTime.now());
         setAccount(account);
         setServiceType(serviceType);
         setTaskStatus(TaskStatus.REGISTERED);
@@ -55,6 +51,11 @@ public abstract class Task {
     protected void setCommandSet(Set<Command> commandSet) {
         commandSet.forEach(command -> command.setTask(this));
         this.commandSet = commandSet;
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        setStatusTimestamp(LocalDateTime.now());
+        this.taskStatus = taskStatus;
     }
 
     @Override
