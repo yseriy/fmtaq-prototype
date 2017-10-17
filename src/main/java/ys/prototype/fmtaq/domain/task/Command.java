@@ -40,12 +40,12 @@ public abstract class Command {
     private Task task;
 
     protected Command(UUID id, String address, String body, CommandSender commandSender) {
-        setId(id);
-        setStartTimestamp(LocalDateTime.now());
-        setAddress(address);
-        setBody(body);
-        setCommandStatus(CommandStatus.REGISTERED);
-        setCommandSender(commandSender);
+        this.id = id;
+        this.startTimestamp = this.statusTimestamp = LocalDateTime.now();
+        this.address = address;
+        this.body = body;
+        this.commandStatus = CommandStatus.REGISTERED;
+        this.commandSender = commandSender;
     }
 
     public void handleResponse(CommandResponseStatus responseStatus) {
@@ -67,7 +67,7 @@ public abstract class Command {
     protected abstract void handleErrorResponse();
 
     protected void setCommandStatus(CommandStatus commandStatus) {
-        setStatusTimestamp(LocalDateTime.now());
+        this.statusTimestamp = LocalDateTime.now();
         this.commandStatus = commandStatus;
     }
 

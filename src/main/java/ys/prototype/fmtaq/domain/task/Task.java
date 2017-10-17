@@ -38,12 +38,12 @@ public abstract class Task {
     private Set<Command> commandSet;
 
     protected Task(UUID id, String account, String serviceType, CommandSender commandSender) {
-        setId(id);
-        setStartTimestamp(LocalDateTime.now());
-        setAccount(account);
-        setServiceType(serviceType);
-        setTaskStatus(TaskStatus.REGISTERED);
-        setCommandSender(commandSender);
+        this.id = id;
+        this.startTimestamp = this.statusTimestamp = LocalDateTime.now();
+        this.account = account;
+        this.serviceType = serviceType;
+        this.taskStatus = TaskStatus.REGISTERED;
+        this.commandSender = commandSender;
     }
 
     public abstract void start();
@@ -54,7 +54,7 @@ public abstract class Task {
     }
 
     public void setTaskStatus(TaskStatus taskStatus) {
-        setStatusTimestamp(LocalDateTime.now());
+        this.statusTimestamp = LocalDateTime.now();
         this.taskStatus = taskStatus;
     }
 
