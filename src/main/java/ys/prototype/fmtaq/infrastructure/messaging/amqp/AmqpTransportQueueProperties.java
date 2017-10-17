@@ -20,17 +20,17 @@ public class AmqpTransportQueueProperties {
         @NotNull
         @Size(min = 1, max = 255)
         private String name;
-        private Boolean durable = true;
-        private Boolean exclusive = false;
-        private Boolean autoDelete = false;
+        private Boolean durable = Boolean.TRUE;
+        private Boolean exclusive = Boolean.FALSE;
+        private Boolean autoDelete = Boolean.FALSE;
     }
 
     @Setter
     @Getter
     public static class Host {
-        private Boolean durable = true;
-        private Boolean exclusive = false;
-        private Boolean autoDelete = false;
+        private Boolean durable = Boolean.TRUE;
+        private Boolean exclusive = Boolean.FALSE;
+        private Boolean autoDelete = Boolean.FALSE;
     }
 
     private Response response;

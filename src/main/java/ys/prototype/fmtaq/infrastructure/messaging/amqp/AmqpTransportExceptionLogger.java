@@ -19,10 +19,10 @@ public class AmqpTransportExceptionLogger {
         String messageDebugString = message.toString();
         String messageBody = new String(message.getBody(), CHARSET_UTF_8);
         FmtaqError fmtaqError = e.getFmtaqError();
-        String logMessageFormat = "command response processing error:\n"
-                + "input amqp message: '%s'\n"
-                + "decoded message body: '%s'\n"
-                + "exception code: '%s', exception category list: '%s', exception string: '%s'\n"
+        String logMessageFormat = "command response processing error:%n"
+                + "input amqp message: '%s'%n"
+                + "decoded message body: '%s'%n"
+                + "exception code: '%s', exception category list: '%s', exception string: '%s'%n"
                 + "%s";
         String logMessage = String.format(logMessageFormat, messageDebugString, messageBody, fmtaqError.getCode(),
                 fmtaqError.getCategory(), fmtaqError.getErrorMessage(), e.printProperties());
@@ -32,8 +32,8 @@ public class AmqpTransportExceptionLogger {
     void logException(Exception e, Message message) {
         String messageDebugString = message.toString();
         String messageBody = new String(message.getBody(), CHARSET_UTF_8);
-        String logMessageFormat = "command response processing error:\n"
-                + "input amqp message: '%s'\n"
+        String logMessageFormat = "command response processing error:%n"
+                + "input amqp message: '%s'%n"
                 + "decoded message body: '%s'";
         String logMessage = String.format(logMessageFormat, messageDebugString, messageBody);
         logger.error(logMessage, e);
