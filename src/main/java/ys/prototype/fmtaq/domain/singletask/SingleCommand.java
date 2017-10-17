@@ -18,7 +18,7 @@ import java.util.UUID;
 @Entity
 public class SingleCommand extends Command {
 
-    public SingleCommand(UUID id, String address, String body, CommandSender commandSender) {
+    SingleCommand(UUID id, String address, String body, CommandSender commandSender) {
         super(id, address, body, commandSender);
     }
 

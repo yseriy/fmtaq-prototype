@@ -75,4 +75,19 @@ public abstract class Command {
     public String toString() {
         return getClass().getSimpleName() + "-" + getId();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Command command = (Command) o;
+
+        return id.equals(command.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

@@ -48,7 +48,7 @@ public abstract class Task {
 
     public abstract void start();
 
-    protected void setCommandSet(Set<Command> commandSet) {
+    public void setCommandSet(Set<Command> commandSet) {
         commandSet.forEach(command -> command.setTask(this));
         this.commandSet = commandSet;
     }
@@ -61,5 +61,20 @@ public abstract class Task {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "-" + getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        return id.equals(task.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

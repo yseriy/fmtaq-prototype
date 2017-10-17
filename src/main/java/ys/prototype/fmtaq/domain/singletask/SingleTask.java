@@ -22,7 +22,7 @@ import java.util.UUID;
 @Entity
 public class SingleTask extends Task {
 
-    public SingleTask(UUID id, String account, String serviceType, CommandSender commandSender) {
+    SingleTask(UUID id, String account, String serviceType, CommandSender commandSender) {
         super(id, account, serviceType, commandSender);
     }
 
