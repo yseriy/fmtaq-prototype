@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ys.prototype.fmtaq.domain.FmtaqErrorList;
+import ys.prototype.fmtaq.domain.FmtaqException;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 import ys.prototype.fmtaq.domain.task.Task;
 
@@ -20,7 +22,7 @@ public class ParallelTask extends Task {
 
     private Integer commandCounter = 0;
 
-    public ParallelTask(UUID id, String account, String serviceType, CommandSender commandSender) {
+    ParallelTask(UUID id, String account, String serviceType, CommandSender commandSender) {
         super(id, account, serviceType, commandSender);
     }
 
@@ -35,6 +37,15 @@ public class ParallelTask extends Task {
     }
 
     void reduceCommandCounter() {
-        if (commandCounter > 0) commandCounter--;
+        if (commandCounter <= 0) {
+            throw illegalCommandCounterValue(commandCounter);
+        }
+
+        commandCounter--;
+    }
+
+    private FmtaqException illegalCommandCounterValue(Integer commandCounter) {
+        return new FmtaqException(FmtaqErrorList.ILLEGAL_COMMAND_COUNTER_VALUE).set("task", this.toString())
+                .set("counter", commandCounter.toString());
     }
 }
