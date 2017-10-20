@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.domain.singletask;
+package ys.prototype.fmtaq.domain.sequencetask;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 @RunWith(SpringRunner.class)
-public class SingleTaskBuilderTest {
+public class SequenceTaskBuilderTest {
 
     @MockBean
     private CommandSender commandSender;
@@ -33,16 +33,16 @@ public class SingleTaskBuilderTest {
         List<String> addressList = Arrays.asList("address_0", "address_1", "address_2");
         List<String> bodyList = Arrays.asList("body_0", "body_1", "body_2");
 
-        TaskBuilder singleTaskBuilder = new SingleTaskBuilder(commandSender);
-        singleTaskBuilder.setAccount(account).setServiceType(serviceType);
+        TaskBuilder taskBuilder = new SequenceTaskBuilder(commandSender);
+        taskBuilder.setAccount(account).setServiceType(serviceType);
 
         Stream.iterate(0, i -> i + 1).limit(3)
-                .forEach(i -> singleTaskBuilder.addCommand(addressList.get(i), bodyList.get(i)));
+                .forEach(i -> taskBuilder.addCommand(addressList.get(i), bodyList.get(i)));
 
-        Task task = singleTaskBuilder.build();
+        Task task = taskBuilder.build();
 
         assertThat(task).isNotNull();
-        assertThat(task).isInstanceOf(SingleTask.class);
+        assertThat(task).isInstanceOf(SequenceTask.class);
         assertThat(task.getId()).isNotNull();
         assertThat(task.getId()).isInstanceOf(UUID.class);
         assertThat(task.getStartTimestamp()).isNotNull();
@@ -62,7 +62,7 @@ public class SingleTaskBuilderTest {
 
     private void checkCommand(Command command) {
         assertThat(command).isNotNull();
-        assertThat(command).isInstanceOf(SingleCommand.class);
+        assertThat(command).isInstanceOf(SequenceCommand.class);
         assertThat(command.getId()).isNotNull();
         assertThat(command.getId()).isInstanceOf(UUID.class);
         assertThat(command.getStartTimestamp()).isNotNull();
