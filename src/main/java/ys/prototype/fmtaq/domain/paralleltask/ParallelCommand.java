@@ -48,7 +48,7 @@ public class ParallelCommand extends Command {
     }
 
     private Boolean isLastCommand() {
-        return getParallelTask().getCommandCounter() <= 0;
+        return getParallelTask().getCommandCounter() == 0;
     }
 
     private ParallelTask getParallelTask() {
