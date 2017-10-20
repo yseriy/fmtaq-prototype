@@ -9,10 +9,7 @@ import ys.prototype.fmtaq.domain.TaskStatus;
 import ys.prototype.fmtaq.domain.task.Command;
 import ys.prototype.fmtaq.domain.task.CommandSender;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Setter
@@ -21,7 +18,7 @@ import java.util.UUID;
 @Entity
 public class SequenceCommand extends Command {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "next_command_id", referencedColumnName = "id")
     private SequenceCommand nextCommand;
 
