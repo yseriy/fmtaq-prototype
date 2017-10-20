@@ -32,7 +32,7 @@ public class ParallelTask extends Task {
     }
 
     void loadCommandList(List<ParallelCommand> parallelCommandList) {
-        setCommandCounter(parallelCommandList.size());
+        this.commandCounter = parallelCommandList.size();
         setCommandSet(new HashSet<>(parallelCommandList));
     }
 
