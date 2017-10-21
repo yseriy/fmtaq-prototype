@@ -85,4 +85,34 @@ public class ParallelCommandLogicTest {
         assertThat(command1.getCommandStatus()).isEqualTo(CommandStatus.OK);
         assertThat(command1.getTask().getTaskStatus()).isEqualTo(TaskStatus.OK);
     }
+
+    @Test
+    public void handleErrorResponse() {
+        assertThat(command1.getCommandStatus()).isEqualTo(CommandStatus.REGISTERED);
+        assertThat(command1.getTask().getTaskStatus()).isEqualTo(TaskStatus.REGISTERED);
+
+        ParallelTask parallelTask = (ParallelTask) task;
+        parallelTask.setCommandCounter(2);
+
+        command1.handleResponse(CommandResponseStatus.ERROR);
+
+        assertThat(parallelTask.getCommandCounter()).isEqualTo(1);
+        assertThat(command1.getCommandStatus()).isEqualTo(CommandStatus.ERROR);
+        assertThat(command1.getTask().getTaskStatus()).isEqualTo(TaskStatus.REGISTERED);
+    }
+
+    @Test
+    public void handleLastErrorResponse() {
+        assertThat(command1.getCommandStatus()).isEqualTo(CommandStatus.REGISTERED);
+        assertThat(command1.getTask().getTaskStatus()).isEqualTo(TaskStatus.REGISTERED);
+
+        ParallelTask parallelTask = (ParallelTask) task;
+        parallelTask.setCommandCounter(1);
+
+        command1.handleResponse(CommandResponseStatus.ERROR);
+
+        assertThat(parallelTask.getCommandCounter()).isEqualTo(0);
+        assertThat(command1.getCommandStatus()).isEqualTo(CommandStatus.ERROR);
+        assertThat(command1.getTask().getTaskStatus()).isEqualTo(TaskStatus.ERROR);
+    }
 }
