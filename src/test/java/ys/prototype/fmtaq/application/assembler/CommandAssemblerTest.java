@@ -37,8 +37,7 @@ public class CommandAssemblerTest {
         CommandAssembler commandAssembler = new CommandAssembler(commandSender, commandRepository);
         Command testedCommand = commandAssembler.getById(commandId);
 
-        assertThat(testedCommand).isNotNull();
-        assertThat(testedCommand).isInstanceOf(Command.class);
+        assertThat(testedCommand).isEqualTo(command);
         verify(commandRepository).findOne(commandId);
         verify(command).setCommandSender(commandSender);
         verify(command.getTask()).setCommandSender(commandSender);
