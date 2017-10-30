@@ -30,8 +30,8 @@ public class AmqpTransportCommandSender implements CommandSender {
         assert command.getBody() != null : "command body cannot be null";
 
         Queue queue = createQueue(command.getAddress());
-        tryDeclareQueue(queue);
-        tryConvertAndSend(command.getAddress(), command.getBody());
+        declareQueue(queue);
+        convertAndSend(command.getAddress(), command.getBody());
     }
 
     private Queue createQueue(String name) {
@@ -42,7 +42,7 @@ public class AmqpTransportCommandSender implements CommandSender {
         return new Queue(name, durable, exclusive, autoDelete);
     }
 
-    private void tryDeclareQueue(Queue queue) {
+    private void declareQueue(Queue queue) {
         try {
             amqpAdmin.declareQueue(queue);
         } catch (AmqpException e) {
@@ -50,7 +50,7 @@ public class AmqpTransportCommandSender implements CommandSender {
         }
     }
 
-    private void tryConvertAndSend(String address, String body) {
+    private void convertAndSend(String address, String body) {
         try {
             amqpTemplate.convertAndSend(address, body);
         } catch (AmqpException e) {

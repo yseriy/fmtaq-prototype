@@ -15,10 +15,10 @@ public class CommandResponseListener {
     private final static Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
     private final CommandResponseJsonConverter commandResponseJsonConverter;
     private final CommandService commandService;
-    private final AmqpTransportExceptionLogger logger;
+    private final AmqpTransportLogger logger;
 
     public CommandResponseListener(CommandResponseJsonConverter commandResponseJsonConverter,
-                                   CommandService commandService, AmqpTransportExceptionLogger logger) {
+                                   CommandService commandService, AmqpTransportLogger logger) {
         this.commandResponseJsonConverter = commandResponseJsonConverter;
         this.commandService = commandService;
         this.logger = logger;
@@ -27,7 +27,7 @@ public class CommandResponseListener {
     @RabbitListener(queues = "${app.transport.amqp.queue.response.name}")
     public void processResponse(Message message) {
         try {
-            tryProcessJsonResponse(message);
+            logProcessResponse(message);
         } catch (FmtaqException e) {
             logger.logFmtaqException(e, message);
         } catch (Exception e) {
@@ -35,7 +35,14 @@ public class CommandResponseListener {
         }
     }
 
-    private void tryProcessJsonResponse(Message message) {
+    private void logProcessResponse(Message message) {
+        long startTime = System.nanoTime();
+        processJsonResponse(message);
+        long elapsedTime = (System.nanoTime() - startTime);
+        logger.logCommandResponseAccessOk(message, elapsedTime);
+    }
+
+    private void processJsonResponse(Message message) {
         assert message != null : "amqp message cannot be null";
         assert message.getBody() != null : "amqp message body cannot be null";
 
