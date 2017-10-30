@@ -29,7 +29,7 @@ public class CommandResponseListenerTest {
     private String commandResponseJsonString;
     private Message message;
     private CommandResponseListener commandResponseListener;
-    private final AmqpTransportExceptionLogger logger = new AmqpTransportExceptionLogger();
+    private final AmqpTransportLogger logger = new AmqpTransportLogger();
 
     @MockBean
     private CommandResponseJsonConverter commandResponseJsonConverter;
