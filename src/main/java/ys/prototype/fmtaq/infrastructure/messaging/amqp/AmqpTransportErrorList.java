@@ -10,7 +10,8 @@ public enum AmqpTransportErrorList implements FmtaqError {
     MISSING_NODE(104),
     NO_CONTENT_TO_BIND(105),
     CANNOT_DECLARE_QUEUE(110),
-    CANNOT_SEND_COMMAND(111);
+    CANNOT_SEND_COMMAND(111),
+    UNSUPPORTED_TRANSPORT_VERSION(112);
 
     private final Integer code;
 

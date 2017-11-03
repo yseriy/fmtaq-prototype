@@ -9,6 +9,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
+import ys.prototype.fmtaq.infrastructure.messaging.amqp.v1.CommandResponseJsonConverter;
 
 import java.util.UUID;
 

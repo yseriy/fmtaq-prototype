@@ -1,4 +1,4 @@
-package ys.prototype.fmtaq.infrastructure.messaging.amqp;
+package ys.prototype.fmtaq.infrastructure.messaging.amqp.v1;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +8,7 @@ import ys.prototype.fmtaq.application.dto.CommandResponseDTO;
 import ys.prototype.fmtaq.domain.CommandResponseStatus;
 import ys.prototype.fmtaq.domain.FmtaqError;
 import ys.prototype.fmtaq.domain.FmtaqException;
+import ys.prototype.fmtaq.infrastructure.messaging.amqp.AmqpTransportErrorList;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class CommandResponseJsonConverter {
         objectMapper = jackson2ObjectMapperBuilder.build();
     }
 
-    CommandResponseDTO toDTO(String messageBody) {
+    public CommandResponseDTO toDTO(String messageBody) {
         assert messageBody != null : "message body cannot be null";
 
         JsonNode root = getMessageBodyJsonRoot(messageBody);
