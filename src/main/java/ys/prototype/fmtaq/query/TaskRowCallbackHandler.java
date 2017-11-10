@@ -16,11 +16,11 @@ import java.sql.SQLException;
 public class TaskRowCallbackHandler implements RowCallbackHandler {
 
     private final PrintWriter printWriter;
-    private final ObjectMapper objectMapper;
+    private final ObjectWriter objectWriter;
 
     TaskRowCallbackHandler(PrintWriter printWriter, ObjectMapper objectMapper) {
         this.printWriter = printWriter;
-        this.objectMapper = objectMapper;
+        this.objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
     }
 
     @Override
@@ -40,7 +40,6 @@ public class TaskRowCallbackHandler implements RowCallbackHandler {
         TaskResponseDTO taskResponseDTO = new TaskResponseDTO(rs.getString("task_id"),
                 rs.getString("task_status"), rs.getString("task_start_time"),
                 rs.getString("task_status_time"), rs.getString("command_body"));
-        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         String taskResponseJsonString = objectWriter.writeValueAsString(taskResponseDTO);
         printWriter.println(taskResponseJsonString);
     }
