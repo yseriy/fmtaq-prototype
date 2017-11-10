@@ -5,7 +5,7 @@ public enum FmtaqErrorList implements FmtaqError {
     EMPTY_COMMAND_SET(108),
     CANNOT_FIND_FIRST_COMMAND(109),
     EMPTY_INCOMING_COMMAND_LIST(110),
-    ILLEGAL_COMMAND_COUNTER_VALUE(110);
+    ILLEGAL_COMMAND_COUNTER_VALUE(111);
 
     private final Integer code;
 

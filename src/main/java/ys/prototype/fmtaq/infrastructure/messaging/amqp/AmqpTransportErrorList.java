@@ -3,15 +3,15 @@ package ys.prototype.fmtaq.infrastructure.messaging.amqp;
 import ys.prototype.fmtaq.domain.FmtaqError;
 
 public enum AmqpTransportErrorList implements FmtaqError {
-    BAD_JSON_FORMAT(100),
-    BAD_UUID_FORMAT(101),
-    CANNOT_BE_CONVERTED_TO_AN_INT(102),
-    CANNOT_BE_CONVERTED_TO_A_TEXT(103),
-    MISSING_NODE(104),
-    NO_CONTENT_TO_BIND(105),
-    CANNOT_DECLARE_QUEUE(110),
-    CANNOT_SEND_COMMAND(111),
-    UNSUPPORTED_TRANSPORT_VERSION(112);
+    BAD_JSON_FORMAT(300),
+    BAD_UUID_FORMAT(301),
+    CANNOT_BE_CONVERTED_TO_AN_INT(302),
+    CANNOT_BE_CONVERTED_TO_A_TEXT(303),
+    MISSING_NODE(304),
+    NO_CONTENT_TO_BIND(305),
+    CANNOT_DECLARE_QUEUE(310),
+    CANNOT_SEND_COMMAND(311),
+    UNSUPPORTED_TRANSPORT_VERSION(312);
 
     private final Integer code;
 
