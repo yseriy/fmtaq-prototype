@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 @SpringBootTest(classes = JacksonAutoConfiguration.class)
 public class TaskDAOTest {
 
-    private final static Charset UTF_8_CHARSET = Charset.forName("UTF-8");
+    private static final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
     private StringWriter stringWriter;
     private PrintWriter printWriter;
 

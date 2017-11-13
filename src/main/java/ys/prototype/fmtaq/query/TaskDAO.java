@@ -24,15 +24,15 @@ import java.sql.SQLException;
 @Transactional(readOnly = true)
 public class TaskDAO {
 
-    private final static int FETCH_SIZE = 100;
-    private final static String MAIN_SQL = "select t.id as task_id, t.task_status as task_status, "
+    private static final int FETCH_SIZE = 100;
+    private static final String MAIN_SQL = "select t.id as task_id, t.task_status as task_status, "
             + "t.start_timestamp as task_start_time, "
             + "t.status_timestamp as task_status_time, c.body as command_body "
             + "from task t "
             + "left join command c "
             + "on t.id = c.task_id ";
-    private final static String TASK_LIST_BY_USER_INFO_SQL = MAIN_SQL + "where t.account = ? AND t.service_type = ?";
-    private final static String TASK_LIST_BY_TASK_ID = MAIN_SQL + "where t.id = ?";
+    private static final String TASK_LIST_BY_USER_INFO_SQL = MAIN_SQL + "where t.account = ? AND t.service_type = ?";
+    private static final String TASK_LIST_BY_TASK_ID = MAIN_SQL + "where t.id = ?";
 
     private final JdbcTemplate jdbcTemplate;
     private final ObjectWriter objectWriter;
