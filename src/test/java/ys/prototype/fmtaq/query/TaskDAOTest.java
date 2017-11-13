@@ -29,7 +29,6 @@ public class TaskDAOTest {
     private final static Charset UTF_8_CHARSET = Charset.forName("UTF-8");
     private StringWriter stringWriter;
     private PrintWriter printWriter;
-    private RowCallbackHandlerInjector rowCallbackHandlerInjector;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -46,7 +45,6 @@ public class TaskDAOTest {
 
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
-        rowCallbackHandlerInjector = new RowCallbackHandlerInjector(jackson2ObjectMapperBuilder);
     }
 
     @Test
@@ -55,7 +53,7 @@ public class TaskDAOTest {
         String serviceType = "service_type";
         UserInfoDTO userInfoDTO = new UserInfoDTO(account, serviceType);
 
-        TaskDAO taskDAO = new TaskDAO(jdbcTemplate, rowCallbackHandlerInjector);
+        TaskDAO taskDAO = new TaskDAO(jdbcTemplate, jackson2ObjectMapperBuilder);
         taskDAO.getTaskListByUserInfo(printWriter, userInfoDTO);
 
         System.out.println(stringWriter.toString());
@@ -66,7 +64,7 @@ public class TaskDAOTest {
         String task_id = "92354e79-560c-4bbb-8786-9087b82782e3";
         TaskIdRequestDTO taskIdRequestDTO = new TaskIdRequestDTO(task_id);
 
-        TaskDAO taskDAO = new TaskDAO(jdbcTemplate, rowCallbackHandlerInjector);
+        TaskDAO taskDAO = new TaskDAO(jdbcTemplate, jackson2ObjectMapperBuilder);
         taskDAO.getTaskListByTaskId(printWriter, taskIdRequestDTO);
 
         System.out.println(stringWriter.toString());
