@@ -1,15 +1,15 @@
-package ys.prototype.fmtaq.query;
+package ys.prototype.fmtaq.command.domain;
 
-import ys.prototype.fmtaq.command.domain.FmtaqError;
-
-public enum QueryErrorList implements FmtaqError {
-    CANNOT_GET_COLUMN_VALUE_BY_COLUMN_LABEL(501),
-    CANNOT_WRITE_VALUE_TO_STREAM(502),
-    CANNOT_CONVERT_TO_JSON(503);
+public enum FmtaqErrorList implements FmtaqError {
+    UNKNOWN_COMMAND_RESPONSE_STATUS(106),
+    EMPTY_COMMAND_SET(108),
+    CANNOT_FIND_FIRST_COMMAND(109),
+    EMPTY_INCOMING_COMMAND_LIST(110),
+    ILLEGAL_COMMAND_COUNTER_VALUE(111);
 
     private final Integer code;
 
-    QueryErrorList(Integer code) {
+    FmtaqErrorList(Integer code) {
         this.code = code;
     }
 

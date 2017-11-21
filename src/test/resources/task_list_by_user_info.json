@@ -1,0 +1,16 @@
+[
+  {
+    "id": "92354e79-560c-4bbb-8786-9087b82782e3",
+    "status": "REGISTERED",
+    "startTimestamp": "2017-11-08 14:21:04.33",
+    "statusTimestamp": "2017-11-08 14:21:04.33",
+    "commandBody": "body"
+  },
+  {
+    "id": "05e81414-bcb9-47de-a55f-e41ae421006f",
+    "status": "REGISTERED",
+    "startTimestamp": "2017-11-08 14:22:04.33",
+    "statusTimestamp": "2017-11-08 14:22:04.33",
+    "commandBody": "body1"
+  }
+]

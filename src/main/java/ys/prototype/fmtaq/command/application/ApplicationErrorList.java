@@ -1,15 +1,14 @@
-package ys.prototype.fmtaq.query;
+package ys.prototype.fmtaq.command.application;
 
 import ys.prototype.fmtaq.command.domain.FmtaqError;
 
-public enum QueryErrorList implements FmtaqError {
-    CANNOT_GET_COLUMN_VALUE_BY_COLUMN_LABEL(501),
-    CANNOT_WRITE_VALUE_TO_STREAM(502),
-    CANNOT_CONVERT_TO_JSON(503);
+public enum ApplicationErrorList implements FmtaqError {
+    COMMAND_NOT_FOUND(207),
+    UNKNOWN_TASK_TYPE(209);
 
     private final Integer code;
 
-    QueryErrorList(Integer code) {
+    ApplicationErrorList(Integer code) {
         this.code = code;
     }
 
